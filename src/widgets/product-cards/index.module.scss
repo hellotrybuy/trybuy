@@ -1,0 +1,12 @@
+@use "/src/scss/variables/breakpoints";
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 40px 25px;
+
+  @media screen and (max-width: breakpoints.$lg) {
+    grid-template-columns: repeat(auto-fit, minmax(159px, 1fr));
+    gap: 30px 8px;
+  }
+}

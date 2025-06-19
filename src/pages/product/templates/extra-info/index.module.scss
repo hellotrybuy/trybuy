@@ -1,0 +1,68 @@
+@use "/src/scss/variables/breakpoints";
+
+.info {
+  position: relative;
+
+  &::after {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(45deg, #7a28ff00 70%, #7a28ff);
+    opacity: 0.05;
+  }
+
+  &::before {
+    content: "";
+    z-index: -1;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(160deg, #fff, #1b1a21 35%);
+    opacity: 0.05;
+  }
+
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    counter-reset: info;
+
+    list-style: none;
+
+    li {
+      font-size: 14px;
+
+      &::before {
+        content: counter(info) ". ";
+        counter-increment: info;
+      }
+    }
+  }
+}
+
+.bg-green {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(125deg, #208692, #1b1a21 70%);
+
+  opacity: 0.05;
+}

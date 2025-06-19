@@ -1,0 +1,77 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/colors";
+
+.card {
+	position: relative;
+
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	&::after {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		top: -10px;
+		bottom: -10px;
+		right: -10px;
+		left: -10px;
+
+		border-radius: 20px;
+
+		background: radial-gradient(farthest-corner at 0 10%, #222630 90%, #2a303f);
+		opacity: 0;
+
+		transition: transitions.$main;
+	}
+
+	&:hover::after {
+		@media screen and (min-width: breakpoints.$lg) {
+			opacity: 1;
+		}
+	}
+
+	&__img {
+		width: 100%;
+		flex: 1;
+		border-radius: 10px;
+	}
+
+	&__title {
+		font-size: 14px;
+	}
+
+	&__review {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 5px;
+	}
+
+	&__review-block {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+
+		border-radius: 20px;
+		padding: 4px 6px;
+		background-color: rgb(168, 168, 168, 0.2);
+
+		img {
+			transform: translateY(-10%);
+		}
+
+		span {
+			font-size: 10px;
+		}
+	}
+
+	&__bottom {
+		font-weight: 600;
+	}
+
+	&__btn {
+		width: 100%;
+	}
+}

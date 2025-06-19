@@ -1,0 +1,144 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.search {
+	display: flex;
+	gap: 20px;
+	align-items: center;
+}
+
+.dropdown {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: -1;
+
+	background-color: #f7f6f8;
+	padding: 50px 17px 13px 17px;
+	border-radius: 24px;
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+	}
+}
+
+.item {
+	color: #7b7b7b;
+	font-weight: 300;
+
+	cursor: pointer;
+
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	width: 100%;
+
+	&__name {
+		white-space: nowrap;
+		overflow: hidden;
+		mask-image: linear-gradient(to right, black 80%, transparent 100%);
+		max-width: 80%;
+		width: 100%;
+	}
+
+	&__type {
+		background: #d9d9d9;
+		border-radius: 10px;
+		padding: 0 5px;
+		font-family: "Mont";
+		font-weight: 600;
+		font-size: 10px;
+		line-height: 100%;
+		letter-spacing: 0%;
+		display: flex;
+		align-items: center;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	width: 100%;
+	border-radius: 50px;
+
+	&__search {
+		position: relative;
+
+		width: 100%;
+
+		display: flex;
+		align-items: center;
+		gap: 17px;
+
+		background: #333940;
+		border-radius: 42px;
+	}
+
+	&__search-btn {
+		&:hover svg,
+		&._active svg {
+			rect {
+				transition: transitions.$main;
+				&:not(:nth-child(2)) {
+					fill: #242730;
+				}
+				&:nth-child(2) {
+					stroke: #242730;
+				}
+			}
+		}
+	}
+
+	&__search-input {
+		flex-grow: 1;
+		height: 42px;
+		padding: 17px;
+		font-size: 14px;
+		color: #7b7b7b;
+
+		background: transparent;
+		border: none;
+		outline: none;
+	}
+
+	&__search-icon {
+		width: 30px;
+		height: 30px;
+
+		padding-right: 10px;
+
+		cursor: pointer;
+	}
+
+	&__apps {
+		@media screen and (max-width: breakpoints.$xl) {
+			display: none !important;
+		}
+	}
+}
+
+.header {
+	position: sticky;
+	z-index: 100;
+	top: 20px;
+	width: 100%;
+	transition: 0.2s ease-in all;
+
+	&__actions {
+		position: relative;
+		z-index: 10;
+		flex-grow: 1;
+	}
+
+	//
+}
+
+.filters {
+	@media screen and (max-width: breakpoints.$lg) {
+		display: none;
+	}
+}

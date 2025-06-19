@@ -1,0 +1,38 @@
+# Node.js
+node_modules/
+dist/
+.vscode/
+
+# Env files
+.env
+.env.* 
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vite cache
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Output of `yarn` or `npm`
+yarn.lock
+package-lock.json
+
+# Build output
+build/
+
+# Local development
+*.local
+*.log
+
+# Vercel
+.vercel/

@@ -1,0 +1,24 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/colors";
+
+.review-block {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	width: max-content;
+	height: max-content;
+	border-radius: 20px;
+	padding: 4px 6px;
+	background-color: rgb(168, 168, 168, 0.2);
+	line-height: 100%;
+	cursor: pointer;
+
+	img {
+		transform: translateY(-10%);
+	}
+
+	span {
+		font-size: 10px;
+	}
+}

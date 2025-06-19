@@ -1,0 +1,45 @@
+@use "/src/scss/variables/breakpoints";
+
+.activation {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    padding: 16px 24px;
+    background: rgb(255, 255, 255, 0.1);
+    border-radius: 20px;
+
+    @media screen and (max-width: breakpoints.$lg) {
+      padding: 16px;
+    }
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__title {
+    font-family: "Unbounded";
+    font-size: 20px;
+
+    @media screen and (max-width: breakpoints.$lg) {
+      text-align: center;
+    }
+  }
+
+  &__options {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 128px);
+    gap: 8px 48px;
+
+    &._row {
+      grid-template-rows: unset;
+      grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+      gap: 8px 40px;
+    }
+  }
+}

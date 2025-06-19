@@ -1,0 +1,24 @@
+@use "/src/scss/variables/breakpoints";
+
+.title {
+  font-family: "Unbounded";
+  font-size: 16px;
+
+  width: fit-content;
+
+  border-radius: 70px;
+  padding: 8px 20px;
+  background: #23262f;
+
+  @media screen and (max-width: breakpoints.$lg) {
+    font-size: 14px;
+  }
+
+  &._large {
+    font-size: 20px;
+
+    @media screen and (max-width: breakpoints.$lg) {
+      font-size: 18px;
+    }
+  }
+}

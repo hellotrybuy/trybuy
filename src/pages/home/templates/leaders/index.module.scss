@@ -1,0 +1,11 @@
+.leaders {
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 27px;
+  }
+
+  &__btn {
+    width: 100%;
+  }
+}

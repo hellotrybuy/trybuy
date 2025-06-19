@@ -1,0 +1,32 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/colors";
+@use "/src/scss/variables/transitions";
+
+.control {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  & > button {
+    flex-shrink: 0;
+
+    width: 43px;
+    height: 43px;
+
+    svg path {
+      transition: transitions.$main;
+    }
+
+    &:hover {
+      svg path {
+        stroke: #3f3f3f;
+      }
+    }
+
+    &:last-child {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
