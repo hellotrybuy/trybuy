@@ -1,0 +1,68 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/zIndex";
+
+.navigation {
+	position: fixed;
+	z-index: zIndex.$z-index-100;
+	left: 4px;
+	right: 4px;
+	bottom: 4px;
+
+	transition: transitions.$main;
+
+	&._hidden {
+		opacity: 0;
+		transform: translateY(100%);
+	}
+
+	@media screen and (min-width: breakpoints.$lg) {
+		display: none;
+	}
+
+	&__inner {
+		padding: 4px 25px;
+		border-radius: 20px;
+		background: radial-gradient(
+			farthest-corner at 50% 100%,
+			#25344d 50%,
+			#222834
+		);
+		box-shadow: 2px 2px 2px rgb(255, 255, 255, 0.05) inset;
+
+		ul {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 20px;
+
+			img {
+				object-fit: contain;
+				width: 22px;
+				height: 22px;
+			}
+
+			li a {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+				gap: 8px;
+
+				&._catalog {
+					transform: translateY(-18%);
+				}
+
+				span {
+					font-size: 10px;
+				}
+			}
+		}
+	}
+}
+
+.catalog-icon {
+	width: 48px;
+	height: 48px;
+
+	border-radius: 100%;
+}

@@ -1,0 +1,15 @@
+@use "/src/scss/variables/breakpoints";
+
+.home {
+  padding-top: 41px;
+
+  @media screen and (max-width: breakpoints.$lg) {
+    padding-top: unset;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+}

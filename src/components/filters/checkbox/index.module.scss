@@ -1,0 +1,71 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/colors";
+
+.checkbox {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	gap: 16px;
+
+	width: fit-content;
+
+	cursor: pointer;
+
+	input {
+		position: absolute;
+		opacity: 0;
+		visibility: hidden;
+		height: 0;
+		width: 0;
+	}
+
+	&__checkmark {
+		position: relative;
+
+		flex-shrink: 0;
+
+		width: 20px;
+		height: 20px;
+
+		border-radius: 4px;
+		background: #696969;
+		border: 1px #696969 solid;
+
+		&::after {
+			content: "";
+
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+
+			background: radial-gradient(
+				54.17% 54.17% at 73.61% 27.78%,
+				#3d97ff 0%,
+				#0077ff 100%
+			);
+
+			opacity: 0;
+			transition: 0.3s ease-in-out all;
+
+			width: 16px;
+			height: 16px;
+
+			border-radius: 2px;
+			border-width: 1px;
+		}
+	}
+
+	input:checked ~ &__checkmark {
+		background: transparent;
+
+		&::after {
+			opacity: 1;
+		}
+	}
+
+	&__caption {
+		text-wrap: nowrap;
+	}
+}

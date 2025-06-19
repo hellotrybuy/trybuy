@@ -1,0 +1,33 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.filersBlock-vertical {
+	&__aside {
+		flex-basis: 231px;
+		position: sticky;
+		top: 100px;
+	}
+}
+
+.aside {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.filter {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	&__title {
+		font-family: "Inter", sans-serif;
+		font-weight: 600;
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+}

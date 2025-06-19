@@ -1,0 +1,90 @@
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/breakpoints";
+
+.apps {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+
+	width: 174px;
+	height: 38px;
+	transform: translateY(3px);
+
+	@media screen and (max-width: breakpoints.$lg) {
+		width: 90vw;
+		justify-content: space-between;
+	}
+}
+
+.app {
+	position: relative;
+	flex-shrink: 0;
+
+	width: 24px;
+
+	transition: transitions.$main;
+
+	@media screen and (min-width: breakpoints.$xl) {
+		&:hover {
+			// Для разных иконок приходиться ставить индивидульный размер
+			// Steam
+			&:nth-child(1) {
+				width: 91px;
+			}
+			// Xbox
+			&:nth-child(2) {
+				width: 79px;
+			}
+			// Playstation
+			&:nth-child(3) {
+				width: 119px;
+			}
+			// Nintendo
+			&:nth-child(4) {
+				width: 107px;
+			}
+			// Discord
+			&:nth-child(5) {
+				width: 107px;
+			}
+			// Microsoft
+			&:nth-child(6) {
+				width: 110px;
+			}
+
+			& img {
+				&:first-child {
+					opacity: 0;
+				}
+				&:last-child {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	& img {
+		opacity: 1;
+		transition: transitions.$main;
+
+		pointer-events: none;
+
+		&:first-child {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-60%);
+
+			@media screen and (max-width: breakpoints.$xl) {
+				position: static;
+				transform: unset;
+			}
+		}
+
+		&:last-child {
+			opacity: 0;
+			@media screen and (max-width: breakpoints.$xl) {
+				display: none;
+			}
+		}
+	}
+}

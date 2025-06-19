@@ -1,0 +1,113 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.catalog {
+	position: absolute;
+	top: 80%;
+	left: 20px;
+	right: 20px;
+
+	padding: 36px 33px 20px 33px;
+	border-radius: 25px;
+	background: #f7f6f8;
+
+	transition: transitions.$main;
+
+	opacity: 0;
+	visibility: hidden;
+
+	&._active {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	&:hover {
+		@media screen and (min-width: breakpoints.$lg) {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+
+	@media screen and (max-width: breakpoints.$lg) {
+		top: 90%;
+		left: 0;
+		right: 0;
+
+		padding: 40px 35px 33px 35px;
+	}
+
+	&__inner {
+		display: flex;
+		flex-direction: column;
+		gap: 23px;
+	}
+
+	&__btn {
+		@media screen and (max-width: breakpoints.$lg) {
+			width: 100%;
+		}
+	}
+}
+
+.categories {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(217px, 1fr));
+	gap: 55px 35px;
+
+	@media screen and (max-width: breakpoints.$md) {
+		grid-template-columns: repeat(1, 1fr);
+		gap: 10px;
+	}
+
+	&__column {
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+
+		&:not(:last-child) {
+			padding-right: clamp(1rem, -5.265rem + 13.05vw, 4.688rem);
+		}
+
+		&:not(:last-child):after {
+			content: "";
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+
+			width: 1px;
+
+			background: linear-gradient(#ffffff 0%, #d1d1d1 53%, #ffffff 100%);
+
+			@media screen and (max-width: breakpoints.$md) {
+				display: none;
+			}
+		}
+	}
+
+	&__title {
+		font-weight: 600;
+		color: #242730;
+	}
+
+	&__list {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+
+		@media screen and (max-width: breakpoints.$md) {
+			display: none;
+		}
+
+		li {
+			color: #242730;
+			transition: transitions.$main;
+
+			&:hover {
+				color: #1480fb;
+			}
+		}
+	}
+}

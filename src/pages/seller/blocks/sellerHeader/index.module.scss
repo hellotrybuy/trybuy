@@ -1,0 +1,171 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.sellerHeader {
+	width: 100%;
+	height: 104px;
+	border-radius: 20px;
+	background: radial-gradient(
+		50.04% 100% at 49.96% 0%,
+		#1b2738 0%,
+		#23262f 100%
+	);
+	padding: 24px;
+	line-height: 100%;
+	display: flex;
+	justify-content: space-between;
+	cursor: default;
+
+	&__footer {
+		width: 100%;
+		background: radial-gradient(
+			50.04% 100% at 49.96% 0%,
+			#1b2738 0%,
+			#23262f 100%
+		);
+		padding: 14px;
+		line-height: 100%;
+		border-radius: 20px;
+
+		&__item {
+			display: flex;
+			gap: 5px;
+			align-items: center;
+		}
+	}
+
+	@media screen and (max-width: breakpoints.$lg) {
+		flex-basis: unset;
+		display: none;
+	}
+
+	&__left {
+		display: flex;
+		gap: 15px;
+		align-items: center;
+
+		&__sales {
+			font-family: "Unbounded";
+			font-weight: 700;
+			font-size: 20px;
+			line-height: 28px;
+			letter-spacing: 0%;
+		}
+
+		&__contacts {
+			display: flex;
+			gap: 5px;
+
+			div {
+				cursor: pointer;
+				transition: 0.2s;
+
+				:hover {
+					transform: scale(1.08);
+					transition: 0.2s;
+				}
+			}
+		}
+	}
+
+	&__right {
+		display: flex;
+		gap: 15px;
+		align-items: center;
+	}
+
+	&__mainInfo {
+		display: flex;
+		gap: 12px;
+
+		&__logo {
+			width: 56px;
+			height: 56px;
+			border-radius: 80px;
+			background: #f3f4f6;
+			position: relative;
+
+			img {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+
+		&__name {
+			font-family: "Unbounded";
+			font-weight: 700;
+			font-size: 22px;
+			line-height: 32px;
+			letter-spacing: 0%;
+			vertical-align: middle;
+
+			@media screen and (max-width: breakpoints.$lg) {
+				font-size: 18px;
+			}
+		}
+
+		&__text {
+			display: flex;
+			flex-direction: column;
+		}
+
+		&__raitingContainer {
+			display: flex;
+			gap: 5px;
+			align-items: center;
+		}
+	}
+}
+
+.sellerHeaderMobile {
+	display: none;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		&__sales {
+			display: flex;
+			gap: 10px;
+		}
+
+		&__buttonChat {
+			width: 100%;
+		}
+
+		&__mainInfo {
+			height: 104px;
+			border-radius: 20px;
+			padding: 24px;
+			display: flex;
+			gap: 12px;
+			background: radial-gradient(
+				50.04% 100% at 49.96% 0%,
+				#1b2738 0%,
+				#23262f 100%
+			);
+		}
+	}
+}
+
+.container-count {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	width: max-content;
+	height: max-content;
+	border-radius: 20px;
+	padding: 4px 6px;
+	background-color: rgb(168, 168, 168, 0.2);
+	line-height: 100%;
+	cursor: pointer;
+}

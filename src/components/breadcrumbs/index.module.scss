@@ -1,0 +1,41 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.breadcrumbs {
+	margin-bottom: 30px;
+	margin-top: 8px;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		margin-bottom: 20px;
+		margin-top: 0;
+	}
+
+	ul {
+		display: flex;
+		gap: 4px;
+
+		overflow: auto;
+
+		li {
+			a {
+				font-size: 12px;
+				opacity: 0.5;
+
+				transition: transitions.$main;
+
+				white-space: nowrap;
+
+				&:hover {
+					opacity: 1;
+				}
+			}
+
+			&._active {
+				a {
+					opacity: 1;
+					pointer-events: none;
+				}
+			}
+		}
+	}
+}

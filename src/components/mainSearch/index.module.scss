@@ -1,0 +1,56 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.actions {
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
+	border-radius: 50px;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		display: none;
+	}
+
+	&__search {
+		position: relative;
+		width: 520px;
+		display: flex;
+		align-items: center;
+		gap: 17px;
+		background: #333940;
+		border-radius: 42px;
+	}
+
+	&__search-btn {
+		&:hover svg,
+		&._active svg {
+			rect {
+				transition: transitions.$main;
+
+				&:not(:nth-child(2)) {
+					fill: #242730;
+				}
+				&:nth-child(2) {
+					stroke: #242730;
+				}
+			}
+		}
+	}
+
+	&__search-input {
+		flex-grow: 1;
+		height: 38px;
+		font-size: 14px;
+		color: #7b7b7b;
+		background: transparent;
+		border: none;
+		outline: none;
+	}
+
+	&__search-icon {
+		width: 30px;
+		height: 30px;
+		padding-right: 10px;
+		cursor: pointer;
+	}
+}

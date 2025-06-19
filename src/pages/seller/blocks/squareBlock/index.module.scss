@@ -1,0 +1,44 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/colors";
+
+.squareBlock {
+	display: flex;
+	flex-direction: column;
+	padding: 16px;
+	gap: 2px;
+	border-radius: 15px;
+	background-color: #303c4a;
+
+	&__name {
+		font-family: "Mont";
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 20px;
+		letter-spacing: 0%;
+		color: #6c737f;
+	}
+}
+
+.space-between-mobile-name {
+	font-family: "Unbounded";
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 20px;
+	letter-spacing: 0%;
+	color: white;
+}
+
+.space-between-mobile {
+	@media screen and (max-width: breakpoints.$lg) {
+		justify-content: space-between;
+		flex-direction: row-reverse;
+		align-items: center;
+	}
+}
+
+.full-width {
+	@media screen and (max-width: breakpoints.$lg) {
+		width: 100%;
+	}
+}
