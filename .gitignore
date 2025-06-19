@@ -9,7 +9,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# OS
 .DS_Store
 Thumbs.db
 
