@@ -3,10 +3,6 @@ node_modules/
 dist/
 .vscode/
 
-# Env files
-.env
-.env.* 
-
 # Logs
 npm-debug.log*
 yarn-debug.log*
