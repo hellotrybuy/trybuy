@@ -3,6 +3,7 @@ import styles from "./index.module.scss";
 import Button from "../../../components/button";
 import { useCallback, useRef } from "react";
 import { useClickOutside } from "../../../hooks/useClickOutside";
+import React from "react";
 
 const cnx = classNames.bind(styles);
 

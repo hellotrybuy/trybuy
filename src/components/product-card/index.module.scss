@@ -2,12 +2,21 @@
 @use "/src/scss/variables/transitions";
 @use "/src/scss/variables/colors";
 
-.card {
+.content {
 	position: relative;
 
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+}
+
+.card {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	justify-content: space-between;
 
 	&::after {
 		content: "";
@@ -36,10 +45,20 @@
 		width: 100%;
 		flex: 1;
 		border-radius: 10px;
+
+		object-fit: fill;
 	}
 
 	&__title {
 		font-size: 14px;
+		position: relative;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+
+		white-space: normal;
+		text-overflow: ellipsis;
 	}
 
 	&__review {

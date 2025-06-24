@@ -1,201 +1,202 @@
 @use "/src/scss/variables/breakpoints";
 
 .desktop {
-  position: relative;
+	position: relative;
 
-  height: 362px;
+	height: 362px;
 
-  border-radius: 20px;
-  padding: 0 44px;
-  background: #23262f;
+	border-radius: 20px;
+	padding: 0 44px;
+	background: #23262f;
 
-  overflow: hidden;
+	overflow: hidden;
 
-  @media screen and (max-width: breakpoints.$lg) {
-    display: none;
-  }
+	@media screen and (max-width: breakpoints.$lg) {
+		display: none;
+	}
 
-  &__text {
-    position: relative;
-    z-index: 10;
+	&__text {
+		position: relative;
+		z-index: 10;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 20px;
 
-    max-width: 250px;
-    height: 100%;
-  }
+		max-width: 250px;
+		height: 100%;
+	}
 
-  &__title {
-    font-family: "Unbounded";
-    font-size: 36px;
-    font-weight: bold;
-  }
+	&__title {
+		font-family: "Unbounded";
+		font-size: 36px;
+		font-weight: bold;
+	}
 
-  &__subtitle {
-    font-size: 14px;
-  }
+	&__subtitle {
+		font-size: 14px;
+		max-width: 90%;
+	}
 
-  &__bg {
-    & > div:first-child {
-      position: absolute;
-      z-index: 5;
-      top: 0;
-      left: 0;
+	&__bg {
+		& > div:first-child {
+			position: absolute;
+			z-index: 5;
+			top: 0;
+			left: 0;
 
-      width: 387px;
-      height: 361px;
+			width: 387px;
+			height: 361px;
 
-      border-radius: 20px 0 0 20px;
+			border-radius: 20px 0 0 20px;
 
-      background: linear-gradient(90deg, #23262f 73%, #23262f00 100%);
+			background: linear-gradient(90deg, #23262f 73%, #23262f00 100%);
 
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+			&::after {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
 
-        width: 100%;
-        height: 100%;
+				width: 100%;
+				height: 100%;
 
-        background: linear-gradient(45deg, #783ff2, #00000000 60%);
+				background: linear-gradient(45deg, #783ff2, #00000000 60%);
 
-        opacity: 0.2;
-      }
+				opacity: 0.2;
+			}
 
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+			&::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
 
-        width: 100%;
-        height: 100%;
+				width: 100%;
+				height: 100%;
 
-        background: linear-gradient(90deg, #23262f 5%, #23262f00 100%);
-      }
-    }
+				background: linear-gradient(90deg, #23262f 5%, #23262f00 100%);
+			}
+		}
 
-    & > div:last-child {
-      position: absolute;
-      z-index: 5;
-      top: 0;
-      right: -2px;
+		& > div:last-child {
+			position: absolute;
+			z-index: 5;
+			top: 0;
+			right: -2px;
 
-      width: 115px;
-      height: 361px;
+			width: 115px;
+			height: 361px;
 
-      border-radius: 20px 20px;
+			border-radius: 20px 20px;
 
-      background: linear-gradient(90deg, #23262f00 20%, #23262f 90%);
-    }
-  }
+			background: linear-gradient(90deg, #23262f00 20%, #23262f 90%);
+		}
+	}
 }
 
 .mobile {
-  @media screen and (min-width: breakpoints.$lg) {
-    display: none;
-  }
+	@media screen and (min-width: breakpoints.$lg) {
+		display: none;
+	}
 
-  &__title {
-    font-family: "Unbounded";
-    text-align: center;
-    font-size: 36px;
-    font-weight: 500;
+	&__title {
+		font-family: "Unbounded";
+		text-align: center;
+		font-size: 36px;
+		font-weight: 500;
 
-    background: -webkit-linear-gradient(#f7f7f7, #91919100 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+		background: -webkit-linear-gradient(#f7f7f7, #91919100 90%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
 
-  &__swipers {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	&__swipers {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 
-    margin: 0 -15px;
-  }
+		margin: 0 -15px;
+	}
 
-  &__swiper {
-    &._bottom {
-      margin-left: -60px;
-    }
-  }
+	&__swiper {
+		&._bottom {
+			margin-left: -60px;
+		}
+	}
 }
 
 .swiper-container {
-  position: absolute;
-  z-index: 1;
-  left: 5px;
-  right: 5px;
+	position: absolute;
+	z-index: 1;
+	left: 5px;
+	right: 5px;
 
-  overflow: hidden;
+	overflow: hidden;
 
-  &._top {
-    top: 14px;
-  }
+	&._top {
+		top: 14px;
+	}
 
-  &._bottom {
-    bottom: 12px;
-    left: 100px;
-  }
+	&._bottom {
+		bottom: 12px;
+		left: 100px;
+	}
 }
 
 .slide {
-  width: auto !important;
-  &__inner {
-    border-radius: 20px;
+	width: auto !important;
+	&__inner {
+		border-radius: 20px;
 
-    width: 321px;
-    height: 160px;
+		width: 321px;
+		height: 160px;
 
-    overflow: hidden;
+		overflow: hidden;
 
-    @media screen and (max-width: breakpoints.$lg) {
-      width: 170px;
-      height: 85px;
-    }
-  }
+		@media screen and (max-width: breakpoints.$lg) {
+			width: 170px;
+			height: 85px;
+		}
+	}
 
-  &__img {
-    border-radius: 20px;
-    width: 100%;
-  }
+	&__img {
+		border-radius: 20px;
+		width: 100%;
+	}
 
-  &__caption {
-    position: absolute;
-    z-index: 5;
+	&__caption {
+		position: absolute;
+		z-index: 5;
 
-    left: 50%;
-    bottom: 10px;
-    transform: translate(-50%, 0);
+		left: 50%;
+		bottom: 10px;
+		transform: translate(-50%, 0);
 
-    text-align: center;
-    font-size: 14px;
-    font-weight: 500;
+		text-align: center;
+		font-size: 14px;
+		font-weight: 500;
 
-    @media screen and (max-width: breakpoints.$lg) {
-      font-size: 12px;
-    }
-  }
+		@media screen and (max-width: breakpoints.$lg) {
+			font-size: 12px;
+		}
+	}
 
-  &__bg {
-    position: absolute;
+	&__bg {
+		position: absolute;
 
-    bottom: 0;
-    left: 0;
+		bottom: 0;
+		left: 0;
 
-    width: 100%;
-    height: 72px;
-    border-radius: 20px;
+		width: 100%;
+		height: 72px;
+		border-radius: 20px;
 
-    background: linear-gradient(#00000000, #000000);
-  }
+		background: linear-gradient(#00000000, #000000);
+	}
 }
 
 .swiper {
-  // overflow: visible !important;
+	// overflow: visible !important;
 }

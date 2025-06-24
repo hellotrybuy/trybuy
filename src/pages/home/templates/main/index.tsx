@@ -70,7 +70,8 @@ export function HomeMain() {
 				<div className={cnx("desktop__text")}>
 					<h2 className={cnx("desktop__title")}>В тренде</h2>
 					<h3 className={cnx("desktop__subtitle")}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+						Пока другие ищут, ты уже знаешь, что взять. Хиты, заслужившие
+						доверие, — всё под рукой.
 					</h3>
 				</div>
 
