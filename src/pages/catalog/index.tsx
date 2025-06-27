@@ -120,7 +120,7 @@ export function CatalogPage() {
 													<span>Palmdale Shop</span>
 												</div>
 												<div className={cnx("box__top-block")}>
-													<img src="icons/common/star.svg" alt="Star" />
+													<img src="/icons/common/star.svg" alt="Star" />
 													<span>5,0</span>
 												</div>
 												<div className={cnx("box__top-block")}>
@@ -138,7 +138,7 @@ export function CatalogPage() {
 														type="text"
 													/>
 													<div className={cnx("box__input-caption")}>
-														<img src="icons/common/info.svg" alt="Info" />
+														<img src="/icons/common/info.svg" alt="Info" />
 														<span>Минимальная сумма 40 ₽</span>
 													</div>
 												</div>
@@ -149,7 +149,7 @@ export function CatalogPage() {
 														type="text"
 													/>
 													<div className={cnx("box__input-caption")}>
-														<img src="icons/common/info.svg" alt="Info" />
+														<img src="/icons/common/info.svg" alt="Info" />
 														<span>Минимальная сумма 40 ₽</span>
 													</div>
 												</div>

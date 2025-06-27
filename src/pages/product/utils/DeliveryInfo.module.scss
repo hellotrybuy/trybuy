@@ -1,0 +1,38 @@
+@use "/src/scss/variables/breakpoints";
+.deliveryInfo {
+	font-size: 0.95rem;
+	line-height: 1.6;
+
+	@media screen and (max-width: breakpoints.$md) {
+		line-height: 1.2;
+	}
+
+	.delivery {
+		margin-bottom: 1.5rem;
+	}
+
+	.attention {
+		background-color: #fff9e6;
+		border-left: 4px solid #f7c948;
+		padding: 1rem;
+		margin: 0.75rem 0;
+		border-radius: 0.5rem;
+		font-size: 0.95rem;
+
+		br {
+			display: block;
+			margin-bottom: 0.5rem;
+			content: "";
+		}
+	}
+}
+
+.link {
+	color: #5e5ecb;
+	transition: 0.2s;
+	cursor: pointer;
+	&:hover {
+		transition: 0.2s;
+		color: #5d5dff;
+	}
+}

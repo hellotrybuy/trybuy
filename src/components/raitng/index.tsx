@@ -10,7 +10,7 @@ type Props = {
 export function Rating({ rating }: Props) {
 	return (
 		<div className={cnx("raiting-block")}>
-			<img src="icons/common/star.svg" alt="Star" />
+			<img src="/icons/common/star.svg" alt="Star" />
 			<span>{rating}</span>
 		</div>
 	);

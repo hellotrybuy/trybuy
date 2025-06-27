@@ -2,63 +2,65 @@
 @use "/src/scss/variables/colors";
 
 .radio {
-  position: relative;
+	position: relative;
 
-  display: flex;
-  align-items: center;
-  gap: 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
 
-  width: fit-content;
+	width: fit-content;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  input {
-    position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    height: 0;
-    width: 0;
-  }
+	input {
+		position: absolute;
+		opacity: 0;
+		visibility: hidden;
+		height: 0;
+		width: 0;
+	}
 
-  &__checkmark {
-    position: relative;
+	&__checkmark {
+		position: relative;
 
-    flex-shrink: 0;
+		flex-shrink: 0;
 
-    width: 20px;
-    height: 20px;
+		width: 20px;
+		height: 20px;
 
-    border-radius: 100%;
-    background: #696969;
-    border: 1px #696969 solid;
+		border-radius: 100%;
+		background: #696969;
+		border: 1px #696969 solid;
 
-    &::after {
-      content: "";
+		&::after {
+			content: "";
 
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 
-      width: 80%;
-      height: 80%;
-      border-radius: 100%;
+			width: 80%;
+			height: 80%;
+			border-radius: 100%;
 
-      background: colors.$blueGradient;
-      transition: 0.3s ease-in-out all;
-      opacity: 0;
-    }
-  }
+			background: colors.$blueGradient;
+			transition: 0.3s ease-in-out all;
+			opacity: 0;
+		}
+	}
 
-  input:checked ~ &__checkmark {
-    background: transparent;
+	input:checked ~ &__checkmark {
+		background: transparent;
 
-    &::after {
-      opacity: 1;
-    }
-  }
+		&::after {
+			opacity: 1;
+		}
+	}
 
-  &__caption {
-    text-wrap: nowrap;
-  }
+	&__caption {
+		// text-wrap: ;
+		// word-break: break-all;
+		// word-wrap: break-word;
+	}
 }

@@ -47,8 +47,8 @@ export function Header() {
 					<div className={cnx("header__inner")}>
 						<div className={cnx("header__logo")}>
 							<a href={Routes.HOME}>
-								<img src="icons/common/logo.svg" alt="TryBuy" />
-								<img src="icons/common/logo-short.svg" alt="TryBuy" />
+								<img src="/icons/common/logo.svg" alt="TryBuy" />
+								<img src="/icons/common/logo-short.svg" alt="TryBuy" />
 							</a>
 						</div>
 

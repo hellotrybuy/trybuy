@@ -119,7 +119,7 @@ export function SellerPage() {
 													<span>Palmdale Shop</span>
 												</div>
 												<div className={cnx("seller-box__top-block")}>
-													<img src="icons/common/star.svg" alt="Star" />
+													<img src="/icons/common/star.svg" alt="Star" />
 													<span>5,0</span>
 												</div>
 												<div className={cnx("seller-box__top-block")}>

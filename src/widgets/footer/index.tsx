@@ -44,7 +44,7 @@ export function Footer() {
 					<div className={cnx("footer__column")}>
 						<div className={cnx("footer__logo")}>
 							<a href={Routes.HOME}>
-								<img src="icons/common/logo.svg" alt="GameMart" />
+								<img src="/icons/common/logo.svg" alt="GameMart" />
 							</a>
 						</div>
 						<CopyrightBlock />
@@ -82,7 +82,7 @@ export function Footer() {
 									{hasTelegram && (
 										<a href="#" aria-label="Поддержка в Telegram">
 											<img
-												src="icons/social/telegram-extended.svg"
+												src="/icons/social/telegram-extended.svg"
 												alt="Поддержка"
 											/>
 										</a>

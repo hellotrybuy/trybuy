@@ -40,7 +40,7 @@ export function HeaderMobileNav({
 		<div className={cnx("actions-mobile__search")} ref={ref}>
 			<img
 				className={cnx("actions-mobile__search-icon")}
-				src="icons/navigation/search.svg"
+				src="/icons/navigation/search.svg"
 				alt="Поиск"
 			/>
 			<input
