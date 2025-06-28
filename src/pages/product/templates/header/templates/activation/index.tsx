@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 
 import { ProductData } from "../../../../../../hooks/types";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import RadioOptionGroup from "./blocks/RadioOptionGroup";
 import TextOptionField from "./blocks/TextOptionField";
