@@ -11,6 +11,51 @@ import "swiper/css";
 import Title from "../../../../components/title";
 import SwiperControl from "../../../../components/swiper-control";
 
+const MOCK_GENRES = [
+	{
+		title: "Игровые товары",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #28344A 0%, #222630 98.46%)",
+		img: "mock/genries/games.svg",
+		style: { width: 187, height: 87 },
+		classNames: "",
+	},
+	{
+		title: "Программное обеспечение",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #284A48 0%, #222630 98.46%)",
+		img: "mock/genries/po.svg",
+		style: { width: 187, height: 87 },
+		classNames: "",
+	},
+	{
+		title: "Сервисы",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #403667 0%, #222630 98.46%)",
+		img: "mock/genries/services.svg",
+		style: { width: 187, height: 87 },
+		classNames: "",
+	},
+	{
+		title: "Playstation",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #131F7D 0%, #222630 98.46%)",
+		img: "mock/genries/playstation.svg",
+		style: { width: 154, height: 137 },
+		classNames: cnx("genre__xbox"),
+	},
+	{
+		title: "Внутриигровые ценности",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #414023 0%, #222630 98.46%)",
+		img: "mock/genries/ingame.svg",
+		style: { width: 187, height: 87 },
+		classNames: "",
+	},
+	{
+		title: "XBOX",
+		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #0A3A0F 0%, #222630 98.46%)",
+		img: "mock/genries/xbox.svg",
+		style: { width: 113, height: 111 },
+		classNames: cnx("genre__xbox"),
+	},
+];
+
 export function HomeGenries() {
 	const prevBtnRef = useRef(null);
 	const nextBtnRef = useRef(null);
@@ -25,15 +70,15 @@ export function HomeGenries() {
 					</Title>
 					<SwiperControl prevBtn={prevBtnRef} nextBtn={nextBtnRef} />
 				</div>
-				{/* Mobile title */}
+
 				<div className={cnx("genries__title", "_mobile")}>Категории</div>
 
-				{/* Swiper */}
 				<div className={cnx("genries__swiper")}>
 					<Swiper
 						modules={[Navigation, FreeMode]}
 						spaceBetween={20}
 						slidesPerView={4}
+						slidesPerGroup={1}
 						loop
 						navigation={{
 							prevEl: prevBtnRef.current,
@@ -42,303 +87,39 @@ export function HomeGenries() {
 						grabCursor
 						onInit={(swiper) => setSwiper(swiper)}
 					>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #28344a)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Симуляторы</b>
-								<img
-									className={cnx("_left")}
-									src="mock/genries/1.png"
-									alt=""
-									style={{ width: 335, height: 162 }}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #284a48)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Шутеры</b>
-								<img
-									src="mock/genries/2.png"
-									alt=""
-									style={{
-										width: 236,
-										height: 192,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #4a4728)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Soulslike</b>
-								<img
-									src="mock/genries/3.png"
-									alt=""
-									style={{
-										width: 252,
-										height: 205,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #4a282a)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Инди и кооп</b>
-								<img
-									src="mock/genries/4.png"
-									alt=""
-									style={{
-										width: 171,
-										height: 192,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #28344a)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Симуляторы</b>
-								<img
-									className={cnx("_left")}
-									src="mock/genries/1.png"
-									alt=""
-									style={{ width: 335, height: 162 }}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #284a48)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Шутеры</b>
-								<img
-									src="mock/genries/2.png"
-									alt=""
-									style={{
-										width: 236,
-										height: 192,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #4a4728)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Soulslike</b>
-								<img
-									src="mock/genries/3.png"
-									alt=""
-									style={{
-										width: 252,
-										height: 205,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
-						<SwiperSlide className={cnx("slide")}>
-							<div
-								className={cnx("genre")}
-								style={{
-									background:
-										"radial-gradient(farthest-corner at 0 0, #222630, #4a282a)",
-								}}
-							>
-								<b className={cnx("genre__title")}>Инди и кооп</b>
-								<img
-									src="mock/genries/4.png"
-									alt=""
-									style={{
-										width: 171,
-										height: 192,
-										transform: "rotateY(180deg)",
-									}}
-								/>
-							</div>
-						</SwiperSlide>
+						{[...MOCK_GENRES, ...MOCK_GENRES].map((genre, index) => (
+							<SwiperSlide key={index} className={cnx("slide")}>
+								<div className={cnx("genre")} style={{ background: genre.bg }}>
+									<p className={cnx("genre__title")}>{genre.title}</p>
+									<img
+										src={genre.img}
+										alt=""
+										className={cnx(genre.classNames)}
+										style={genre.style}
+									/>
+								</div>
+							</SwiperSlide>
+						))}
 					</Swiper>
 				</div>
 
-				<div className={cnx("genries__grid")}>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #28344a)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Симуляторы</b>
-						<img
-							className={cnx("_left")}
-							src="mock/genries/1.png"
-							alt=""
-							style={{ width: 335, height: 162 }}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #284a48)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Шутеры</b>
-						<img
-							src="mock/genries/2.png"
-							alt=""
-							style={{
-								width: 236,
-								height: 192,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #4a4728)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Soulslike</b>
-						<img
-							src="mock/genries/3.png"
-							alt=""
-							style={{
-								width: 252,
-								height: 205,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #4a282a)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Инди и кооп</b>
-						<img
-							src="mock/genries/4.png"
-							alt=""
-							style={{
-								width: 171,
-								height: 192,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #28344a)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Симуляторы</b>
-						<img
-							className={cnx("_left")}
-							src="mock/genries/1.png"
-							alt=""
-							style={{ width: 335, height: 162 }}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #284a48)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Шутеры</b>
-						<img
-							src="mock/genries/2.png"
-							alt=""
-							style={{
-								width: 236,
-								height: 192,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #4a4728)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Soulslike</b>
-						<img
-							src="mock/genries/3.png"
-							alt=""
-							style={{
-								width: 252,
-								height: 205,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-					<div
-						className={cnx("genre")}
-						style={{
-							background:
-								"radial-gradient(farthest-corner at 0 0, #222630, #4a282a)",
-						}}
-					>
-						<b className={cnx("genre__title")}>Инди и кооп</b>
-						<img
-							src="mock/genries/4.png"
-							alt=""
-							style={{
-								width: 171,
-								height: 192,
-								transform: "rotateY(180deg)",
-							}}
-						/>
-					</div>
-				</div>
+				{/* <div className={cnx("genries__grid")}>
+					{[...MOCK_GENRES].map((genre, index) => (
+						<div
+							key={index}
+							className={cnx("genre")}
+							style={{ background: genre.bg }}
+						>
+							<b className={cnx("genre__title")}>{genre.title}</b>
+							<img
+								src={genre.img}
+								alt=""
+								className={cnx(genre.className)}
+								style={genre.style}
+							/>
+						</div>
+					))}
+				</div> */}
 			</div>
 		</section>
 	);
