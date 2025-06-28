@@ -2,11 +2,12 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 
 import { ProductData } from "../../../../../../hooks/types";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import RadioOptionGroup from "./blocks/RadioOptionGroup";
 import TextOptionField from "./blocks/TextOptionField";
 import CheckboxOptionGroup from "./blocks/CheckboxOptionGroup";
+import { usePrice } from "../../../../context";
 
 const cnx = classNames.bind(styles);
 
@@ -16,6 +17,7 @@ interface Props {
 
 export default function ProductActivation({ product }: Props) {
 	const options = product.options;
+	const { setTotalPrice } = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
 	);
@@ -30,6 +32,62 @@ export default function ProductActivation({ product }: Props) {
 	const [formState, setFormState] = useState<
 		Record<string, string | Record<string, boolean>>
 	>({});
+
+	const basePrice = useMemo(() => {
+		return parseFloat(product.price.replace(",", "."));
+	}, [product.price]);
+
+	function applyModifier(
+		currentPrice: number,
+		type: string,
+		value: number,
+	): number {
+		if (!type || type === "") return currentPrice;
+
+		if (type === "%") {
+			return currentPrice + (currentPrice * value) / 100;
+		}
+
+		// Любой другой тип, например "RUB", "USD", и т.п.
+		return currentPrice + value;
+	}
+
+	useEffect(() => {
+		let result = basePrice;
+
+		options.forEach((opt) => {
+			const value = formState[opt.name];
+
+			if (opt.type === "radio") {
+				const selected = opt.variants?.find((v) => v.value === value);
+				if (selected && selected.modify_value && selected.modify_type) {
+					result = applyModifier(
+						result,
+						selected.modify_type,
+						selected.modify_value,
+					);
+				}
+			}
+
+			if (opt.type === "checkbox") {
+				const group = value as Record<string, boolean>;
+				if (group) {
+					opt.variants?.forEach((variant) => {
+						if (group[variant.value]) {
+							if (variant.modify_value && variant.modify_type) {
+								result = applyModifier(
+									result,
+									variant.modify_type,
+									variant.modify_value,
+								);
+							}
+						}
+					});
+				}
+			}
+		});
+		setTotalPrice(Math.round(result));
+	}, [formState, options, basePrice, setTotalPrice]);
 
 	useEffect(() => {
 		const initialState: Record<string, any> = {};

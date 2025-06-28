@@ -18,7 +18,11 @@
 
 		padding: 17px 26px;
 		border-radius: 20px;
-		background-color: #23262f;
+		background: radial-gradient(
+			50.04% 100% at 49.96% 0%,
+			#1b2738 0%,
+			#23262f 100%
+		);
 
 		overflow: hidden;
 

@@ -2,127 +2,127 @@
 @use "/src/scss/variables/transitions";
 
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 
-  @media screen and (max-width: breakpoints.$lg) {
-    gap: 20px;
-  }
+	@media screen and (max-width: breakpoints.$lg) {
+		gap: 20px;
+	}
 }
 
 .top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
 
-  &__caption {
-    font-size: 14px;
+	&__caption {
+		font-size: 14px;
 
-    padding: 8px 16px;
-    border-radius: 60px;
-    background-color: #442ada;
+		padding: 8px 16px;
+		border-radius: 60px;
+		background-color: #442ada;
 
-    &._activation {
-      background-color: rgb(238, 126, 28, 0.7);
-    }
+		&._activation {
+			background-color: rgb(238, 126, 28, 0.7);
+		}
 
-    &._replenishment {
-      background-color: rgb(42, 218, 115, 0.5);
-    }
-  }
+		&._replenishment {
+			background-color: rgb(42, 218, 115, 0.5);
+		}
+	}
 
-  &__info {
-    display: flex;
-    align-items: center;
-    gap: 24px;
+	&__info {
+		display: flex;
+		align-items: center;
+		gap: 24px;
 
-    @media screen and (max-width: breakpoints.$lg) {
-      gap: 8px;
-    }
-  }
+		@media screen and (max-width: breakpoints.$lg) {
+			gap: 8px;
+		}
+	}
 
-  &__info-block {
-    font-size: 14px;
+	&__info-block {
+		font-size: 14px;
 
-    padding: 8px 16px;
-    border-radius: 50px;
-    background-color: rgb(255, 255, 255, 0.1);
-  }
+		padding: 8px 16px;
+		border-radius: 50px;
+		background-color: rgb(255, 255, 255, 0.1);
+	}
 
-  &__info-reviews {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+	&__info-reviews {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+	}
 
-  &__info-star {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+	&__info-star {
+		display: flex;
+		align-items: center;
+		gap: 6px;
 
-    img {
-      display: block;
-      width: 12px;
-    }
-  }
+		img {
+			display: block;
+			width: 12px;
+		}
+	}
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
+	display: flex;
+	flex-direction: column;
+	gap: 13px;
 
-  &__top {
-    display: flex;
-    justify-content: space-between;
-    gap: 14px;
+	&__top {
+		display: flex;
+		justify-content: space-between;
+		gap: 14px;
 
-    img {
-      display: none;
+		img {
+			display: none;
+			border-radius: 20px;
+			object-fit: contain;
 
-      object-fit: contain;
+			@media screen and (max-width: breakpoints.$lg) {
+				display: block;
+				width: 150px;
+			}
 
-      @media screen and (max-width: breakpoints.$lg) {
-        display: block;
-        width: 150px;
-      }
+			@media screen and (max-width: breakpoints.$md) {
+				width: 99px;
+			}
+		}
+	}
 
-      @media screen and (max-width: breakpoints.$md) {
-        width: 99px;
-      }
-    }
-  }
+	&__title {
+		font-family: "Unbounded";
+		font-size: 24px;
+		font-weight: 500;
 
-  &__title {
-    font-family: "Unbounded";
-    font-size: 24px;
-    font-weight: 500;
+		@media screen and (max-width: breakpoints.$lg) {
+			font-size: 16px;
+		}
+	}
 
-    @media screen and (max-width: breakpoints.$lg) {
-      font-size: 16px;
-    }
-  }
+	&__offline-text {
+		margin-bottom: 50px;
 
-  &__offline-text {
-    margin-bottom: 50px;
+		@media screen and (max-width: breakpoints.$lg) {
+			margin-bottom: unset;
+		}
 
-    @media screen and (max-width: breakpoints.$lg) {
-      margin-bottom: unset;
-    }
+		ul {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 3px;
 
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 3px;
-
-      li {
-        font-size: 14px;
-        color: rgb(255, 255, 255, 0.8);
-      }
-    }
-  }
+			li {
+				font-size: 14px;
+				color: rgb(255, 255, 255, 0.8);
+			}
+		}
+	}
 }

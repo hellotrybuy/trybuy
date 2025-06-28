@@ -82,16 +82,18 @@ export function Header() {
 						setIsCatalogOpen={setIsCatalogOpen}
 					/>
 
-					{searchValue && isSearchOpen && (
+					{isSearchOpen && (
 						<div className={cnx("actions__search-dropdown", "dropdown")}>
-							<ul>
-								{MOCK_DATA_SEARCH_RESULTS.map((el, index) => (
-									<li key={index} className={cnx("item")}>
-										<div className={cnx("item__name")}>{el.name}</div>
-										<div className={cnx("item__type")}>{el.type}</div>
-									</li>
-								))}
-							</ul>
+							{searchValue != "" && (
+								<ul>
+									{MOCK_DATA_SEARCH_RESULTS.map((el, index) => (
+										<li key={index} className={cnx("item")}>
+											<div className={cnx("item__name")}>{el.name}</div>
+											<div className={cnx("item__type")}>{el.type}</div>
+										</li>
+									))}
+								</ul>
+							)}
 						</div>
 					)}
 				</div>

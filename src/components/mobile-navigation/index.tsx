@@ -37,7 +37,13 @@ export function MobileNavigation() {
 						</a>
 					</li>
 					<li>
-						<a href={Routes.HOME}>
+						<a
+							onClick={(e) => {
+								console.log("aaa");
+								e.preventDefault();
+								document.getElementById("main-search-input")?.focus();
+							}}
+						>
 							<img src="/icons/navigation/search.svg" alt="Поиск" />
 							<span>Поиск</span>
 						</a>

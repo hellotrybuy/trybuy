@@ -25,7 +25,7 @@ export function HeaderMobileNav({
 	const ref = useRef<HTMLDivElement>(null);
 
 	useClickOutside(ref, () => setIsSearchOpen(false));
-
+	console.log(searchValue, "searchValue");
 	const openCatalog = useCallback(() => {
 		setIsCatalogOpen(!isCatalogOpen);
 		setIsSearchOpen(false);
@@ -45,11 +45,15 @@ export function HeaderMobileNav({
 			/>
 			<input
 				onClick={openSearch}
+				id="main-search-input"
 				className={cnx("actions-mobile__search-input")}
 				value={searchValue}
 				onChange={(e) => setSearchValue(e.target.value)}
 				type="text"
 				placeholder="Поиск"
+				onFocus={() => {
+					openSearch();
+				}}
 			/>
 			<Button
 				onClick={openCatalog}
