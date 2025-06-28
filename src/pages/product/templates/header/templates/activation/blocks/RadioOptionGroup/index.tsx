@@ -29,7 +29,7 @@ export default function RadioOptionGroup({
 	const hiddenRadios = option.variants?.slice(VISIBLE_COUNT) || [];
 	const radioCount = option.variants?.length || 0;
 
-	const isMobile = useIsMobile();
+	const { isMobile } = useIsMobile();
 	const [isTwoColumn, setIsTwoColumn] = useState(false);
 
 	useEffect(() => {

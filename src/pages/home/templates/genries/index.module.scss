@@ -68,6 +68,12 @@
 		border-radius: 10px;
 	}
 
+	@media screen and (max-width: breakpoints.$sm) {
+		height: clamp(6.438rem, 2.557rem + 19.25vw, 13.25rem);
+
+		aspect-ratio: 1/1.1;
+	}
+
 	&:hover {
 		@media screen and (min-width: breakpoints.$lg) {
 			filter: brightness(1.3);
@@ -104,8 +110,8 @@
 			right: -10% !important;
 			max-height: 70% !important;
 		}
-		@media screen and (max-width: breakpoints.$md) {
-			right: -10% !important;
+
+		@media screen and (max-width: breakpoints.$sm) {
 			max-height: 50% !important;
 		}
 	}
@@ -129,7 +135,7 @@
 		// }
 
 		@media screen and (max-width: breakpoints.$sm) {
-			width: 70% !important;
+			width: 85% !important;
 		}
 
 		&._left {

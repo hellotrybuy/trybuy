@@ -10,6 +10,7 @@ import "swiper/css";
 
 import Title from "../../../../components/title";
 import SwiperControl from "../../../../components/swiper-control";
+import { useIsMobile } from "../../../../hooks/useIsMobile";
 
 const MOCK_GENRES = [
 	{
@@ -61,6 +62,8 @@ export function HomeGenries() {
 	const nextBtnRef = useRef(null);
 	const [, setSwiper] = useState<SwiperType>();
 
+	const { isMobile2 } = useIsMobile();
+
 	return (
 		<section className={cnx("genries")}>
 			<div className={cnx("genries__inner")}>
@@ -76,7 +79,7 @@ export function HomeGenries() {
 				<div className={cnx("genries__swiper")}>
 					<Swiper
 						modules={[Navigation, FreeMode]}
-						spaceBetween={20}
+						spaceBetween={isMobile2 ? 100 : 20}
 						slidesPerView={4}
 						slidesPerGroup={1}
 						loop
@@ -86,6 +89,7 @@ export function HomeGenries() {
 						}}
 						grabCursor
 						onInit={(swiper) => setSwiper(swiper)}
+						className={cnx("slider")}
 					>
 						{[...MOCK_GENRES, ...MOCK_GENRES].map((genre, index) => (
 							<SwiperSlide key={index} className={cnx("slide")}>

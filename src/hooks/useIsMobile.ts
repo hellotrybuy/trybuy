@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
 
-const MOBILE_BREAKPOINT = 768.2; // можно изменить под свой проект
+const MOBILE_BREAKPOINT = 768.2;
+const MOBILE_BREAKPOINT_2 = 576.2;
 
-export function useIsMobile(): boolean {
-	const [isMobile, setIsMobile] = useState(
-		typeof window !== "undefined"
-			? window.innerWidth < MOBILE_BREAKPOINT
-			: false,
-	);
+export function useIsMobile() {
+	const [isMobile, setIsMobile] = useState(false);
+	const [isMobile2, setIsMobile2] = useState(false);
 
 	useEffect(() => {
 		const handleResize = () => {
-			setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+			const width = window.innerWidth;
+			setIsMobile(width < MOBILE_BREAKPOINT);
+			setIsMobile2(width < MOBILE_BREAKPOINT_2);
 		};
 
 		window.addEventListener("resize", handleResize);
-
-		// Первый вызов при монтировании
-		handleResize();
+		handleResize(); // вызов при монтировании
 
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
-	return isMobile;
+	return { isMobile, isMobile2 };
 }
