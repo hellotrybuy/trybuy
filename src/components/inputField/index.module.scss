@@ -9,11 +9,16 @@
 		width: 100%;
 		border-radius: 20px;
 		padding: 16px;
-		background: rgb(255, 255, 255, 0.1);
+		background: #42454f;
 	}
 
 	&__bottom {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		font-size: 10px;
+		color: #ffffff66;
 	}
 
 	&__top {
@@ -48,8 +53,9 @@
 		gap: 10px;
 
 		border-radius: 50px;
-		padding: 0 24px;
+		padding: 0 16px;
 		border: 1px rgb(255, 255, 255, 0.2) solid;
+		background-color: #42454f;
 
 		@media screen and (max-width: breakpoints.$lg) {
 			flex: 1 1 100%;
@@ -63,7 +69,11 @@
 			font-size: 14px;
 			color: colors.$white;
 
-			height: 54px;
+			height: 38px;
+
+			&::placeholder {
+				color: #7b7b7b;
+			}
 		}
 
 		span {

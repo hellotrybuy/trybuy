@@ -13,8 +13,9 @@ import OtherProducts from "./templates/other-products";
 import { useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PriceProvider, usePrice } from "./context";
+import { scrollFixed } from "../../lib/scroll-fixed";
 
 export default function ProductPage() {
 	const { id } = useParams();
@@ -37,6 +38,24 @@ export default function ProductPage() {
 function InnerProductPage({ product }: { product: ProductData }) {
 	const { totalPrice } = usePrice();
 	const cnx = classNames.bind(styles);
+
+	const [isHidden, setIsHidden] = useState(false);
+
+	useEffect(() => {
+		const computeScroll = () =>
+			scrollFixed(
+				() => setIsHidden(false),
+				() => {
+					if (isHidden !== true) setIsHidden(true);
+				},
+			);
+
+		window.addEventListener("scroll", computeScroll);
+
+		() => {
+			window.removeEventListener("scroll", computeScroll);
+		};
+	}, [isHidden]);
 
 	return (
 		<div className={cnx("product")}>
@@ -79,7 +98,21 @@ function InnerProductPage({ product }: { product: ProductData }) {
 						<div className={cnx("aside__block", "payment")}>
 							<strong className={cnx("payment__title")}>Способы оплаты</strong>
 							<div className={cnx("payment__grid")}>
-								{/* ...иконки оплаты */}
+								<img src="/mock/apple-pay.png" alt="Apple pay" />
+								<img src="/mock/unionpay.png" alt="Union pay" />
+								<img src="/mock/wepay.png" alt="Wepay" />
+								<img src="/mock/apple-pay.png" alt="Apple pay" />
+								<img src="/mock/unionpay.png" alt="Union pay" />
+								<img src="/mock/wepay.png" alt="Wepay" />
+								<img src="/mock/apple-pay.png" alt="Apple pay" />
+								<img src="/mock/unionpay.png" alt="Union pay" />
+								<img src="/mock/wepay.png" alt="Wepay" />
+								<img src="/mock/apple-pay.png" alt="Apple pay" />
+								<img src="/mock/unionpay.png" alt="Union pay" />
+								<img src="/mock/wepay.png" alt="Wepay" />
+								<img src="/mock/apple-pay.png" alt="Apple pay" />
+								<img src="/mock/unionpay.png" alt="Union pay" />
+								<img src="/mock/wepay.png" alt="Wepay" />
 							</div>
 						</div>
 					</aside>
@@ -88,7 +121,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 			</div>
 
 			{/* Mobile buy button */}
-			<div className={cnx("product__buy")}>
+			<div className={cnx("product__buy", isHidden && "product__buy__hidden")}>
 				<Button className={cnx("product__buy-btn")}>
 					{totalPrice} ₽ КУПИТЬ
 				</Button>

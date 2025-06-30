@@ -23,7 +23,14 @@ export function InputField({
 	return (
 		<div className={cnx("replenishment__bottom", className)}>
 			<div className={cnx("replenishment__block")}>
-				<input type="text" placeholder={placeholder} {...props} />
+				<input
+					type="text"
+					placeholder={
+						placeholder.charAt(0).toUpperCase() +
+						placeholder.slice(1).toLowerCase()
+					}
+					{...props}
+				/>
 				{afterText && <span>{afterText}</span>}
 			</div>
 			<small className={cnx("replenishment__caption")}>{warning}</small>

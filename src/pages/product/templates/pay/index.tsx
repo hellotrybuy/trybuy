@@ -7,6 +7,7 @@ const cnx = classNames.bind(styles);
 
 export function ProductPay() {
 	const { totalPrice } = usePrice();
+
 	return (
 		<div className={cnx("pay")}>
 			<div className={cnx("pay__price")}>

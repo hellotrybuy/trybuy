@@ -1,33 +1,33 @@
 @use "/src/scss/variables/breakpoints";
 
 .pay {
-  display: flex;
-  align-items: center;
-  gap: 48px;
+	display: flex;
+	align-items: center;
+	gap: 48px;
 
-  padding: 16px 24px;
-  border-radius: 20px;
-  background-color: rgb(255, 255, 255, 0.1);
+	padding: 16px 24px;
+	border-radius: 20px;
+	background-color: rgb(255, 255, 255, 0.1);
 
-  @media screen and (max-width: breakpoints.$lg) {
-    display: none;
-  }
+	@media screen and (max-width: breakpoints.$lg) {
+		display: none;
+	}
 
-  &__price {
-    flex-grow: 1;
-  }
+	&__price {
+		flex-grow: 1;
+	}
 
-  b {
-    font-size: 32px;
-  }
+	b {
+		font-size: 32px;
+	}
 
-  a {
-    font-size: 14px;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
+	a {
+		font-size: 14px;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
 
-  &__btn {
-    width: 182px;
-  }
+	&__btn {
+		width: 182px;
+	}
 }

@@ -82,7 +82,7 @@ export function Header() {
 						setIsCatalogOpen={setIsCatalogOpen}
 					/>
 
-					{isSearchOpen && (
+					{isSearchOpen && searchValue != "" && (
 						<div className={cnx("actions__search-dropdown", "dropdown")}>
 							{searchValue != "" && (
 								<ul>

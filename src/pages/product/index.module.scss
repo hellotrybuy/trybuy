@@ -42,6 +42,11 @@
 		transition: transitions.$main;
 		overflow: hidden;
 
+		&__hidden {
+			opacity: 0;
+			transform: translateY(100%);
+		}
+
 		&::after {
 			content: "";
 			position: absolute;
@@ -129,10 +134,11 @@
 }
 
 .payment {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 	&__title {
 		font-family: "Unbounded";
-
-		margin-bottom: 24px;
 	}
 
 	&__grid {
