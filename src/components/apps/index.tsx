@@ -11,28 +11,28 @@ export function Apps({ className }: IApps) {
 	return (
 		<div className={cnx("apps", className)}>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/steam.svg" alt="" />
-				<img src="/icons/header/steam-extended.svg" alt="" />
+				<img src="/iconsFolder/header/steam.svg" alt="" />
+				<img src="/iconsFolder/header/steam-extended.svg" alt="" />
 			</a>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/xbox.svg" alt="" />
-				<img src="/icons/header/xbox-extended.svg" alt="" />
+				<img src="/iconsFolder/header/xbox.svg" alt="" />
+				<img src="/iconsFolder/header/xbox-extended.svg" alt="" />
 			</a>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/playstation.svg" alt="" />
-				<img src="/icons/header/playstation-extended.svg" alt="" />
+				<img src="/iconsFolder/header/playstation.svg" alt="" />
+				<img src="/iconsFolder/header/playstation-extended.svg" alt="" />
 			</a>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/nintendo.svg" alt="" />
-				<img src="/icons/header/nintendo-extended.svg" alt="" />
+				<img src="/iconsFolder/header/nintendo.svg" alt="" />
+				<img src="/iconsFolder/header/nintendo-extended.svg" alt="" />
 			</a>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/discord.svg" alt="" />
-				<img src="/icons/header/discord-extended.svg" alt="" />
+				<img src="/iconsFolder/header/discord.svg" alt="" />
+				<img src="/iconsFolder/header/discord-extended.svg" alt="" />
 			</a>
 			<a href="#" className={cnx("app")}>
-				<img src="/icons/header/microsoft.svg" alt="" />
-				<img src="/icons/header/microsoft-extended.svg" alt="" />
+				<img src="/iconsFolder/header/microsoft.svg" alt="" />
+				<img src="/iconsFolder/header/microsoft-extended.svg" alt="" />
 			</a>
 		</div>
 	);

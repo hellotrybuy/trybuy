@@ -28,7 +28,7 @@ export function ProductCard({
 					<strong className={cnx("card__title")}>{product.name}</strong>
 					<div className={cnx("card__review")}>
 						<div className={cnx("card__review-block")}>
-							<img src="/icons/common/star.svg" alt="Рейтинг" />
+							<img src="/iconsFolder/common/star.svg" alt="Рейтинг" />
 							<span>{raiting}</span>
 						</div>
 						<div className={cnx("card__review-block")}>

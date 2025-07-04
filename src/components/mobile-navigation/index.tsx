@@ -32,7 +32,7 @@ export function MobileNavigation() {
 				<ul>
 					<li>
 						<a href={Routes.HOME}>
-							<img src="/icons/navigation/home.svg" alt="Главная" />
+							<img src="/iconsFolder/navigation/home.svg" alt="Главная" />
 							<span> Главная</span>
 						</a>
 					</li>
@@ -44,27 +44,27 @@ export function MobileNavigation() {
 								document.getElementById("main-search-input")?.focus();
 							}}
 						>
-							<img src="/icons/navigation/search.svg" alt="Поиск" />
+							<img src="/iconsFolder/navigation/search.svg" alt="Поиск" />
 							<span>Поиск</span>
 						</a>
 					</li>
 					<li>
 						<a className={cnx("_catalog")} href={Routes.CATALOG}>
 							<Button className={cnx("catalog-icon")}>
-								<img src="/icons/navigation/catalog.svg" alt="Каталог" />
+								<img src="/iconsFolder/navigation/catalog.svg" alt="Каталог" />
 							</Button>
 							<span>Каталог</span>
 						</a>
 					</li>
 					<li>
 						<a href={Routes.HOME}>
-							<img src="/icons/navigation/purchases.svg" alt="Покупки" />
+							<img src="/iconsFolder/navigation/purchases.svg" alt="Покупки" />
 							<span>Покупки</span>
 						</a>
 					</li>
 					<li>
 						<a href={Routes.HOME}>
-							<img src="/icons/navigation/help.svg" alt="Помощь" />
+							<img src="/iconsFolder/navigation/help.svg" alt="Помощь" />
 							<span>Помощь</span>
 						</a>
 					</li>

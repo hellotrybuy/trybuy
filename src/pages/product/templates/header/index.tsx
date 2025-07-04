@@ -54,7 +54,7 @@ export function ProductHeader({ product }: Props) {
 					<div className={cnx("top__info-block")}>
 						<div className={cnx("top__info-reviews")}>
 							<div className={cnx("top__info-star")}>
-								<img src="/icons/common/star.svg" alt="Оценка" />
+								<img src="/iconsFolder/common/star.svg" alt="Оценка" />
 								<span>{"5.0"}</span>
 							</div>
 							<span>{reviewsCount ?? 0} отзывов</span>

@@ -80,7 +80,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 							<div className={cnx("seller__top")}>
 								<strong>{product.seller.name}</strong>
 								<div className={cnx("seller__star")}>
-									<img src="/icons/common/star.svg" alt="Оценка" />
+									<img src="/iconsFolder/common/star.svg" alt="Оценка" />
 									<span>5,0</span>
 								</div>
 							</div>

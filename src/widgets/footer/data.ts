@@ -25,9 +25,9 @@ export const CONTACT_INFO = [
 ];
 
 export const SOCIAL_LINKS = [
-	{ href: "#", src: "/icons/social/vk.svg", alt: "VK" },
-	{ href: "#", src: "/icons/social/instagram.svg", alt: "Instagram" },
-	{ href: "#", src: "/icons/social/telegram.svg", alt: "Telegram" },
+	{ href: "#", src: "/iconsFolder/social/vk.svg", alt: "VK" },
+	{ href: "#", src: "/iconsFolder/social/instagram.svg", alt: "Instagram" },
+	{ href: "#", src: "/iconsFolder/social/telegram.svg", alt: "Telegram" },
 ];
 
 export const LEGAL_LINKS = [

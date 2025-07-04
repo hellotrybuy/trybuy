@@ -292,7 +292,7 @@ export function FilterMobile({ className }: IFilterMobile) {
 				</div>
 
 				<div onClick={() => closeFilter()} className={cnx("filter__close")}>
-					<img src="/icons/common/close.svg" alt="Закрыть" />
+					<img src="/iconsFolder/common/close.svg" alt="Закрыть" />
 				</div>
 			</div>
 		</div>

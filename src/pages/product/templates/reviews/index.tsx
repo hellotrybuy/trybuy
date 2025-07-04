@@ -14,7 +14,7 @@ export function ProductRewies() {
 			<div className={cnx("reviews__top")}>
 				<Title>Отзывы (123)</Title>
 				<div className={cnx("reviews__star")}>
-					<img src="/icons/common/star.svg" alt="Оценка" />
+					<img src="/iconsFolder/common/star.svg" alt="Оценка" />
 					<span>5,0</span>
 				</div>
 				<button
@@ -43,7 +43,7 @@ export function ProductRewies() {
 			</div>
 			<div className={cnx("reviews__body")}>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">
@@ -55,7 +55,7 @@ export function ProductRewies() {
 					</div>
 				</div>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">
@@ -67,7 +67,7 @@ export function ProductRewies() {
 					</div>
 				</div>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">
@@ -79,7 +79,7 @@ export function ProductRewies() {
 					</div>
 				</div>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">
@@ -91,7 +91,7 @@ export function ProductRewies() {
 					</div>
 				</div>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">
@@ -103,7 +103,7 @@ export function ProductRewies() {
 					</div>
 				</div>
 				<div className={cnx("reviews__review", "review")}>
-					<img src="/icons/common/like.svg" alt="Лайк" />
+					<img src="/iconsFolder/common/like.svg" alt="Лайк" />
 					<div className={cnx("review__info")}>
 						<span className={cnx("review__name")}>Иван</span>
 						<time className={cnx("review__time")} dateTime="2001-05-15 19:00">

@@ -72,7 +72,7 @@ export function MainSearch({
 				/>
 				<img
 					className={cnx("actions__search-icon")}
-					src="/icons/navigation/search.svg"
+					src="/iconsFolder/navigation/search.svg"
 					alt="Поиск"
 				/>
 			</div>

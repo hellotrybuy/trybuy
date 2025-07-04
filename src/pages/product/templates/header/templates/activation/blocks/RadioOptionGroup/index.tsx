@@ -96,7 +96,7 @@ export default function RadioOptionGroup({
 					white
 				>
 					<img
-						src="/icons/common/arrow.svg"
+						src="/iconsFolder/common/arrow.svg"
 						className={cnx("showMoreBtn__icon", {
 							"showMoreBtn__icon--rotated": isExpanded,
 						})}

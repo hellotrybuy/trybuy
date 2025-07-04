@@ -14,7 +14,7 @@ export function SellerHeader() {
 					<div className={cnx("sellerHeader__left")}>
 						<div className={cnx("sellerHeader__mainInfo")}>
 							<div className={cnx("sellerHeader__mainInfo__logo")}>
-								<img src="/icons/seller/Shop.svg" />
+								<img src="/iconsFolder/seller/Shop.svg" />
 							</div>
 							<div className={cnx("sellerHeader__mainInfo__text")}>
 								<h2 className={cnx("sellerHeader__mainInfo__name")}>
@@ -44,10 +44,10 @@ export function SellerHeader() {
 						<SquareBlock name="Контакты">
 							<div className={cnx("sellerHeader__left__contacts")}>
 								<div>
-									<img src="/icons/seller/Mail.svg" />
+									<img src="/iconsFolder/seller/Mail.svg" />
 								</div>
 								<div>
-									<img src="/icons/seller/Telegram.svg" />
+									<img src="/iconsFolder/seller/Telegram.svg" />
 								</div>
 							</div>
 						</SquareBlock>
@@ -58,7 +58,7 @@ export function SellerHeader() {
 				<div className={cnx("sellerHeaderMobile")}>
 					<div className={cnx("sellerHeaderMobile__mainInfo")}>
 						<div className={cnx("sellerHeader__mainInfo__logo")}>
-							<img src="/icons/seller/Shop.svg" />
+							<img src="/iconsFolder/seller/Shop.svg" />
 						</div>
 						<div className={cnx("sellerHeader__mainInfo__text")}>
 							<h2 className={cnx("sellerHeader__mainInfo__name")}>
@@ -93,10 +93,10 @@ export function SellerHeader() {
 					<SquareBlock name="Контакты" isSpaceBetweenMobile>
 						<div className={cnx("sellerHeader__left__contacts")}>
 							<div>
-								<img src="/icons/seller/Mail.svg" />
+								<img src="/iconsFolder/seller/Mail.svg" />
 							</div>
 							<div>
-								<img src="/icons/seller/Telegram.svg" />
+								<img src="/iconsFolder/seller/Telegram.svg" />
 							</div>
 						</div>
 					</SquareBlock>
