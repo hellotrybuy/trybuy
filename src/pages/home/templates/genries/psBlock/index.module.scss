@@ -1,0 +1,122 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.psAnim {
+	width: 200px;
+	height: 170px;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: auto;
+		width: 100%;
+		inset: 0;
+		right: 0;
+	}
+}
+
+.psAnim__circle {
+	position: absolute;
+	left: 40%;
+	top: 10%;
+	transform: rotate(30deg);
+	transition: 0.3s ease;
+	transform-origin: center bottom;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: auto;
+		width: 30%;
+		top: 30%;
+		left: 50%;
+	}
+
+	@media screen and (max-width: breakpoints.$sm) {
+		top: 45%;
+	}
+
+	@media screen and (min-width: breakpoints.$lg) {
+		&.hovered {
+			left: 40%;
+			top: 5%;
+			transform: rotate(-10deg);
+			transition: 0.3s ease;
+		}
+	}
+}
+
+.psAnim__cross {
+	position: absolute;
+	bottom: 0;
+	right: -20px;
+	transform: rotate(3deg);
+	transition: 0.3s ease;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: auto;
+		width: 30%;
+		right: -5px;
+	}
+
+	@media screen and (min-width: breakpoints.$lg) {
+		&.hovered {
+			right: 0;
+			transform: rotate(0deg);
+			transition: 0.3s ease;
+		}
+	}
+}
+
+.psAnim__squre {
+	position: absolute;
+	left: 15%;
+	bottom: -10%;
+	width: 86px;
+	transition: 0.3s ease;
+	transform: rotate(-10deg);
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: auto;
+		width: 30%;
+		left: 35%;
+		bottom: 0;
+	}
+
+	@media screen and (min-width: breakpoints.$lg) {
+		&.hovered {
+			left: 0%;
+			bottom: 2%;
+			transform: rotate(0deg);
+			transition: 0.3s ease;
+		}
+	}
+}
+
+.psAnim__triangle {
+	position: absolute;
+	left: 10%;
+	top: 15%;
+	transform: rotate(10deg);
+	transition: 0.3s ease;
+	transform-origin: center bottom;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: auto;
+		width: 30%;
+		left: 20%;
+		top: 25%;
+	}
+
+	@media screen and (max-width: breakpoints.$sm) {
+		top: 40%;
+	}
+
+	@media screen and (min-width: breakpoints.$lg) {
+		&.hovered {
+			top: 2%;
+			left: 0%;
+			transform: rotate(0deg);
+			transition: 0.3s ease;
+		}
+	}
+}

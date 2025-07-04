@@ -20,8 +20,8 @@ function App() {
 				<Header />
 				<main className="main">
 					<Routes>
-						<Route path="/" element={<Navigation />} />
-						<Route path="/home" element={<Home />} />
+						<Route path="/" element={<Home />} />
+						<Route path="/nav" element={<Navigation />} />
 						<Route path="/product" element={<ProductPage />} />
 						<Route path="/catalog" element={<CatalogPage />} />
 						<Route path="/seller" element={<SellerPage />} />

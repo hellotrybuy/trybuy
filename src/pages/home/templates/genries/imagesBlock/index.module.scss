@@ -1,0 +1,96 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+
+.imgBlock {
+	display: flex;
+	position: absolute;
+	bottom: -25px;
+	right: -20px;
+	gap: 1px;
+
+	div > img {
+		max-width: 70px;
+
+		@media screen and (max-width: breakpoints.$md) {
+			max-width: 50px;
+		}
+	}
+
+	&__xbox {
+		img {
+			transition: 0.3s ease;
+			max-width: 100px !important;
+			position: relative;
+			bottom: 20%;
+			right: 20%;
+
+			@media screen and (max-width: breakpoints.$md) {
+				max-width: 70px !important;
+			}
+		}
+	}
+
+	&__first {
+		transition: 0.3s ease;
+		position: relative;
+		transform-origin: bottom center;
+		z-index: 1;
+		transform: rotate(-30deg) translateY(45px) translateX(35px);
+
+		@media screen and (max-width: breakpoints.$md) {
+			transform: rotate(-20deg) translateY(15px) translateX(20px);
+		}
+	}
+
+	&__second {
+		transition: 0.3s ease;
+		position: relative;
+		transform: rotate(-15deg) translateY(8px) translateX(8px);
+		z-index: 2;
+		backdrop-filter: blur(2px);
+
+		@media screen and (max-width: breakpoints.$md) {
+			transform: rotate(-10deg) translateY(-5px) translateX(5px);
+		}
+	}
+
+	&__tree {
+		transition: 0.3s ease;
+		position: relative;
+		z-index: 1;
+
+		@media screen and (max-width: breakpoints.$md) {
+			transform: translateY(-10px);
+		}
+	}
+
+	&__xbox.hovered {
+		img {
+			@media screen and (min-width: breakpoints.$md) {
+				transition: 0.3s ease;
+				transform: scale(1.3);
+			}
+		}
+	}
+
+	&__first.hovered {
+		@media screen and (min-width: breakpoints.$md) {
+			transition: 0.3s ease;
+			transform: rotate(-31deg) translateY(40px) translateX(35px);
+		}
+	}
+
+	&__second.hovered {
+		@media screen and (min-width: breakpoints.$md) {
+			transition: 0.3s ease;
+			transform: rotate(-15deg) translateY(0px) translateX(8px);
+		}
+	}
+
+	&__tree.hovered {
+		@media screen and (min-width: breakpoints.$md) {
+			transition: 0.3s ease;
+			transform: translateY(-10px);
+		}
+	}
+}

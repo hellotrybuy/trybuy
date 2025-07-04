@@ -52,7 +52,7 @@
 
 .genre {
 	position: relative;
-
+	display: block;
 	height: 200px;
 
 	padding: 24px 27px;
@@ -78,10 +78,10 @@
 		@media screen and (min-width: breakpoints.$lg) {
 			filter: brightness(1.3);
 
-			& img {
-				scale: 1.2;
-				bottom: 5%;
-			}
+			// & img {
+			// 	scale: 1.2;
+			// 	bottom: 5%;
+			// }
 		}
 	}
 
@@ -117,26 +117,26 @@
 	}
 
 	img {
-		position: absolute;
-		bottom: 0;
-		right: 0;
+		// position: absolute;
+		// bottom: 0;
+		// right: 0;
 
-		object-fit: contain;
-		transition: transitions.$main;
+		// object-fit: contain;
+		// transition: transitions.$main;
 
-		@media screen and (max-width: breakpoints.$lg) {
-			height: auto !important;
-			width: 70% !important;
-		}
-
-		// @media screen and (max-width: breakpoints.$md) {
-		// 	height: 85% !important;
+		// @media screen and (max-width: breakpoints.$lg) {
+		// 	height: auto !important;
 		// 	width: 70% !important;
 		// }
 
-		@media screen and (max-width: breakpoints.$sm) {
-			width: 85% !important;
-		}
+		// // @media screen and (max-width: breakpoints.$md) {
+		// // 	height: 85% !important;
+		// // 	width: 70% !important;
+		// // }
+
+		// @media screen and (max-width: breakpoints.$sm) {
+		// 	width: 85% !important;
+		// }
 
 		&._left {
 			left: -50px;

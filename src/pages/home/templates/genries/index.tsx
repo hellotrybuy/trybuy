@@ -11,6 +11,11 @@ import "swiper/css";
 import Title from "../../../../components/title";
 import SwiperControl from "../../../../components/swiper-control";
 import { useIsMobile } from "../../../../hooks/useIsMobile";
+import { useMainScreenCategories } from "../../../../hooks/useMainScreenCategories";
+import ImagesBlock from "./imagesBlock";
+import PsAnim from "./psBlock";
+import { Link } from "react-router";
+import { Routes } from "../../../../routes";
 
 const MOCK_GENRES = [
 	{
@@ -61,8 +66,16 @@ export function HomeGenries() {
 	const prevBtnRef = useRef(null);
 	const nextBtnRef = useRef(null);
 	const [, setSwiper] = useState<SwiperType>();
+	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+	const { categories } = useMainScreenCategories();
+	console.log(categories, "categories");
 
 	const { isMobile2 } = useIsMobile();
+
+	const getGradint = (first: string, second: string) => {
+		return `radial-gradient(97.07% 97.07% at 100% 98.78%, ${first} 0%, ${second} 98.46%)`;
+	};
 
 	return (
 		<section className={cnx("genries")}>
@@ -82,7 +95,6 @@ export function HomeGenries() {
 						spaceBetween={isMobile2 ? 100 : 20}
 						slidesPerView={4}
 						slidesPerGroup={1}
-						loop
 						navigation={{
 							prevEl: prevBtnRef.current,
 							nextEl: nextBtnRef.current,
@@ -91,17 +103,41 @@ export function HomeGenries() {
 						onInit={(swiper) => setSwiper(swiper)}
 						className={cnx("slider")}
 					>
-						{[...MOCK_GENRES, ...MOCK_GENRES].map((genre, index) => (
+						{[...categories].map((genre, index) => (
 							<SwiperSlide key={index} className={cnx("slide")}>
-								<div className={cnx("genre")} style={{ background: genre.bg }}>
-									<p className={cnx("genre__title")}>{genre.title}</p>
-									<img
-										src={genre.img}
+								<Link
+									to={Routes.CATALOG}
+									key={genre.id}
+									onMouseEnter={() => setHoveredIndex(index)}
+									onMouseLeave={() => setHoveredIndex(null)}
+									className={cnx("genre")}
+									style={{
+										background: getGradint(
+											genre.collections_color_1,
+											genre.collections_color_2,
+										),
+									}}
+								>
+									<p className={cnx("genre__title")}>
+										{genre.collections_name}
+									</p>
+									{index == 3 ? (
+										<PsAnim isHovered={hoveredIndex === index} />
+									) : (
+										<ImagesBlock
+											images={genre.screenshots}
+											isHovered={hoveredIndex === index}
+											index={index}
+										/>
+									)}
+
+									{/* <img
+										src={`https://test.try-buy.ru/${genre.screenshots[0]}`}
 										alt=""
-										className={cnx(genre.classNames)}
-										style={genre.style}
-									/>
-								</div>
+										// className={cnx(genre.classNames)}
+										// style={genre.style}
+									/> */}
+								</Link>
 							</SwiperSlide>
 						))}
 					</Swiper>
