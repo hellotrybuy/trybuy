@@ -8,7 +8,7 @@ import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
 export function OtherProducts() {
-	const { products, loading } = useProductList(1, 15);
+	const { products } = useProductList(1, 15);
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 

@@ -31,12 +31,10 @@ export function useProductList(page: number, rows: number) {
 	console.log(page, "page");
 	const [data, setData] = useState<ProductResponse | null>(null);
 	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
 			setLoading(true);
-			setError(null);
 			const baseUrl = import.meta.env.VITE_API_URL;
 
 			const offset = (page - 1) * rows;
@@ -53,11 +51,8 @@ export function useProductList(page: number, rows: number) {
 					const json: ProductResponse = JSON.parse(text);
 					setData(json);
 				} catch (parseErr) {
-					setError("Неверный JSON-ответ от сервера");
 					console.error("Ошибка JSON:", parseErr);
 				}
-			} catch (err: any) {
-				setError(err.message || "Ошибка загрузки данных");
 			} finally {
 				setLoading(false);
 			}

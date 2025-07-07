@@ -12,7 +12,7 @@ const cnx = classNames.bind(styles);
 export function HomeLeaders() {
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const { products, loading } = useProductList(currentPage, 15);
+	const { products } = useProductList(currentPage, 15);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
 	const changePage = () => {

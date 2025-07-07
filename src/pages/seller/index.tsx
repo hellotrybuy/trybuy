@@ -23,7 +23,7 @@ export function SellerPage() {
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
-	const { products, loading } = useProductList(1, 15);
+	const { products } = useProductList(1, 15);
 	return (
 		<div className={cnx("seller")}>
 			<Breadcrumbs />

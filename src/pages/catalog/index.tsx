@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs from "../../components/breadcrumbs";
@@ -18,6 +18,7 @@ import { Filers } from "../../components/filters";
 import { ChapterSearch } from "./chapterSearch";
 import { useProductList } from "../../hooks/useProductList";
 import { ProductData } from "../../hooks/types";
+import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
 
 export const selectOptions = [
 	{ value: "По рекомендациям", label: "По рекомендациям" },
@@ -33,9 +34,12 @@ export function CatalogPage() {
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 
-	const { products, loading } = useProductList(currentPage, 15);
+	const { products } = useProductList(currentPage, 15);
 
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
+
+	const { categorys } = useGetGreatCategories();
+	console.log(categorys, "categorys");
 
 	const changePage = () => {
 		setCurrentPage((prevPage) => prevPage + 1);

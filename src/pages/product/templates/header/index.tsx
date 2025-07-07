@@ -19,8 +19,8 @@ export function ProductHeader({ product }: Props) {
 	const [searchParams] = useSearchParams();
 	const searchPayType = searchParams.get(PAY_TYPE) as PayType;
 	const reviewsCount = useMemo(() => {
-		const bad = Number(product.bad_reviews);
-		const good = Number(product.good_reviews);
+		const bad = Number(product[0].bad_reviews);
+		const good = Number(product[0].good_reviews);
 
 		return (bad + good).toString();
 	}, [product]);
@@ -40,17 +40,17 @@ export function ProductHeader({ product }: Props) {
 						</div>
 					</div>
 					<div className={cnx("top__info-block")}>
-						{product.sales ?? 0} продано
+						{product[0].sales ?? 0} продано
 					</div>
 				</div>
 			</div>
 
 			<div className={cnx("header__main", "main")}>
 				<div className={cnx("main__top")}>
-					<h1 className={cnx("main__title")}>Купить {product.name}</h1>
+					<h1 className={cnx("main__title")}>Купить {product[0].name}</h1>
 					<img
 						src={`https://graph.digiseller.ru/img.ashx?id_d=${product[0].id_product}&w=200&h=200&crop=true`}
-						alt={product.name}
+						alt={product[0].name}
 					/>
 				</div>
 

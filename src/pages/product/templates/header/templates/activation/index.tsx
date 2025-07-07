@@ -12,7 +12,7 @@ import { usePrice } from "../../../../context";
 const cnx = classNames.bind(styles);
 
 interface Props {
-	product: ProductData[];
+	product: ProductData;
 }
 
 export default function ProductActivation({ product }: Props) {
@@ -77,7 +77,11 @@ export default function ProductActivation({ product }: Props) {
 			if (opt.type === "checkbox") {
 				if (typeof value === "boolean") {
 					if (value && opt.modify_value && opt.modify_type) {
-						result = applyModifier(result, opt.modify_type, opt.modify_value);
+						result = applyModifier(
+							result,
+							opt.modify_type,
+							Number(opt.modify_value),
+						);
 					}
 				} else if (typeof value === "object" && Array.isArray(opt.variants)) {
 					const group = value as Record<string, boolean>;

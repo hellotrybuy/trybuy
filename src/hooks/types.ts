@@ -73,6 +73,8 @@ export interface OptionItem {
 	type: string;
 	variants?: Array<OptionItemVariantItem>;
 	comment: string;
+	modify_value: string;
+	modify_type: string;
 }
 
 export interface OptionItemVariantItem {
@@ -82,4 +84,20 @@ export interface OptionItemVariantItem {
 	modify_value?: number;
 	text: string;
 	value: string;
+}
+
+export interface GreatCatergory {
+	id: number;
+	name: string;
+	url: string;
+	icon_dark: string;
+	icon_light: string;
+	cnt_product: string;
+}
+
+export interface ApiResponseGreatCatergory {
+	retval: number;
+	retdesc: string;
+	queryId: string;
+	data: GreatCatergory[];
 }

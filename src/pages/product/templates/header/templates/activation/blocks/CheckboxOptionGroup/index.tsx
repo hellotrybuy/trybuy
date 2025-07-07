@@ -7,7 +7,7 @@ const cnx = classNames.bind(styles);
 
 interface Props {
 	option: OptionItem;
-	values: Record<string, boolean>;
+	values: string | boolean | Record<string, boolean>;
 	onChange: (optionName: string, variantValue: string) => void;
 }
 
