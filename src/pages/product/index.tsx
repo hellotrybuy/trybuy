@@ -57,6 +57,8 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		};
 	}, [isHidden]);
 
+	console.log(product, "asd");
+
 	return (
 		<div className={cnx("product")}>
 			<Breadcrumbs />
@@ -72,13 +74,13 @@ function InnerProductPage({ product }: { product: ProductData }) {
 					<aside className={cnx("product__aside", "aside")}>
 						<img
 							className={cnx("aside__img")}
-							src={product.preview_imgs[0].url}
+							src={`https://graph.digiseller.ru/img.ashx?id_d=${product[0].id_product}&w=200&h=200&crop=true`}
 							alt={product.name}
 						/>
 						<div className={cnx("aside__block", "seller")}>
 							<span className={cnx("seller__caption")}>продавец</span>
 							<div className={cnx("seller__top")}>
-								<strong>{product.seller.name}</strong>
+								<strong>{product[0].seller_name}</strong>
 								<div className={cnx("seller__star")}>
 									<img src="/iconsFolder/common/star.svg" alt="Оценка" />
 									<span>5,0</span>

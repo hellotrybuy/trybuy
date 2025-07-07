@@ -1,6 +1,8 @@
 export interface ProductData {
 	id: string;
 	id_prev: string;
+	seller_name: string;
+	id_product: string;
 	id_next: string;
 	name: string;
 	price: string;
@@ -14,6 +16,9 @@ export interface ProductData {
 	type_good: number;
 	no_cart: string;
 	num_in_lock: string;
+	good_reviews: string;
+	bad_reviews: string;
+	sales: string;
 	num_in_stock: string | null;
 	label: string;
 	sale_info: {
@@ -36,21 +41,11 @@ export interface ProductData {
 		id: string;
 		name: string;
 	};
-	options: Array<OptionItem>;
+	options: string;
 	payment_methods: {
 		[key: string]: Array<[string, string]>;
 	};
 	currencies: string[];
-	statistics: {
-		sales: string;
-		good_reviews: string;
-		bad_reviews: string;
-		refunds: string;
-		sales_hidden: string;
-		good_reviews_hidden: string;
-		bad_reviews_hidden: string;
-		refunds_hidden: string;
-	};
 	gift_commiss: string;
 	agency_fee: string;
 	agency_id: string;
@@ -69,7 +64,7 @@ export interface ApiResponse {
 	retval: number;
 	retdesc: string;
 	queryId: string;
-	product: ProductData;
+	data: ProductData;
 }
 
 export interface OptionItem {

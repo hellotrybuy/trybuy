@@ -8,7 +8,7 @@ import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
 export function OtherProducts() {
-	const data = useProductList({});
+	const { products, loading } = useProductList(1, 15);
 
 	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -28,8 +28,8 @@ export function OtherProducts() {
 	}, [windowWidth]);
 
 	const visibleProducts = useMemo(() => {
-		return data.products.slice(0, cardsAmount);
-	}, [data.products, cardsAmount]);
+		return products.slice(0, cardsAmount);
+	}, [products, cardsAmount]);
 
 	return (
 		<div className={cnx("other")}>

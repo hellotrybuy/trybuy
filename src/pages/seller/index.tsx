@@ -23,7 +23,7 @@ export function SellerPage() {
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
-	const data = useProductList({});
+	const { products, loading } = useProductList(1, 15);
 	return (
 		<div className={cnx("seller")}>
 			<Breadcrumbs />
@@ -131,7 +131,7 @@ export function SellerPage() {
 								)}
 
 								<div className={cnx("seller-main__cards")}>
-									<ProductCards data={data.products} />
+									<ProductCards data={products} />
 								</div>
 							</div>
 						</div>

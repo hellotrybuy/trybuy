@@ -18,30 +18,9 @@ interface Props {
 export function ProductHeader({ product }: Props) {
 	const [searchParams] = useSearchParams();
 	const searchPayType = searchParams.get(PAY_TYPE) as PayType;
-
-	// const getCaptionText = () => {
-	// 	switch (searchPayType) {
-	// 		case "offline":
-	// 			return "Оффлайн аккаунт";
-	// 		case "activation":
-	// 			return "Активация";
-	// 		case "replenishment":
-	// 			return "Пополнение";
-	// 		default:
-	// 			return "Оффлайн аккаунт";
-	// 	}
-	// };
-
-	// const captionClasses = cnx({
-	// 	top__caption: true,
-	// 	_offline: searchPayType === "offline",
-	// 	_activation: searchPayType === "activation",
-	// 	_replenishment: searchPayType === "replenishment",
-	// });
-
 	const reviewsCount = useMemo(() => {
-		const bad = Number(product.statistics.bad_reviews);
-		const good = Number(product.statistics.good_reviews);
+		const bad = Number(product.bad_reviews);
+		const good = Number(product.good_reviews);
 
 		return (bad + good).toString();
 	}, [product]);
@@ -61,7 +40,7 @@ export function ProductHeader({ product }: Props) {
 						</div>
 					</div>
 					<div className={cnx("top__info-block")}>
-						{product.statistics.sales ?? 0} продано
+						{product.sales ?? 0} продано
 					</div>
 				</div>
 			</div>
@@ -69,43 +48,14 @@ export function ProductHeader({ product }: Props) {
 			<div className={cnx("header__main", "main")}>
 				<div className={cnx("main__top")}>
 					<h1 className={cnx("main__title")}>Купить {product.name}</h1>
-					{product.preview_imgs[0] && (
-						<img src={product.preview_imgs[0].url} alt={product.name} />
-					)}
+					<img
+						src={`https://graph.digiseller.ru/img.ashx?id_d=${product[0].id_product}&w=200&h=200&crop=true`}
+						alt={product.name}
+					/>
 				</div>
 
 				<div className={cnx("main__bottom")}>
-					{/* {!searchPayType && (
-						<div className={cnx("main__offline-text")}>
-							<ul>
-								<li>{product.category}</li>
-								<li>• {product.isNew ? "Новинка" : "Бестселлер"}</li>
-								<li>• Поддерживаемые языки {product.languageCount}</li>
-								<li>
-									•{" "}
-									{product.offline
-										? "Не требует интернет подключения"
-										: "Онлайн-режим"}
-								</li>
-								<li>• Гарантия {product.guaranteeDays} дней</li>
-							</ul>
-						</div>
-					)}
-
-					{searchPayType === "offline" && (
-						<div className={cnx("main__offline-text")}>
-							<ul>
-								<li>{product.category}</li>
-								<li>• {product.isNew ? "Новинка" : "Бестселлер"}</li>
-								<li>• Поддерживаемые языки {product.languageCount}</li>
-								<li>• Не требует интернет подключения</li>
-								<li>• Гарантия {product.guaranteeDays} дней</li>
-							</ul>
-						</div>
-					)} */}
-					<div className={cnx("main__offline-text")}>
-						{/* <DeliveryInfo rawHtml={product.info} /> */}
-					</div>
+					<div className={cnx("main__offline-text")}></div>
 					<ProductActivation product={product} />
 					{searchPayType === "replenishment" && <ProductReplenishment />}
 				</div>

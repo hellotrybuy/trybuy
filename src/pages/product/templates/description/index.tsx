@@ -14,7 +14,7 @@ export function ProductDescription({ product }: Props) {
 	return (
 		<ProductInfoCard title="Описание товара" className={cnx("description")}>
 			<p className={cnx("description__info")}>
-				<DeliveryInfo rawHtml={product.info} />
+				<DeliveryInfo rawHtml={product[0].product_desc} />
 			</p>
 			{/* <div className={cnx("description__bottom", "bottom")}>
 				<div className={cnx("bottom__block")}>

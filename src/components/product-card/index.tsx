@@ -1,15 +1,15 @@
 import { Link } from "react-router";
-import { Product } from "../../hooks/useProductList";
 import Button from "../button";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
+import { ProductData } from "../../hooks/types";
 
 const cnx = classNames.bind(styles);
 
 interface Props {
 	raiting?: string;
 	reviewsCount?: number;
-	product: Product;
+	product: ProductData;
 }
 export function ProductCard({
 	raiting = "5.0",

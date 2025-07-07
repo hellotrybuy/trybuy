@@ -20,8 +20,8 @@ export function Radio({
 }: IRadio) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		onChange?.(e); // вызов стандартного onChange, если передан
-		if (onValueChange && typeof value === "string") {
-			onValueChange(value); // наш коллбэк
+		if (onValueChange) {
+			onValueChange(e.target.value); // <-- правильное значение!
 		}
 	};
 

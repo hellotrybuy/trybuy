@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs from "../../components/breadcrumbs";
@@ -17,6 +17,7 @@ import FilterMobile from "../../widgets/mobile-filter";
 import { Filers } from "../../components/filters";
 import { ChapterSearch } from "./chapterSearch";
 import { useProductList } from "../../hooks/useProductList";
+import { ProductData } from "../../hooks/types";
 
 export const selectOptions = [
 	{ value: "По рекомендациям", label: "По рекомендациям" },
@@ -28,10 +29,29 @@ export const selectOptions = [
 export function CatalogPage() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
+	const [currentPage, setCurrentPage] = useState(1);
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 
-	const data = useProductList({});
+	const { products, loading } = useProductList(currentPage, 15);
+
+	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
+
+	const changePage = () => {
+		setCurrentPage((prevPage) => prevPage + 1);
+	};
+
+	useEffect(() => {
+		if (products && products.length > 0) {
+			setCatalogData((prev) => {
+				const newProducts = products.filter(
+					(newProduct) =>
+						!prev.some((existing) => existing.id === newProduct.id),
+				);
+				return [...prev, ...newProducts];
+			});
+		}
+	}, [products]);
 
 	return (
 		<div className={cnx("catalog")}>
@@ -246,12 +266,16 @@ export function CatalogPage() {
 
 							{/* Product cards */}
 							<div className={cnx("main__cards")}>
-								<ProductCards data={data.products} />
+								<ProductCards data={catalogData} />
 							</div>
 						</div>
 					</div>
 
-					<Button white className={cnx("catalog__btn-more")}>
+					<Button
+						white
+						className={cnx("catalog__btn-more")}
+						onClick={changePage}
+					>
 						Загрузить ещё
 					</Button>
 				</div>

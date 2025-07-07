@@ -1,7 +1,7 @@
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 
-import { ProductData } from "../../../../../../hooks/types";
+import { OptionItem, ProductData } from "../../../../../../hooks/types";
 import { useEffect, useMemo, useState } from "react";
 
 import RadioOptionGroup from "./blocks/RadioOptionGroup";
@@ -12,11 +12,14 @@ import { usePrice } from "../../../../context";
 const cnx = classNames.bind(styles);
 
 interface Props {
-	product: ProductData;
+	product: ProductData[];
 }
 
 export default function ProductActivation({ product }: Props) {
-	const options = product.options;
+	const options = useMemo(() => {
+		return JSON.parse(product[0].options) as OptionItem[];
+	}, [product]);
+
 	const { setTotalPrice } = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
@@ -30,12 +33,12 @@ export default function ProductActivation({ product }: Props) {
 	};
 
 	const [formState, setFormState] = useState<
-		Record<string, string | Record<string, boolean>>
+		Record<string, string | boolean | Record<string, boolean>>
 	>({});
 
 	const basePrice = useMemo(() => {
-		return parseFloat(product.price.replace(",", "."));
-	}, [product.price]);
+		return parseFloat(product[0].price);
+	}, [product]);
 
 	function applyModifier(
 		currentPrice: number,
@@ -48,7 +51,6 @@ export default function ProductActivation({ product }: Props) {
 			return currentPrice + (currentPrice * value) / 100;
 		}
 
-		// Любой другой тип, например "RUB", "USD", и т.п.
 		return currentPrice + value;
 	}
 
@@ -58,8 +60,11 @@ export default function ProductActivation({ product }: Props) {
 		options.forEach((opt) => {
 			const value = formState[opt.name];
 
-			if (opt.type === "radio") {
-				const selected = opt.variants?.find((v) => v.value === value);
+			if (opt.type === "radio" && Array.isArray(opt.variants)) {
+				const selected = opt.variants?.find(
+					(v) => String(v.value) === String(value),
+				);
+				console.log(selected, "selected");
 				if (selected && selected.modify_value && selected.modify_type) {
 					result = applyModifier(
 						result,
@@ -70,8 +75,12 @@ export default function ProductActivation({ product }: Props) {
 			}
 
 			if (opt.type === "checkbox") {
-				const group = value as Record<string, boolean>;
-				if (group) {
+				if (typeof value === "boolean") {
+					if (value && opt.modify_value && opt.modify_type) {
+						result = applyModifier(result, opt.modify_type, opt.modify_value);
+					}
+				} else if (typeof value === "object" && Array.isArray(opt.variants)) {
+					const group = value as Record<string, boolean>;
 					opt.variants?.forEach((variant) => {
 						if (group[variant.value]) {
 							if (variant.modify_value && variant.modify_type) {
@@ -86,6 +95,7 @@ export default function ProductActivation({ product }: Props) {
 				}
 			}
 		});
+
 		setTotalPrice(Math.round(result));
 	}, [formState, options, basePrice, setTotalPrice]);
 
@@ -98,24 +108,36 @@ export default function ProductActivation({ product }: Props) {
 			}
 			if (opt.type === "radio" && Array.isArray(opt.variants)) {
 				const defaultVariant = opt.variants.find(
-					(variant) => variant.default === "1",
+					(variant) => Number(variant.default) === 1,
 				);
-				initialState[opt.name] = defaultVariant?.value || "";
+				initialState[opt.name] = defaultVariant?.value ?? "";
 			}
-			if (opt.type === "checkbox" && Array.isArray(opt.variants)) {
-				initialState[opt.name] = opt.variants.reduce((acc, variant) => {
-					acc[variant.value] = false;
-					return acc;
-				}, {} as Record<string, boolean>);
+			if (opt.type === "checkbox") {
+				if (Array.isArray(opt.variants) && opt.variants.length > 0) {
+					initialState[opt.name] = opt.variants.reduce((acc, variant) => {
+						acc[variant.value] = false;
+						return acc;
+					}, {} as Record<string, boolean>);
+				} else {
+					initialState[opt.name] = false;
+				}
 			}
 		});
 
 		setFormState(initialState);
 	}, [options]);
 
-	const handleCheckboxChange = (optionName: string, variantValue: string) => {
+	const handleCheckboxChange = (optionName: string, variantValue?: string) => {
 		setFormState((prev) => {
 			const current = prev[optionName];
+
+			if (typeof current === "boolean") {
+				return {
+					...prev,
+					[optionName]: !current,
+				};
+			}
+
 			const currentGroup =
 				typeof current === "object" && current !== null ? current : {};
 
@@ -123,13 +145,14 @@ export default function ProductActivation({ product }: Props) {
 				...prev,
 				[optionName]: {
 					...currentGroup,
-					[variantValue]: !currentGroup[variantValue],
+					[variantValue!]: !currentGroup[variantValue!],
 				},
 			};
 		});
 	};
 
 	const handleRadioChange = (name: string, value: string) => {
+		console.log(value, "value");
 		setFormState((prev) => ({ ...prev, [name]: value }));
 	};
 
@@ -164,7 +187,7 @@ export default function ProductActivation({ product }: Props) {
 							<CheckboxOptionGroup
 								key={el.name}
 								option={el}
-								values={formState[el.name] as Record<string, boolean>}
+								values={formState[el.name]}
 								onChange={handleCheckboxChange}
 							/>
 						);

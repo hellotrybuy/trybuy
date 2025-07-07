@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ProductData } from "./types";
 
 export interface Product {
 	id: string;
@@ -21,32 +22,13 @@ export interface Product {
 	cnt: string;
 }
 
-interface UseProductListParams {
-	categoryId?: number;
-	page?: number;
-	rows?: number;
-	search?: string;
-	sort?: string;
-	minPrice?: number;
-	maxPrice?: number;
-	platforms?: string;
-}
-
 interface ProductResponse {
-	products: Product[];
+	data: ProductData[];
 	totalPages: number;
 }
 
-export function useProductList({
-	categoryId = 151,
-	page = 1,
-	rows = 40,
-	search = "",
-	sort = "default",
-	minPrice = 0,
-	maxPrice = 999999,
-	platforms = "",
-}: UseProductListParams) {
+export function useProductList(page: number, rows: number) {
+	console.log(page, "page");
 	const [data, setData] = useState<ProductResponse | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -57,7 +39,10 @@ export function useProductList({
 			setError(null);
 			const baseUrl = import.meta.env.VITE_API_URL;
 
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product`;
+			const offset = (page - 1) * rows;
+
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_popular&limit=
+			${rows.toString()}&offset=${offset.toString()}`;
 
 			try {
 				const res = await fetch(url.toString());
@@ -79,12 +64,12 @@ export function useProductList({
 		};
 
 		fetchProducts();
-	}, [categoryId, page, rows, search, sort, minPrice, maxPrice, platforms]);
+	}, [page, rows]);
+
+	console.log(data, "data");
 
 	return {
-		products: data?.products ?? [],
-		totalPages: data?.totalPages ?? 0,
+		products: data?.data ?? [],
 		loading,
-		error,
 	};
 }
