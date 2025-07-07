@@ -5,8 +5,6 @@ interface Props {
 }
 
 export default function DeliveryInfo({ rawHtml }: Props) {
-	console.log(rawHtml, "rawHtml");
-
 	function parseHtml(raw: string): string {
 		const withTags = raw
 			.replace(/<delivery>/g, '<div class="delivery">')

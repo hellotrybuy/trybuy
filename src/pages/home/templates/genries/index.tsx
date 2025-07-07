@@ -17,51 +17,6 @@ import PsAnim from "./psBlock";
 import { Link } from "react-router";
 import { Routes } from "../../../../routes";
 
-const MOCK_GENRES = [
-	{
-		title: "Игровые товары",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #28344A 0%, #222630 98.46%)",
-		img: "mock/genries/games.svg",
-		style: { width: 187, height: 87 },
-		classNames: "",
-	},
-	{
-		title: "Программное обеспечение",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #284A48 0%, #222630 98.46%)",
-		img: "mock/genries/po.svg",
-		style: { width: 187, height: 87 },
-		classNames: "",
-	},
-	{
-		title: "Сервисы",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #403667 0%, #222630 98.46%)",
-		img: "mock/genries/services.svg",
-		style: { width: 187, height: 87 },
-		classNames: "",
-	},
-	{
-		title: "Playstation",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #131F7D 0%, #222630 98.46%)",
-		img: "mock/genries/playstation.svg",
-		style: { width: 154, height: 137 },
-		classNames: cnx("genre__xbox"),
-	},
-	{
-		title: "Внутриигровые ценности",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #414023 0%, #222630 98.46%)",
-		img: "mock/genries/ingame.svg",
-		style: { width: 187, height: 87 },
-		classNames: "",
-	},
-	{
-		title: "XBOX",
-		bg: "radial-gradient(97.07% 97.07% at 100% 98.78%, #0A3A0F 0%, #222630 98.46%)",
-		img: "mock/genries/xbox.svg",
-		style: { width: 113, height: 111 },
-		classNames: cnx("genre__xbox"),
-	},
-];
-
 export function HomeGenries() {
 	const prevBtnRef = useRef(null);
 	const nextBtnRef = useRef(null);
@@ -69,7 +24,6 @@ export function HomeGenries() {
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
 	const { categories } = useMainScreenCategories();
-	console.log(categories, "categories");
 
 	const { isMobile2 } = useIsMobile();
 

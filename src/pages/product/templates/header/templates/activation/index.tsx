@@ -113,9 +113,6 @@ export default function ProductActivation({ product }: Props) {
 		setFormState(initialState);
 	}, [options]);
 
-	console.log(formState, "formState");
-	console.log(product, "options");
-
 	const handleCheckboxChange = (optionName: string, variantValue: string) => {
 		setFormState((prev) => {
 			const current = prev[optionName];

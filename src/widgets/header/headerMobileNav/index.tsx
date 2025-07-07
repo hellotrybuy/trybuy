@@ -25,7 +25,6 @@ export function HeaderMobileNav({
 	const ref = useRef<HTMLDivElement>(null);
 
 	useClickOutside(ref, () => setIsSearchOpen(false));
-	console.log(searchValue, "searchValue");
 	const openCatalog = useCallback(() => {
 		setIsCatalogOpen(!isCatalogOpen);
 		setIsSearchOpen(false);

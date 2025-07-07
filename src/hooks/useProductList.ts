@@ -57,25 +57,12 @@ export function useProductList({
 			setError(null);
 			const baseUrl = import.meta.env.VITE_API_URL;
 
-			const url = `${baseUrl}/engine/functions/category/category_product_functions.php?${new URLSearchParams(
-				{
-					ajax: "1",
-					category_id: String(categoryId),
-					rows: String(rows),
-					page: String(page),
-					search,
-					sort,
-					minPrice: String(minPrice),
-					maxPrice: String(maxPrice),
-					platforms,
-				},
-			)}`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product`;
 
 			try {
 				const res = await fetch(url.toString());
 
 				const text = await res.text();
-				console.log("Raw server response:", text);
 
 				try {
 					const json: ProductResponse = JSON.parse(text);

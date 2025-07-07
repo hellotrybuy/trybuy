@@ -27,7 +27,6 @@ export function useMainScreenCategories() {
 			try {
 				const res = await fetch(url);
 				const text = await res.text();
-				console.log("Raw server response (collections):", text);
 
 				const json = JSON.parse(text);
 

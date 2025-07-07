@@ -28,7 +28,7 @@ export default defineConfig({
 				orientation: "any",
 				display: "standalone",
 				lang: "ru-RU",
-				iconsFolder: [
+				icons: [
 					{
 						src: "/iconsFolder/pwa/icon_192x192.png",
 						sizes: "192x192",

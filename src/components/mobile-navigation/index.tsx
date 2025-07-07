@@ -39,7 +39,6 @@ export function MobileNavigation() {
 					<li>
 						<a
 							onClick={(e) => {
-								console.log("aaa");
 								e.preventDefault();
 								document.getElementById("main-search-input")?.focus();
 							}}

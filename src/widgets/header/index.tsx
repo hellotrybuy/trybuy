@@ -37,9 +37,6 @@ export function Header() {
 		return () => window.removeEventListener("scroll", computeScroll);
 	}, [isHeaderFixed]);
 
-	console.log(searchValue, "searchValue");
-	console.log(isCatalogOpen, "isCatalogOpen");
-
 	return (
 		<>
 			<header className={cnx("header")}>
