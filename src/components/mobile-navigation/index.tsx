@@ -56,7 +56,11 @@ export function MobileNavigation() {
 						</a>
 					</li>
 					<li>
-						<a href={Routes.HOME}>
+						<a
+							href="https://oplata.info/info/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
 							<img src="/iconsFolder/navigation/purchases.svg" alt="Покупки" />
 							<span>Покупки</span>
 						</a>

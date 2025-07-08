@@ -21,6 +21,10 @@ export function Header() {
 
 	const [isHeaderFixed, setIsHeaderFixed] = useState(false);
 
+	const goHistory = () => {
+		window.open("https://oplata.info/info/", "_blank");
+	};
+
 	useEffect(() => {
 		const computeScroll = () => {
 			const scrollY = window.scrollY;
@@ -71,7 +75,9 @@ export function Header() {
 							/>
 						</nav>
 
-						<Button className={cnx("header__btn")}>История покупок</Button>
+						<Button className={cnx("header__btn")} onClick={goHistory}>
+							История покупок
+						</Button>
 					</div>
 
 					<CatalogMenu

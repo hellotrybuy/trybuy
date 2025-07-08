@@ -7,7 +7,20 @@ import { useClickOutside } from "../../../hooks/useClickOutside";
 
 const cnx = classNames.bind(styles);
 
-export function ChapterSearch() {
+interface ChapterSearchProps {
+	setSelectValue: React.Dispatch<React.SetStateAction<string>>;
+	selectValue: string;
+	values: {
+		value: string;
+		label: string;
+	}[];
+}
+
+export function ChapterSearch({
+	setSelectValue,
+	selectValue,
+	values,
+}: ChapterSearchProps) {
 	const [searchValue, setSearchValue] = useState("");
 	const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -51,7 +64,11 @@ export function ChapterSearch() {
 				)}
 			</nav>
 			<div className={cnx("filters")}>
-				<FilterSelect />
+				<FilterSelect
+					setSelectValue={setSelectValue}
+					selectValue={selectValue}
+					values={values}
+				/>
 			</div>
 		</div>
 	);

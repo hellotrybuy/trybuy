@@ -1,20 +1,24 @@
-import { useState } from "react";
 import Select from "../select";
 
-const OPTIONS = [
-	{ value: "По рекомендациям", label: "По рекомендациям" },
-	{ value: "По кол-ву продаж", label: "По кол-ву продаж" },
-	{ value: "Сначала дешевле", label: "Сначала дешевле" },
-	{ value: "Сначала дороже", label: "Сначала дороже" },
-];
+interface FilterSelectProps {
+	setSelectValue: React.Dispatch<React.SetStateAction<string>>;
+	selectValue: string;
+	values: {
+		value: string;
+		label: string;
+	}[];
+}
 
-export function FilterSelect() {
-	const [selectValue, setSelectValue] = useState(OPTIONS[0].value);
+export function FilterSelect({
+	setSelectValue,
+	selectValue,
+	values,
+}: FilterSelectProps) {
 	return (
 		<Select
 			onChange={(newValue) => setSelectValue(newValue)}
 			value={selectValue}
-			options={OPTIONS}
+			options={values}
 		/>
 	);
 }

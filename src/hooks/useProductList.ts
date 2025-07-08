@@ -22,7 +22,11 @@ export interface Product {
 	cnt: string;
 }
 
-export function useProductList(page: number, rows: number) {
+export function useProductList(
+	page: number,
+	rows: number,
+	selectOptions: string = "default",
+) {
 	console.log(page, "page");
 	const [data, setData] = useState<ProductResponse | null>(null);
 	const [loading, setLoading] = useState(true);
@@ -35,7 +39,7 @@ export function useProductList(page: number, rows: number) {
 			const offset = (page - 1) * rows;
 
 			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_popular&limit=
-			${rows.toString()}&offset=${offset.toString()}`;
+			${rows.toString()}&offset=${offset.toString()}&sort=${selectOptions}`;
 
 			try {
 				const res = await fetch(url.toString());
@@ -54,7 +58,7 @@ export function useProductList(page: number, rows: number) {
 		};
 
 		fetchProducts();
-	}, [page, rows]);
+	}, [page, rows, selectOptions]);
 
 	console.log(data, "data");
 

@@ -15,7 +15,6 @@ import { useMainScreenCategories } from "../../../../hooks/useMainScreenCategori
 import ImagesBlock from "./imagesBlock";
 import PsAnim from "./psBlock";
 import { Link } from "react-router";
-import { Routes } from "../../../../routes";
 
 export function HomeGenries() {
 	const prevBtnRef = useRef(null);
@@ -60,7 +59,7 @@ export function HomeGenries() {
 						{[...categories].map((genre, index) => (
 							<SwiperSlide key={index} className={cnx("slide")}>
 								<Link
-									to={Routes.CATALOG}
+									to={genre.collections_url}
 									key={genre.id}
 									onMouseEnter={() => setHoveredIndex(index)}
 									onMouseLeave={() => setHoveredIndex(null)}
@@ -94,6 +93,7 @@ export function HomeGenries() {
 								</Link>
 							</SwiperSlide>
 						))}
+						{isMobile2 && <SwiperSlide></SwiperSlide>}
 					</Swiper>
 				</div>
 

@@ -11,6 +11,7 @@ export function useGetProductsFromCat(
 	category_id: string,
 	page: number,
 	rows: number,
+	selectOptions: string = "default",
 ): UseGetCategories {
 	const [products, setProducts] = useState<ProductData[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -24,7 +25,7 @@ export function useGetProductsFromCat(
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_products_category_paginated&category_id=${category_id}&limit=
+					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_products_category_paginated&sort=${selectOptions}&category_id=${category_id}&limit=
 			${rows.toString()}&offset=${offset.toString()}`,
 				);
 				if (!response.ok) {
@@ -41,7 +42,7 @@ export function useGetProductsFromCat(
 		};
 
 		fetchData();
-	}, [baseUrl, category_id, page, rows]);
+	}, [baseUrl, category_id, page, rows, selectOptions]);
 
 	return { products, loading, error };
 }

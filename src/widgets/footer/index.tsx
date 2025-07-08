@@ -14,6 +14,10 @@ import classNames from "classnames/bind";
 
 const cnx = classNames.bind(styles);
 
+const goHistory = () => {
+	window.open("https://join.try-buy.ru/", "_blank");
+};
+
 function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 	return (
 		<div
@@ -31,7 +35,9 @@ function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 					</a>
 				))}
 			</div>
-			<Button className={cnx("copyright__btn")}>Стать продавцом</Button>
+			<Button className={cnx("copyright__btn")} onClick={goHistory}>
+				Стать продавцом
+			</Button>
 		</div>
 	);
 }
