@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProductData } from "./types";
+import { ProductResponse } from "./types";
 
 export interface Product {
 	id: string;
@@ -20,11 +20,6 @@ export interface Product {
 	id_product: string;
 	in_stock: string;
 	cnt: string;
-}
-
-interface ProductResponse {
-	data: ProductData[];
-	totalPages: number;
 }
 
 export function useProductList(page: number, rows: number) {

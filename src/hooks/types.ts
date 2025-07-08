@@ -101,3 +101,8 @@ export interface ApiResponseGreatCatergory {
 	queryId: string;
 	data: GreatCatergory[];
 }
+
+export interface ProductResponse {
+	data: ProductData[];
+	totalPages: number;
+}

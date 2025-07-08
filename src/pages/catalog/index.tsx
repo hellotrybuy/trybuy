@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs from "../../components/breadcrumbs";
@@ -11,7 +11,6 @@ import { CONTAINER } from "../../constants/classnames";
 import ProductCards from "../../widgets/product-cards";
 import { CATALOG_CATEGORY } from "../../constants/searchParams";
 import { CatalogType } from "../../types";
-import { Routes } from "../../routes";
 import Select from "../../components/select";
 import FilterMobile from "../../widgets/mobile-filter";
 import { Filers } from "../../components/filters";
@@ -19,6 +18,7 @@ import { ChapterSearch } from "./chapterSearch";
 import { useProductList } from "../../hooks/useProductList";
 import { ProductData } from "../../hooks/types";
 import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
+import { useGetProductsFromCat } from "../../hooks/useGetProductsFromCat";
 
 export const selectOptions = [
 	{ value: "По рекомендациям", label: "По рекомендациям" },
@@ -31,31 +31,49 @@ export function CatalogPage() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 	const [currentPage, setCurrentPage] = useState(1);
-
+	const [categoryId, setCategoryId] = useState("all");
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 
-	const { products } = useProductList(currentPage, 15);
+	const { products, loading: productsLoading } = useProductList(
+		currentPage,
+		15,
+	);
+	const { products: productsFromCat, loading: productsFromCatLoading } =
+		useGetProductsFromCat(categoryId, currentPage, 15);
 
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
-	const { categorys } = useGetGreatCategories();
-	console.log(categorys, "categorys");
+	const { categorys, loading: loadingCat } = useGetGreatCategories();
+	console.log(productsFromCat, "productsFromCat");
+
+	const changeCategory = (id: string) => {
+		setCurrentPage(1);
+		setCategoryId(id);
+	};
 
 	const changePage = () => {
 		setCurrentPage((prevPage) => prevPage + 1);
 	};
 
 	useEffect(() => {
-		if (products && products.length > 0) {
+		const newItems = categoryId === "all" ? products : productsFromCat;
+		if (newItems && newItems.length > 0) {
 			setCatalogData((prev) => {
-				const newProducts = products.filter(
-					(newProduct) =>
-						!prev.some((existing) => existing.id === newProduct.id),
-				);
-				return [...prev, ...newProducts];
+				return currentPage === 1
+					? newItems
+					: [
+							...prev,
+							...newItems.filter((item) => !prev.some((p) => p.id === item.id)),
+					  ];
 			});
 		}
-	}, [products]);
+	}, [products, productsFromCat, categoryId, currentPage]);
+
+	const dataIsLoaded = useMemo(() => {
+		return categoryId == "all" ? productsLoading : productsFromCatLoading;
+	}, [categoryId, productsLoading, productsFromCatLoading]);
+
+	if (loadingCat) return;
 
 	return (
 		<div className={cnx("catalog")}>
@@ -65,23 +83,22 @@ export function CatalogPage() {
 					<div className={cnx("catalog__categories", "categories")}>
 						<nav className={cnx("categories__nav")}>
 							<ul>
-								<li className={cnx(category !== "games" && "_active")}>
-									<a href={Routes.CATALOG}>Все товары</a>
+								<li
+									className={cnx(categoryId == "all" && "_active")}
+									onClick={() => changeCategory("all")}
+								>
+									<div>Все товары</div>
 								</li>
-								<li className={cnx(category === "games" && "_active")}>
-									<a href={`${Routes.CATALOG}?${CATALOG_CATEGORY}=games`}>
-										Игры
-									</a>
-								</li>
-								<li>
-									<a href="#">Программное обеспечение</a>
-								</li>
-								<li>
-									<a href="#">Сервисы и соцсети</a>
-								</li>
-								<li>
-									<a href="#">Внутриигровые ценности</a>
-								</li>
+								{categorys &&
+									categorys.map((el) => (
+										<li
+											className={cnx(categoryId == el.id && "_active")}
+											key={el.id}
+											onClick={() => changeCategory(el.id)}
+										>
+											<div>{el.name}</div>
+										</li>
+									))}
 							</ul>
 						</nav>
 					</div>
@@ -91,8 +108,6 @@ export function CatalogPage() {
 							<Filers />
 						</div>
 						<div className={cnx("catalog__main", "main")}>
-							{/* Mobile filter */}
-
 							<div className={cnx("catalog__filter-mobile", "filter-mobile")}>
 								<Select
 									onChange={(newValue) => setSelectValue(newValue)}
@@ -102,8 +117,6 @@ export function CatalogPage() {
 								<FilterMobile />
 							</div>
 							<ChapterSearch />
-
-							{/* Desktop box for all */}
 
 							{category === "all" ||
 								(category == null && (
@@ -268,9 +281,12 @@ export function CatalogPage() {
 								<Button className={cnx("box__btn")}>Купить</Button>
 							</div>
 
-							{/* Product cards */}
-							<div className={cnx("main__cards")}>
-								<ProductCards data={catalogData} />
+							<div className={cnx("main__cards")} key={categoryId}>
+								{dataIsLoaded ? (
+									<ProductCards data={catalogData} loading />
+								) : (
+									<ProductCards data={catalogData} />
+								)}
 							</div>
 						</div>
 					</div>

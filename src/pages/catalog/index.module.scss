@@ -65,9 +65,9 @@
 		}
 
 		li {
-			a {
+			div {
 				display: block;
-
+				cursor: pointer;
 				text-wrap: nowrap;
 
 				padding: 12px 16px;
@@ -77,8 +77,8 @@
 				transition: transitions.$main;
 			}
 
-			&:hover a,
-			&._active a {
+			&:hover div,
+			&._active div {
 				background-color: #0077ff;
 			}
 		}

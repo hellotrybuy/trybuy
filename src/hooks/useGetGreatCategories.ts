@@ -35,7 +35,7 @@ export function useGetGreatCategories(): UseGetCategories {
 		};
 
 		fetchData();
-	}, []);
+	}, [baseUrl]);
 
 	return { categorys, loading, error };
 }
