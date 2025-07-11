@@ -203,7 +203,11 @@ export function CatalogPage() {
 									value={selectValue}
 									options={selectOptions}
 								/>
-								<FilterMobile />
+								<FilterMobile
+									platforms={platforms}
+									selectedPlatforms={selectedPlatforms}
+									setSelectedPlatforms={changePlatforms}
+								/>
 							</div>
 							<ChapterSearch
 								selectValue={selectValue}
