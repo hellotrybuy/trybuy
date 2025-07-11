@@ -259,6 +259,7 @@ export function FilterMobile({ className }: IFilterMobile) {
 		onTouchStart,
 		onTouchMove,
 	]);
+	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
 	return (
 		<div className={cnx("filter", className)}>
@@ -288,7 +289,11 @@ export function FilterMobile({ className }: IFilterMobile) {
 
 			<div className={cnx("filter__body")} ref={filterRef}>
 				<div className={cnx("filter__con")}>
-					<Filers />
+					<Filers
+						platforms={[]}
+						selectedPlatforms={selectedPlatforms}
+						setSelectedPlatforms={setSelectedPlatforms}
+					/>
 				</div>
 
 				<div onClick={() => closeFilter()} className={cnx("filter__close")}>

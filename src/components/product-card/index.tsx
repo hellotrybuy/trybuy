@@ -17,7 +17,7 @@ export function ProductCard({
 	product,
 }: Props) {
 	return (
-		<Link to={`/product/${product.id_product}`}>
+		<Link to={`/product/${product.id_product}`} className={cnx("link")}>
 			<div className={cnx("card")}>
 				<div className={cnx("content")}>
 					<img

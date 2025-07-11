@@ -1,3 +1,5 @@
+import { ProductDataCAT } from "./useGetProductsFromCat";
+
 export interface ProductData {
 	id: string;
 	id_prev: string;
@@ -21,6 +23,7 @@ export interface ProductData {
 	sales: string;
 	num_in_stock: string | null;
 	label: string;
+	sort_order: number;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;
@@ -95,6 +98,13 @@ export interface GreatCatergory {
 	cnt_product: string;
 }
 
+export interface Platform {
+	id: number;
+	platform_name: string;
+	platform_url: string;
+	sort_order: number;
+}
+
 export interface ApiResponseGreatCatergory {
 	retval: number;
 	retdesc: string;
@@ -104,5 +114,15 @@ export interface ApiResponseGreatCatergory {
 
 export interface ProductResponse {
 	data: ProductData[];
+	totalPages: number;
+}
+
+export interface ProductDataCATResponse {
+	products: ProductDataCAT[];
+	totalPages: number;
+}
+
+export interface PlatformsRespose {
+	data: Platform[];
 	totalPages: number;
 }

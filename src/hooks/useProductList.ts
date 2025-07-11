@@ -60,8 +60,6 @@ export function useProductList(
 		fetchProducts();
 	}, [page, rows, selectOptions]);
 
-	console.log(data, "data");
-
 	return {
 		products: data?.data ?? [],
 		loading,

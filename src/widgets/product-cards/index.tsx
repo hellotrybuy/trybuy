@@ -1,6 +1,7 @@
 import ProductCard from "../../components/product-card";
 import ProductCardSkeleton from "../../components/productCardSkeleton/ProductCardSkeleton";
 import { ProductData } from "../../hooks/types";
+import { ProductDataCAT } from "../../hooks/useGetProductsFromCat";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 
@@ -8,7 +9,7 @@ const cnx = classNames.bind(styles);
 
 // Временный пропс для мока
 interface IProductCards {
-	data: ProductData[];
+	data: ProductData[] | ProductDataCAT[];
 	loading?: boolean;
 }
 

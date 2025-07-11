@@ -1,8 +1,39 @@
-import { useState, useEffect } from "react";
-import { ProductData, ProductResponse } from "./types";
+import { useState, useEffect, useMemo } from "react";
+import { ProductDataCATResponse } from "./types";
+
+export interface ProductDataCAT {
+	id: number;
+	product_id: number;
+	category_id: number;
+	platform_name: string;
+	platform_url: string;
+	icon: string;
+	sort_order: number;
+	type_name: string;
+	type_url: string;
+	name: string;
+	price: number;
+	price_usd: string;
+	price_eur: string;
+	platform: number;
+	type: number;
+	old_price: number;
+	preview: string;
+	url: string;
+	discount_product: number;
+	id_product: number;
+	in_stock: number;
+	cnt: number;
+	recomm_product: number;
+	is_new_product: number;
+	good_reviews: string;
+	bad_reviews: string;
+	agency_percent: number;
+	type_digi_product: string;
+}
 
 interface UseGetCategories {
-	products: ProductData[] | [];
+	products: ProductDataCAT[] | [];
 	loading: boolean;
 	error: Error | null;
 }
@@ -12,11 +43,19 @@ export function useGetProductsFromCat(
 	page: number,
 	rows: number,
 	selectOptions: string = "default",
+	selectedPlatforms: string[],
 ): UseGetCategories {
-	const [products, setProducts] = useState<ProductData[] | []>(null);
+	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<Error | null>(null);
 	const baseUrl = import.meta.env.VITE_API_URL;
+
+	const platforms = useMemo(() => {
+		if (selectedPlatforms.length > 0) {
+			return selectedPlatforms.map((platform) => `${platform}`).join("%2C");
+		}
+		return "";
+	}, [selectedPlatforms]);
 
 	useEffect(() => {
 		setLoading(true);
@@ -25,14 +64,15 @@ export function useGetProductsFromCat(
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_products_category_paginated&sort=${selectOptions}&category_id=${category_id}&limit=
-			${rows.toString()}&offset=${offset.toString()}`,
+					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category_id}&limit=
+			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);
 				}
-				const data: ProductResponse = await response.json();
-				setProducts(data.data);
+				const data: ProductDataCATResponse = await response.json();
+				console.log(data, "data.data");
+				setProducts(data.products);
 			} catch (err) {
 				setError(err as Error);
 				setProducts(null);
@@ -42,7 +82,7 @@ export function useGetProductsFromCat(
 		};
 
 		fetchData();
-	}, [baseUrl, category_id, page, rows, selectOptions]);
+	}, [baseUrl, category_id, page, rows, selectOptions, platforms]);
 
 	return { products, loading, error };
 }

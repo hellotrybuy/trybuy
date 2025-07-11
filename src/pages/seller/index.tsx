@@ -21,6 +21,7 @@ const cnx = classNames.bind(styles);
 export function SellerPage() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
+	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const { products } = useProductList(1, 15);
@@ -57,7 +58,11 @@ export function SellerPage() {
 
 						<div className={cnx("seller__body")}>
 							<div className={cnx("seller__filters")}>
-								<Filers />
+								<Filers
+									platforms={[]}
+									selectedPlatforms={selectedPlatforms}
+									setSelectedPlatforms={setSelectedPlatforms}
+								/>
 							</div>
 
 							<div className={cnx("seller__main", "seller-main")}>
