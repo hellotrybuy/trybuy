@@ -73,6 +73,7 @@ export function CatalogPage() {
 		setSelectedPlatforms([]);
 		setSearchParams((prev) => {
 			const newParams = new URLSearchParams(prev);
+			newParams.delete(CATALOG_PLATFORMS);
 			if (id === "all") {
 				newParams.delete(CATALOG_CATEGORY);
 			} else {

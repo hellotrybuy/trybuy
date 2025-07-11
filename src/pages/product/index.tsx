@@ -23,7 +23,7 @@ export default function ProductPage() {
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
-	}, []);
+	}, [id]);
 
 	if (data.product == null) return;
 	const product = data.product as ProductData;
@@ -51,10 +51,6 @@ function InnerProductPage({ product }: { product: ProductData }) {
 			);
 
 		window.addEventListener("scroll", computeScroll);
-
-		() => {
-			window.removeEventListener("scroll", computeScroll);
-		};
 	}, [isHidden]);
 
 	console.log(product, "asd");

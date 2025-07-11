@@ -57,48 +57,50 @@ export default function ProductActivation({ product }: Props) {
 	useEffect(() => {
 		let result = basePrice;
 
-		options.forEach((opt) => {
-			const value = formState[opt.name];
+		if (options) {
+			options.forEach((opt) => {
+				const value = formState[opt.name];
 
-			if (opt.type === "radio" && Array.isArray(opt.variants)) {
-				const selected = opt.variants?.find(
-					(v) => String(v.value) === String(value),
-				);
-				console.log(selected, "selected");
-				if (selected && selected.modify_value && selected.modify_type) {
-					result = applyModifier(
-						result,
-						selected.modify_type,
-						selected.modify_value,
+				if (opt.type === "radio" && Array.isArray(opt.variants)) {
+					const selected = opt.variants?.find(
+						(v) => String(v.value) === String(value),
 					);
-				}
-			}
-
-			if (opt.type === "checkbox") {
-				if (typeof value === "boolean") {
-					if (value && opt.modify_value && opt.modify_type) {
+					console.log(selected, "selected");
+					if (selected && selected.modify_value && selected.modify_type) {
 						result = applyModifier(
 							result,
-							opt.modify_type,
-							Number(opt.modify_value),
+							selected.modify_type,
+							selected.modify_value,
 						);
 					}
-				} else if (typeof value === "object" && Array.isArray(opt.variants)) {
-					const group = value as Record<string, boolean>;
-					opt.variants?.forEach((variant) => {
-						if (group[variant.value]) {
-							if (variant.modify_value && variant.modify_type) {
-								result = applyModifier(
-									result,
-									variant.modify_type,
-									variant.modify_value,
-								);
-							}
-						}
-					});
 				}
-			}
-		});
+
+				if (opt.type === "checkbox") {
+					if (typeof value === "boolean") {
+						if (value && opt.modify_value && opt.modify_type) {
+							result = applyModifier(
+								result,
+								opt.modify_type,
+								Number(opt.modify_value),
+							);
+						}
+					} else if (typeof value === "object" && Array.isArray(opt.variants)) {
+						const group = value as Record<string, boolean>;
+						opt.variants?.forEach((variant) => {
+							if (group[variant.value]) {
+								if (variant.modify_value && variant.modify_type) {
+									result = applyModifier(
+										result,
+										variant.modify_type,
+										variant.modify_value,
+									);
+								}
+							}
+						});
+					}
+				}
+			});
+		}
 
 		setTotalPrice(Math.round(result));
 	}, [formState, options, basePrice, setTotalPrice]);
@@ -106,27 +108,29 @@ export default function ProductActivation({ product }: Props) {
 	useEffect(() => {
 		const initialState: Record<string, any> = {};
 
-		options.forEach((opt) => {
-			if (opt.type === "text") {
-				initialState[opt.name] = "";
-			}
-			if (opt.type === "radio" && Array.isArray(opt.variants)) {
-				const defaultVariant = opt.variants.find(
-					(variant) => Number(variant.default) === 1,
-				);
-				initialState[opt.name] = defaultVariant?.value ?? "";
-			}
-			if (opt.type === "checkbox") {
-				if (Array.isArray(opt.variants) && opt.variants.length > 0) {
-					initialState[opt.name] = opt.variants.reduce((acc, variant) => {
-						acc[variant.value] = false;
-						return acc;
-					}, {} as Record<string, boolean>);
-				} else {
-					initialState[opt.name] = false;
+		if (options) {
+			options.forEach((opt) => {
+				if (opt.type === "text") {
+					initialState[opt.name] = "";
 				}
-			}
-		});
+				if (opt.type === "radio" && Array.isArray(opt.variants)) {
+					const defaultVariant = opt.variants.find(
+						(variant) => Number(variant.default) === 1,
+					);
+					initialState[opt.name] = defaultVariant?.value ?? "";
+				}
+				if (opt.type === "checkbox") {
+					if (Array.isArray(opt.variants) && opt.variants.length > 0) {
+						initialState[opt.name] = opt.variants.reduce((acc, variant) => {
+							acc[variant.value] = false;
+							return acc;
+						}, {} as Record<string, boolean>);
+					} else {
+						initialState[opt.name] = false;
+					}
+				}
+			});
+		}
 
 		setFormState(initialState);
 	}, [options]);
@@ -163,40 +167,41 @@ export default function ProductActivation({ product }: Props) {
 	return (
 		<div className={cnx("activation")}>
 			<div className={cnx("activation__inner")}>
-				{options.map((el) => {
-					if (el.type === "radio")
-						return (
-							<RadioOptionGroup
-								key={el.name}
-								option={el}
-								isExpanded={!!expandedRadios[el.name]}
-								toggleExpand={toggleExpand}
-								formValue={formState[el.name] as string}
-								onChange={handleRadioChange}
-							/>
-						);
-					if (el.type === "text")
-						return (
-							<TextOptionField
-								key={el.name}
-								option={el}
-								value={formState[el.name] as string}
-								onChange={(name, value) =>
-									setFormState((prev) => ({ ...prev, [name]: value }))
-								}
-							/>
-						);
-					if (el.type === "checkbox")
-						return (
-							<CheckboxOptionGroup
-								key={el.name}
-								option={el}
-								values={formState[el.name]}
-								onChange={handleCheckboxChange}
-							/>
-						);
-					return null;
-				})}
+				{options &&
+					options.map((el) => {
+						if (el.type === "radio")
+							return (
+								<RadioOptionGroup
+									key={el.name}
+									option={el}
+									isExpanded={!!expandedRadios[el.name]}
+									toggleExpand={toggleExpand}
+									formValue={formState[el.name] as string}
+									onChange={handleRadioChange}
+								/>
+							);
+						if (el.type === "text")
+							return (
+								<TextOptionField
+									key={el.name}
+									option={el}
+									value={formState[el.name] as string}
+									onChange={(name, value) =>
+										setFormState((prev) => ({ ...prev, [name]: value }))
+									}
+								/>
+							);
+						if (el.type === "checkbox")
+							return (
+								<CheckboxOptionGroup
+									key={el.name}
+									option={el}
+									values={formState[el.name]}
+									onChange={handleCheckboxChange}
+								/>
+							);
+						return null;
+					})}
 			</div>
 		</div>
 	);
