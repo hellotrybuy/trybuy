@@ -77,7 +77,11 @@ export function SellerPage() {
 										value={selectValue}
 										options={selectOptions}
 									/>
-									<FilterMobile />
+									<FilterMobile
+										platforms={[]}
+										selectedPlatforms={selectedPlatforms}
+										setSelectedPlatforms={setSelectedPlatforms}
+									/>
 								</div>
 
 								{category === "games" && (
