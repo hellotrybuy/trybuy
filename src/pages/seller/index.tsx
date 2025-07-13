@@ -22,6 +22,7 @@ export function SellerPage() {
 	const [searchParams] = useSearchParams();
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+	const [selectedType, setSelectedType] = useState<string[]>([]);
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const { products } = useProductList(1, 15);
@@ -62,6 +63,9 @@ export function SellerPage() {
 									platforms={[]}
 									selectedPlatforms={selectedPlatforms}
 									setSelectedPlatforms={setSelectedPlatforms}
+									contentTypes={[]}
+									selectedTypes={selectedType}
+									setSelectedTypes={setSelectedType}
 								/>
 							</div>
 
@@ -80,6 +84,9 @@ export function SellerPage() {
 									<FilterMobile
 										platforms={[]}
 										selectedPlatforms={selectedPlatforms}
+										contentTypes={[]}
+										selectedTypes={selectedType}
+										setSelectedTypes={setSelectedType}
 										setSelectedPlatforms={setSelectedPlatforms}
 									/>
 								</div>

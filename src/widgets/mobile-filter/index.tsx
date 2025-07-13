@@ -6,7 +6,7 @@ import { Filers } from "../../components/filters";
 import { throttle } from "lodash";
 import { lockBody } from "../../lib/lock-body";
 import { unlockBody } from "../../lib/unlock-body";
-import { Platform } from "../../hooks/types";
+import { Platform, ProductTypes } from "../../hooks/types";
 
 const cnx = classNames.bind(styles);
 const TRANSITION_DISABLE_TIMEOUT = 300;
@@ -16,6 +16,9 @@ interface IFilterMobile {
 	platforms: [] | Platform[];
 	setSelectedPlatforms: (ids: string[]) => void;
 	selectedPlatforms: string[];
+	contentTypes: [] | ProductTypes[];
+	setSelectedTypes: (ids: string[]) => void;
+	selectedTypes: string[];
 }
 
 function moveFilter({
@@ -108,6 +111,9 @@ export function FilterMobile({
 	platforms,
 	setSelectedPlatforms,
 	selectedPlatforms,
+	contentTypes,
+	selectedTypes,
+	setSelectedTypes,
 }: IFilterMobile) {
 	const btnRef = useRef<HTMLButtonElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
@@ -301,6 +307,9 @@ export function FilterMobile({
 						platforms={platforms}
 						selectedPlatforms={selectedPlatforms}
 						setSelectedPlatforms={setSelectedPlatforms}
+						contentTypes={contentTypes}
+						selectedTypes={selectedTypes}
+						setSelectedTypes={setSelectedTypes}
 					/>
 				</div>
 

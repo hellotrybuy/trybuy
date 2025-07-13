@@ -44,6 +44,7 @@ export function useGetProductsFromCat(
 	rows: number,
 	selectOptions: string = "default",
 	selectedPlatforms: string[],
+	selectedTypes: string[],
 ): UseGetCategories {
 	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -57,6 +58,13 @@ export function useGetProductsFromCat(
 		return "";
 	}, [selectedPlatforms]);
 
+	const productTypes = useMemo(() => {
+		if (selectedTypes.length > 0) {
+			return selectedTypes.map((type) => `${type}`).join("%2C");
+		}
+		return "";
+	}, [selectedTypes]);
+
 	useEffect(() => {
 		setLoading(true);
 		setError(null);
@@ -65,7 +73,7 @@ export function useGetProductsFromCat(
 			try {
 				const response = await fetch(
 					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category_id}&limit=
-			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}`,
+			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -82,7 +90,15 @@ export function useGetProductsFromCat(
 		};
 
 		fetchData();
-	}, [baseUrl, category_id, page, rows, selectOptions, platforms]);
+	}, [
+		baseUrl,
+		category_id,
+		page,
+		rows,
+		selectOptions,
+		platforms,
+		productTypes,
+	]);
 
 	return { products, loading, error };
 }

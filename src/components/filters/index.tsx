@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import classNames from "classnames/bind";
 import Checkbox from "./checkbox";
 import styles from "./index.module.scss";
 import Button from "../button";
-import { Platform } from "../../hooks/types";
+import { Platform, ProductTypes } from "../../hooks/types";
 
 const cnx = classNames.bind(styles);
 
@@ -18,31 +18,32 @@ const platforms_mock: Platform[] = [
 	{ id: 8, platform_name: "Nintendo Switch", platform_url: "", sort_order: 0 },
 ];
 
-const contentTypes = [
-	"Ключи",
-	"Гифты",
-	"Аккаунты",
-	"Аренда аккаунтов",
-	"Активация",
+const contentTypes_mock: ProductTypes[] = [
+	{ id: 1, type_name: "Ключи", type_url: "", sort_order: 0 },
+	{ id: 2, type_name: "Гифты", type_url: "", sort_order: 0 },
+	{ id: 3, type_name: "Аккаунты", type_url: "", sort_order: 0 },
+	{ id: 4, type_name: "Аренда аккаунтов", type_url: "", sort_order: 0 },
+	{ id: 5, type_name: "Активаsция", type_url: "", sort_order: 0 },
 ];
 
 interface Props {
 	platforms: [] | Platform[];
 	setSelectedPlatforms: (ids: string[]) => void;
 	selectedPlatforms: string[];
+
+	contentTypes: [] | ProductTypes[];
+	setSelectedTypes: (ids: string[]) => void;
+	selectedTypes: string[];
 }
 
 export function Filers({
 	platforms,
 	setSelectedPlatforms,
 	selectedPlatforms,
+	contentTypes,
+	setSelectedTypes,
+	selectedTypes,
 }: Props) {
-	const [selectedContentTypes, setSelectedContentTypes] = useState<string[]>(
-		[],
-	);
-
-	console.log(platforms);
-
 	const currentPlatforms = useMemo(() => {
 		if (!platforms || platforms.length == 0) {
 			return platforms_mock;
@@ -50,6 +51,16 @@ export function Filers({
 			return platforms;
 		}
 	}, [platforms]);
+
+	const currentTypes = useMemo(() => {
+		if (!contentTypes || contentTypes.length == 0) {
+			return contentTypes_mock;
+		} else {
+			return contentTypes;
+		}
+	}, [contentTypes]);
+
+	console.log(currentTypes, "currentTypes");
 
 	const toggleItem = (
 		item: string,
@@ -63,7 +74,7 @@ export function Filers({
 
 	const resetFilters = () => {
 		setSelectedPlatforms([]);
-		setSelectedContentTypes([]);
+		setSelectedTypes([]);
 	};
 
 	return (
@@ -71,44 +82,46 @@ export function Filers({
 			<div className={cnx("aside__filter", "filter")}>
 				<strong className={cnx("filter__title")}>Платформа:</strong>
 				<ul>
-					{currentPlatforms.map((platform) => (
-						<li key={platform.id}>
-							<Checkbox
-								caption={platform.platform_name}
-								checked={selectedPlatforms.includes(
-									platform.platform_url.toString(),
-								)}
-								onChange={() =>
-									toggleItem(
+					{currentPlatforms &&
+						currentPlatforms.map((platform) => (
+							<li key={platform.id}>
+								<Checkbox
+									caption={platform.platform_name}
+									checked={selectedPlatforms.includes(
 										platform.platform_url.toString(),
-										selectedPlatforms,
-										setSelectedPlatforms,
-									)
-								}
-							/>
-						</li>
-					))}
+									)}
+									onChange={() =>
+										toggleItem(
+											platform.platform_url.toString(),
+											selectedPlatforms,
+											setSelectedPlatforms,
+										)
+									}
+								/>
+							</li>
+						))}
 				</ul>
 			</div>
 
 			<div className={cnx("aside__filter", "filter")}>
 				<strong className={cnx("filter__title")}>Тип контента:</strong>
 				<ul>
-					{contentTypes.map((content) => (
-						<li key={content}>
-							<Checkbox
-								caption={content}
-								checked={selectedContentTypes.includes(content)}
-								onChange={() =>
-									toggleItem(
-										content,
-										selectedContentTypes,
-										setSelectedContentTypes,
-									)
-								}
-							/>
-						</li>
-					))}
+					{currentTypes &&
+						currentTypes.map((content) => (
+							<li key={content.id}>
+								<Checkbox
+									caption={content.type_name}
+									checked={selectedTypes.includes(content.type_url.toString())}
+									onChange={() =>
+										toggleItem(
+											content.type_url.toString(),
+											selectedTypes,
+											setSelectedTypes,
+										)
+									}
+								/>
+							</li>
+						))}
 				</ul>
 			</div>
 

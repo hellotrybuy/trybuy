@@ -12,20 +12,19 @@ import ProductCards from "../../widgets/product-cards";
 import {
 	CATALOG_CATEGORY,
 	CATALOG_PLATFORMS,
+	CATALOG_TYPES,
 } from "../../constants/searchParams";
-import { CatalogType } from "../../types";
 import Select from "../../components/select";
 import FilterMobile from "../../widgets/mobile-filter";
 import { Filers } from "../../components/filters";
 import { ChapterSearch } from "./chapterSearch";
-import { useProductList } from "../../hooks/useProductList";
-import { ProductData } from "../../hooks/types";
 import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
 import {
 	ProductDataCAT,
 	useGetProductsFromCat,
 } from "../../hooks/useGetProductsFromCat";
 import { useGetPlatforms } from "../../hooks/useGetPlatforms";
+import { useGetProductTypes } from "../../hooks/useGetProductTypes";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -36,18 +35,34 @@ export const selectOptions = [
 
 export function CatalogPage() {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
+	const category = searchParams.get(CATALOG_CATEGORY);
 	const platformsFromUrl = searchParams.get(CATALOG_PLATFORMS);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [categoryId, setCategoryId] = useState("all");
-	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
-	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 
-	const { products, loading: productsLoading } = useProductList(
-		currentPage,
-		15,
-		selectValue,
-	);
+	const previewPlatforms = useMemo(() => {
+		if (platformsFromUrl) {
+			return platformsFromUrl.split("__");
+		} else {
+			return [];
+		}
+	}, [platformsFromUrl]);
+
+	const previewTypesFromUrl = useMemo(() => {
+		if (typesFromUrl) {
+			return typesFromUrl.split("__");
+		} else {
+			return [];
+		}
+	}, [typesFromUrl]);
+
+	const [currentPage, setCurrentPage] = useState(1);
+	const [categoryId, setCategoryId] = useState(category);
+	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
+	const [selectedPlatforms, setSelectedPlatforms] =
+		useState<string[]>(previewPlatforms);
+	const [selectedType, setSelectedType] =
+		useState<string[]>(previewTypesFromUrl);
+
 	const { products: productsFromCat, loading: productsFromCatLoading } =
 		useGetProductsFromCat(
 			categoryId,
@@ -55,26 +70,28 @@ export function CatalogPage() {
 			15,
 			selectValue,
 			selectedPlatforms,
+			selectedType,
 		);
 
-	const [catalogData, setCatalogData] = useState<
-		ProductData[] | ProductDataCAT[]
-	>([]);
+	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
 	const { categorys, loading: loadingCat } = useGetGreatCategories();
 
 	const { platforms } = useGetPlatforms(categoryId);
+	const { types: productTypes } = useGetProductTypes(categoryId);
 
-	console.log(platforms, "platforms");
+	console.log(productTypes, "productTypes");
 
 	const changeCategory = (id: string) => {
 		setCurrentPage(1);
 		setCategoryId(id);
 		setSelectedPlatforms([]);
+		setSelectedType([]);
 		setSearchParams((prev) => {
 			const newParams = new URLSearchParams(prev);
 			newParams.delete(CATALOG_PLATFORMS);
-			if (id === "all") {
+			newParams.delete(CATALOG_TYPES);
+			if (id === "") {
 				newParams.delete(CATALOG_CATEGORY);
 			} else {
 				newParams.set(CATALOG_CATEGORY, id);
@@ -96,13 +113,14 @@ export function CatalogPage() {
 		});
 	};
 
-	const previewPlatforms = useMemo(() => {
-		if (platformsFromUrl) {
-			return platformsFromUrl.split("__");
-		} else {
-			return [];
-		}
-	}, [platformsFromUrl]);
+	const changeContentTypes = (ids: string[]) => {
+		setSelectedType(ids);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.set(CATALOG_TYPES, ids.join("__"));
+			return newParams;
+		});
+	};
 
 	useEffect(() => {
 		if (previewPlatforms.length > 0) {
@@ -114,10 +132,19 @@ export function CatalogPage() {
 	}, [previewPlatforms]);
 
 	useEffect(() => {
+		if (previewTypesFromUrl.length > 0) {
+			setSelectedType(previewTypesFromUrl);
+		} else {
+			setSelectedType([]);
+		}
+		setCurrentPage(1);
+	}, [previewTypesFromUrl]);
+
+	useEffect(() => {
 		if (category) {
 			setCategoryId(category);
 		} else {
-			setCategoryId("all");
+			setCategoryId("");
 		}
 		setCurrentPage(1);
 	}, [category]);
@@ -127,41 +154,27 @@ export function CatalogPage() {
 	}, []);
 
 	useEffect(() => {
-		const newItems = categoryId == "all" ? products : productsFromCat;
+		if (!productsFromCat || productsFromCat.length === 0) return;
 
-		console.log(platforms, "platforms");
+		setCatalogData((prev) => {
+			const existingIds = new Set(prev.map((p) => p.id));
+			const uniqueNew = productsFromCat.filter(
+				(p, index, self) =>
+					self.findIndex((x) => x.id_product === p.id_product) === index,
+			);
 
-		if (newItems && newItems.length > 0) {
-			if (categoryId === "all") {
-				setCatalogData((prev) => {
-					const filtered = newItems as ProductData[];
-					if (currentPage === 1) return filtered;
-					return [
-						...(prev as ProductData[]),
-						...filtered.filter(
-							(item) => !(prev as ProductData[]).some((p) => p.id === item.id),
-						),
-					];
-				});
-			} else {
-				setCatalogData((prev) => {
-					const filtered = newItems as ProductDataCAT[];
-					if (currentPage === 1) return filtered;
-					return [
-						...(prev as ProductDataCAT[]),
-						...filtered.filter(
-							(item) =>
-								!(prev as ProductDataCAT[]).some((p) => p.id === item.id),
-						),
-					];
-				});
+			if (currentPage === 1) {
+				return uniqueNew;
 			}
-		}
-	}, [products, productsFromCat, categoryId, currentPage, platforms]);
+
+			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
+			return [...prev, ...filteredNew];
+		});
+	}, [productsFromCat, currentPage]);
 
 	const dataIsLoaded = useMemo(() => {
-		return categoryId == "all" ? productsLoading : productsFromCatLoading;
-	}, [categoryId, productsLoading, productsFromCatLoading]);
+		return productsFromCatLoading;
+	}, [productsFromCatLoading]);
 
 	if (loadingCat) return;
 
@@ -174,8 +187,8 @@ export function CatalogPage() {
 						<nav className={cnx("categories__nav")}>
 							<ul>
 								<li
-									className={cnx(categoryId == "all" && "_active")}
-									onClick={() => changeCategory("all")}
+									className={cnx(categoryId == "" && "_active")}
+									onClick={() => changeCategory("")}
 								>
 									<div>Все товары</div>
 								</li>
@@ -199,6 +212,9 @@ export function CatalogPage() {
 								platforms={platforms}
 								selectedPlatforms={selectedPlatforms}
 								setSelectedPlatforms={changePlatforms}
+								contentTypes={productTypes}
+								selectedTypes={selectedType}
+								setSelectedTypes={changeContentTypes}
 							/>
 						</div>
 						<div className={cnx("catalog__main", "main")}>
@@ -212,6 +228,9 @@ export function CatalogPage() {
 									platforms={platforms}
 									selectedPlatforms={selectedPlatforms}
 									setSelectedPlatforms={changePlatforms}
+									contentTypes={productTypes}
+									selectedTypes={selectedType}
+									setSelectedTypes={changeContentTypes}
 								/>
 							</div>
 							<ChapterSearch

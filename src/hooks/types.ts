@@ -105,6 +105,13 @@ export interface Platform {
 	sort_order: number;
 }
 
+export interface ProductTypes {
+	id: number;
+	type_name: string;
+	type_url: string;
+	sort_order: number;
+}
+
 export interface ApiResponseGreatCatergory {
 	retval: number;
 	retdesc: string;
@@ -124,5 +131,10 @@ export interface ProductDataCATResponse {
 
 export interface PlatformsRespose {
 	data: Platform[];
+	totalPages: number;
+}
+
+export interface ProductsTypesRespose {
+	data: ProductTypes[];
 	totalPages: number;
 }
