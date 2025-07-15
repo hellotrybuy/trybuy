@@ -6,19 +6,26 @@ import { Filers } from "../../components/filters";
 import { throttle } from "lodash";
 import { lockBody } from "../../lib/lock-body";
 import { unlockBody } from "../../lib/unlock-body";
-import { Platform, ProductTypes } from "../../hooks/types";
+import { CatrgorySecondPlace, Platform, ProductTypes } from "../../hooks/types";
+import { SetURLSearchParams } from "react-router";
 
 const cnx = classNames.bind(styles);
 const TRANSITION_DISABLE_TIMEOUT = 300;
 
 interface IFilterMobile {
 	className?: string;
+	category: string;
 	platforms: [] | Platform[];
 	setSelectedPlatforms: (ids: string[]) => void;
 	selectedPlatforms: string[];
 	contentTypes: [] | ProductTypes[];
 	setSelectedTypes: (ids: string[]) => void;
 	selectedTypes: string[];
+	searchParams: URLSearchParams | null;
+	categorySecondPlace: [] | CatrgorySecondPlace[];
+	setSelectSecondCat: (id: string) => void;
+	selectSecondCat: string;
+	setSearchParams: SetURLSearchParams | null;
 }
 
 function moveFilter({
@@ -114,6 +121,12 @@ export function FilterMobile({
 	contentTypes,
 	selectedTypes,
 	setSelectedTypes,
+	searchParams = null,
+	setSearchParams = null,
+	categorySecondPlace,
+	selectSecondCat,
+	setSelectSecondCat,
+	category = "",
 }: IFilterMobile) {
 	const btnRef = useRef<HTMLButtonElement>(null);
 	const filterRef = useRef<HTMLDivElement>(null);
@@ -304,12 +317,18 @@ export function FilterMobile({
 			<div className={cnx("filter__body")} ref={filterRef}>
 				<div className={cnx("filter__con")}>
 					<Filers
+						category={category}
 						platforms={platforms}
 						selectedPlatforms={selectedPlatforms}
 						setSelectedPlatforms={setSelectedPlatforms}
 						contentTypes={contentTypes}
 						selectedTypes={selectedTypes}
 						setSelectedTypes={setSelectedTypes}
+						searchParams={searchParams}
+						categorySecondPlace={categorySecondPlace}
+						selectSecondCat={selectSecondCat}
+						setSelectSecondCat={setSelectSecondCat}
+						setSearchParams={setSearchParams}
 					/>
 				</div>
 

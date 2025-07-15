@@ -105,6 +105,12 @@ export interface Platform {
 	sort_order: number;
 }
 
+export interface CatrgorySecondPlace {
+	id: number;
+	name: string;
+	url: string;
+}
+
 export interface ProductTypes {
 	id: number;
 	type_name: string;
@@ -136,5 +142,9 @@ export interface PlatformsRespose {
 
 export interface ProductsTypesRespose {
 	data: ProductTypes[];
+	totalPages: number;
+}
+export interface CatrgorySecondPlaceRespose {
+	data: CatrgorySecondPlace[];
 	totalPages: number;
 }

@@ -45,6 +45,7 @@ export function useGetProductsFromCat(
 	selectOptions: string = "default",
 	selectedPlatforms: string[],
 	selectedTypes: string[],
+	selectSecondCat: string = "",
 ): UseGetCategories {
 	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -68,11 +69,14 @@ export function useGetProductsFromCat(
 	useEffect(() => {
 		setLoading(true);
 		setError(null);
+
+		const category = selectSecondCat ? selectSecondCat : category_id;
+
 		const offset = (page - 1) * rows;
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category_id}&limit=
+					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&limit=
 			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}`,
 				);
 				if (!response.ok) {
@@ -98,6 +102,7 @@ export function useGetProductsFromCat(
 		selectOptions,
 		platforms,
 		productTypes,
+		selectSecondCat,
 	]);
 
 	return { products, loading, error };

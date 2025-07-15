@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ProductsTypesRespose, ProductTypes } from "./types";
+import { CatrgorySecondPlace, CatrgorySecondPlaceRespose } from "./types";
 
-export function useGetProductTypes(category_id: string) {
-	const [data, setData] = useState<ProductTypes[] | []>([]);
+export function useGetCategoriesSecondPlace(category_id: string) {
+	const [data, setData] = useState<CatrgorySecondPlace[] | []>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -10,14 +10,15 @@ export function useGetProductTypes(category_id: string) {
 			const fetchPlatforms = async () => {
 				setLoading(true);
 				const baseUrl = import.meta.env.VITE_API_URL;
-				const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_types_by_category&categoryId=${category_id}`;
+				const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_parent_id_categories&category_id=${category_id}&not_null=1`;
+
 				try {
 					const res = await fetch(url.toString());
 
 					const text = await res.text();
 
 					try {
-						const json: ProductsTypesRespose = JSON.parse(text);
+						const json: CatrgorySecondPlaceRespose = JSON.parse(text);
 						setData(json.data);
 					} catch (parseErr) {
 						console.error("Ошибка JSON:", parseErr);
@@ -33,7 +34,7 @@ export function useGetProductTypes(category_id: string) {
 	}, [category_id]);
 
 	return {
-		types: data,
+		platforms: data,
 		loading,
 	};
 }

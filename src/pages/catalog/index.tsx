@@ -12,6 +12,7 @@ import ProductCards from "../../widgets/product-cards";
 import {
 	CATALOG_CATEGORY,
 	CATALOG_PLATFORMS,
+	CATALOG_SECOND_CAT,
 	CATALOG_TYPES,
 } from "../../constants/searchParams";
 import Select from "../../components/select";
@@ -25,6 +26,7 @@ import {
 } from "../../hooks/useGetProductsFromCat";
 import { useGetPlatforms } from "../../hooks/useGetPlatforms";
 import { useGetProductTypes } from "../../hooks/useGetProductTypes";
+import { useGetCategoriesSecondPlace } from "../../hooks/useGetCategoriesSecondPlace";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -38,6 +40,7 @@ export function CatalogPage() {
 	const category = searchParams.get(CATALOG_CATEGORY);
 	const platformsFromUrl = searchParams.get(CATALOG_PLATFORMS);
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
+	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
 
 	const previewPlatforms = useMemo(() => {
 		if (platformsFromUrl) {
@@ -62,6 +65,7 @@ export function CatalogPage() {
 		useState<string[]>(previewPlatforms);
 	const [selectedType, setSelectedType] =
 		useState<string[]>(previewTypesFromUrl);
+	const [selectSecondCat, setSelectSecondCat] = useState(secondCategoryFromUrl);
 
 	const { products: productsFromCat, loading: productsFromCatLoading } =
 		useGetProductsFromCat(
@@ -71,6 +75,7 @@ export function CatalogPage() {
 			selectValue,
 			selectedPlatforms,
 			selectedType,
+			selectSecondCat,
 		);
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
@@ -79,6 +84,8 @@ export function CatalogPage() {
 
 	const { platforms } = useGetPlatforms(categoryId);
 	const { types: productTypes } = useGetProductTypes(categoryId);
+	const { platforms: categorySecondPlace } =
+		useGetCategoriesSecondPlace(categoryId);
 
 	console.log(productTypes, "productTypes");
 
@@ -91,6 +98,7 @@ export function CatalogPage() {
 			const newParams = new URLSearchParams(prev);
 			newParams.delete(CATALOG_PLATFORMS);
 			newParams.delete(CATALOG_TYPES);
+			newParams.delete(CATALOG_SECOND_CAT);
 			if (id === "") {
 				newParams.delete(CATALOG_CATEGORY);
 			} else {
@@ -121,6 +129,24 @@ export function CatalogPage() {
 			return newParams;
 		});
 	};
+
+	const changeCategorySecondPlace = (id: string) => {
+		setSelectSecondCat(id);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.set(CATALOG_SECOND_CAT, id);
+			return newParams;
+		});
+	};
+
+	useEffect(() => {
+		if (secondCategoryFromUrl) {
+			setSelectSecondCat(secondCategoryFromUrl);
+		} else {
+			setSelectSecondCat("");
+		}
+		setCurrentPage(1);
+	}, [secondCategoryFromUrl]);
 
 	useEffect(() => {
 		if (previewPlatforms.length > 0) {
@@ -159,8 +185,10 @@ export function CatalogPage() {
 		setCatalogData((prev) => {
 			const existingIds = new Set(prev.map((p) => p.id));
 			const uniqueNew = productsFromCat.filter(
-				(p, index, self) =>
-					self.findIndex((x) => x.id_product === p.id_product) === index,
+				(p: ProductDataCAT, index, self) =>
+					self.findIndex(
+						(x: ProductDataCAT) => x.id_product === p.id_product,
+					) === index,
 			);
 
 			if (currentPage === 1) {
@@ -205,16 +233,21 @@ export function CatalogPage() {
 							</ul>
 						</nav>
 					</div>
-
 					<div className={cnx("catalog__body")}>
 						<div className={cnx("catalog__filters")}>
 							<Filers
 								platforms={platforms}
+								category={categoryId}
 								selectedPlatforms={selectedPlatforms}
 								setSelectedPlatforms={changePlatforms}
 								contentTypes={productTypes}
 								selectedTypes={selectedType}
 								setSelectedTypes={changeContentTypes}
+								setSelectSecondCat={changeCategorySecondPlace}
+								selectSecondCat={selectSecondCat}
+								categorySecondPlace={categorySecondPlace}
+								searchParams={searchParams}
+								setSearchParams={setSearchParams}
 							/>
 						</div>
 						<div className={cnx("catalog__main", "main")}>
@@ -226,11 +259,17 @@ export function CatalogPage() {
 								/>
 								<FilterMobile
 									platforms={platforms}
+									category={categoryId}
 									selectedPlatforms={selectedPlatforms}
 									setSelectedPlatforms={changePlatforms}
 									contentTypes={productTypes}
 									selectedTypes={selectedType}
 									setSelectedTypes={changeContentTypes}
+									setSelectSecondCat={changeCategorySecondPlace}
+									selectSecondCat={selectSecondCat}
+									categorySecondPlace={categorySecondPlace}
+									searchParams={searchParams}
+									setSearchParams={setSearchParams}
 								/>
 							</div>
 							<ChapterSearch

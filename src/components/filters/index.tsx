@@ -3,7 +3,15 @@ import classNames from "classnames/bind";
 import Checkbox from "./checkbox";
 import styles from "./index.module.scss";
 import Button from "../button";
-import { Platform, ProductTypes } from "../../hooks/types";
+import { CatrgorySecondPlace, Platform, ProductTypes } from "../../hooks/types";
+import Radio from "../radio";
+import {
+	CATALOG_CATEGORY,
+	CATALOG_PLATFORMS,
+	CATALOG_SECOND_CAT,
+	CATALOG_TYPES,
+} from "../../constants/searchParams";
+import { SetURLSearchParams } from "react-router";
 
 const cnx = classNames.bind(styles);
 
@@ -27,6 +35,7 @@ const contentTypes_mock: ProductTypes[] = [
 ];
 
 interface Props {
+	category: string;
 	platforms: [] | Platform[];
 	setSelectedPlatforms: (ids: string[]) => void;
 	selectedPlatforms: string[];
@@ -34,6 +43,13 @@ interface Props {
 	contentTypes: [] | ProductTypes[];
 	setSelectedTypes: (ids: string[]) => void;
 	selectedTypes: string[];
+
+	categorySecondPlace: [] | CatrgorySecondPlace[];
+	setSelectSecondCat: (id: string) => void;
+	selectSecondCat: string;
+
+	searchParams: URLSearchParams | null;
+	setSearchParams: SetURLSearchParams | null;
 }
 
 export function Filers({
@@ -43,6 +59,12 @@ export function Filers({
 	contentTypes,
 	setSelectedTypes,
 	selectedTypes,
+	categorySecondPlace,
+	selectSecondCat,
+	setSelectSecondCat,
+	searchParams = null,
+	setSearchParams = null,
+	category,
 }: Props) {
 	const currentPlatforms = useMemo(() => {
 		if (!platforms || platforms.length == 0) {
@@ -75,12 +97,37 @@ export function Filers({
 	const resetFilters = () => {
 		setSelectedPlatforms([]);
 		setSelectedTypes([]);
+		setSelectSecondCat("");
+
+		if (searchParams && setSearchParams) {
+			searchParams.delete(CATALOG_PLATFORMS);
+			searchParams.delete(CATALOG_TYPES);
+			searchParams.delete(CATALOG_SECOND_CAT);
+
+			setSearchParams(searchParams);
+		}
 	};
 
-	return (
-		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
-			<div className={cnx("aside__filter", "filter")}>
-				<strong className={cnx("filter__title")}>Платформа:</strong>
+	const firstBlock = useMemo(() => {
+		if (categorySecondPlace) {
+			return (
+				<ul>
+					{categorySecondPlace &&
+						categorySecondPlace.map((categorySecond: CatrgorySecondPlace) => (
+							<li key={categorySecond.id}>
+								<Radio
+									caption={categorySecond.name}
+									checked={selectSecondCat === categorySecond.id.toString()}
+									onChange={() =>
+										setSelectSecondCat(categorySecond.id.toString())
+									}
+								/>
+							</li>
+						))}
+				</ul>
+			);
+		} else {
+			return (
 				<ul>
 					{currentPlatforms &&
 						currentPlatforms.map((platform) => (
@@ -101,10 +148,30 @@ export function Filers({
 							</li>
 						))}
 				</ul>
+			);
+		}
+	}, [
+		categorySecondPlace,
+		currentPlatforms,
+		selectedPlatforms,
+		setSelectedPlatforms,
+		selectSecondCat,
+		setSelectSecondCat,
+	]);
+
+	console.log(category, "category");
+
+	return (
+		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
+			<div className={cnx("aside__filter", "filter")}>
+				<strong className={cnx("filter__title")}>
+					{category == "151" || !category ? "Платформа" : "Категории"}
+				</strong>
+				{firstBlock}
 			</div>
 
 			<div className={cnx("aside__filter", "filter")}>
-				<strong className={cnx("filter__title")}>Тип контента:</strong>
+				<strong className={cnx("filter__title")}>Тип товара:</strong>
 				<ul>
 					{currentTypes &&
 						currentTypes.map((content) => (

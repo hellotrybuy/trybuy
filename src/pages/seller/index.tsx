@@ -23,6 +23,7 @@ export function SellerPage() {
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 	const [selectedType, setSelectedType] = useState<string[]>([]);
+	const [selectSecondCat, setSelectSecondCat] = useState("");
 
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const { products } = useProductList(1, 15);
@@ -66,6 +67,12 @@ export function SellerPage() {
 									contentTypes={[]}
 									selectedTypes={selectedType}
 									setSelectedTypes={setSelectedType}
+									searchParams={null}
+									setSearchParams={null}
+									categorySecondPlace={[]}
+									selectSecondCat={selectSecondCat}
+									setSelectSecondCat={setSelectSecondCat}
+									category={""}
 								/>
 							</div>
 
@@ -82,12 +89,18 @@ export function SellerPage() {
 										options={selectOptions}
 									/>
 									<FilterMobile
+										category={""}
 										platforms={[]}
 										selectedPlatforms={selectedPlatforms}
 										contentTypes={[]}
 										selectedTypes={selectedType}
 										setSelectedTypes={setSelectedType}
 										setSelectedPlatforms={setSelectedPlatforms}
+										searchParams={null}
+										categorySecondPlace={[]}
+										selectSecondCat={selectSecondCat}
+										setSelectSecondCat={setSelectSecondCat}
+										setSearchParams={null}
 									/>
 								</div>
 
