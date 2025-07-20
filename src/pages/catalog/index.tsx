@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs from "../../components/breadcrumbs";
@@ -58,7 +58,7 @@ export function CatalogPage() {
 		}
 	}, [typesFromUrl]);
 
-	const [currentPage, setCurrentPage] = useState(1);
+	const [currentPage, setCurrentPage] = useState(0);
 	const [categoryId, setCategoryId] = useState(category);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const [selectedPlatforms, setSelectedPlatforms] =
@@ -66,17 +66,20 @@ export function CatalogPage() {
 	const [selectedType, setSelectedType] =
 		useState<string[]>(previewTypesFromUrl);
 	const [selectSecondCat, setSelectSecondCat] = useState(secondCategoryFromUrl);
-
-	const { products: productsFromCat, loading: productsFromCatLoading } =
-		useGetProductsFromCat(
-			categoryId,
-			currentPage,
-			15,
-			selectValue,
-			selectedPlatforms,
-			selectedType,
-			selectSecondCat,
-		);
+	const loadMoreRef = useRef(null);
+	const {
+		products: productsFromCat,
+		loading: productsFromCatLoading,
+		totalPages,
+	} = useGetProductsFromCat(
+		categoryId,
+		currentPage,
+		20,
+		selectValue,
+		selectedPlatforms,
+		selectedType,
+		selectSecondCat,
+	);
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
@@ -86,8 +89,6 @@ export function CatalogPage() {
 	const { types: productTypes } = useGetProductTypes(categoryId);
 	const { platforms: categorySecondPlace } =
 		useGetCategoriesSecondPlace(categoryId);
-
-	console.log(productTypes, "productTypes");
 
 	const changeCategory = (id: string) => {
 		setCurrentPage(1);
@@ -109,7 +110,7 @@ export function CatalogPage() {
 	};
 
 	const changePage = () => {
-		setCurrentPage((prevPage) => prevPage + 1);
+		if (totalPages >= currentPage) setCurrentPage((prevPage) => prevPage + 1);
 	};
 
 	const changePlatforms = (ids: string[]) => {
@@ -178,6 +179,27 @@ export function CatalogPage() {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !productsFromCatLoading) {
+					changePage();
+				}
+			},
+			{ threshold: 0.1 },
+		);
+
+		if (loadMoreRef.current) {
+			observer.observe(loadMoreRef.current);
+		}
+
+		return () => {
+			if (loadMoreRef.current) {
+				observer.unobserve(loadMoreRef.current);
+			}
+		};
+	}, [productsFromCatLoading, loadMoreRef, changePage]);
 
 	useEffect(() => {
 		if (!productsFromCat || productsFromCat.length === 0) return;
@@ -379,13 +401,16 @@ export function CatalogPage() {
 						</div>
 					</div>
 
-					<Button
-						white
-						className={cnx("catalog__btn-more")}
-						onClick={changePage}
-					>
-						Загрузить ещё
-					</Button>
+					{totalPages != currentPage && (
+						<Button
+							white
+							ref={loadMoreRef}
+							className={cnx("catalog__btn-more")}
+							onClick={changePage}
+						>
+							Загрузить ещё
+						</Button>
+					)}
 				</div>
 			</div>
 		</div>

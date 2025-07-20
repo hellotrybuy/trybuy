@@ -24,6 +24,7 @@ export interface ProductData {
 	num_in_stock: string | null;
 	label: string;
 	sort_order: number;
+	prices_unit: string;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;
@@ -78,6 +79,7 @@ export interface OptionItem {
 	comment: string;
 	modify_value: string;
 	modify_type: string;
+	modify: string;
 }
 
 export interface OptionItemVariantItem {
@@ -118,6 +120,13 @@ export interface ProductTypes {
 	sort_order: number;
 }
 
+export interface ExchangeRate {
+	id: number;
+	currency_code: string;
+	rate: string;
+	last_updated: number;
+}
+
 export interface ApiResponseGreatCatergory {
 	retval: number;
 	retdesc: string;
@@ -144,7 +153,13 @@ export interface ProductsTypesRespose {
 	data: ProductTypes[];
 	totalPages: number;
 }
+
 export interface CatrgorySecondPlaceRespose {
 	data: CatrgorySecondPlace[];
 	totalPages: number;
+}
+
+export interface ExchangeRespose {
+	data: ExchangeRate[];
+	message: string;
 }

@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import Button from "../../../../components/button";
 import Title from "../../../../components/title";
 import { useProductList } from "../../../../hooks/useProductList";
-import ProductCards from "../../../../widgets/product-cards";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 import { ProductData } from "../../../../hooks/types";
+import PopularCards from "../../../../widgets/popular-cards";
 
 const cnx = classNames.bind(styles);
 
 export function HomeLeaders() {
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const { products } = useProductList(currentPage, 15);
+	const { products } = useProductList(currentPage, 20);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
 	const changePage = () => {
@@ -35,7 +35,7 @@ export function HomeLeaders() {
 		<section className={cnx("leaders")}>
 			<div className={cnx("leaders__inner")}>
 				<Title size="large">Лидеры продаж</Title>
-				<ProductCards data={catalogData} />
+				<PopularCards data={catalogData} />
 				<Button
 					size="large"
 					className={cnx("leaders__btn")}

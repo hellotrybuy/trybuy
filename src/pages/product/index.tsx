@@ -53,8 +53,6 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		window.addEventListener("scroll", computeScroll);
 	}, [isHidden]);
 
-	console.log(product, "asd");
-
 	return (
 		<div className={cnx("product")}>
 			<Breadcrumbs />

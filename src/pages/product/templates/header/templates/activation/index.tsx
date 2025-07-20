@@ -1,13 +1,18 @@
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 
-import { OptionItem, ProductData } from "../../../../../../hooks/types";
-import { useEffect, useMemo, useState } from "react";
+import {
+	ExchangeRate,
+	OptionItem,
+	ProductData,
+} from "../../../../../../hooks/types";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import RadioOptionGroup from "./blocks/RadioOptionGroup";
 import TextOptionField from "./blocks/TextOptionField";
 import CheckboxOptionGroup from "./blocks/CheckboxOptionGroup";
 import { usePrice } from "../../../../context";
+import { useGetExchangeRate } from "../../../../../../hooks/useGetExchangeRate";
 
 const cnx = classNames.bind(styles);
 
@@ -40,19 +45,51 @@ export default function ProductActivation({ product }: Props) {
 		return parseFloat(product[0].price);
 	}, [product]);
 
-	function applyModifier(
-		currentPrice: number,
-		type: string,
-		value: number,
-	): number {
-		if (!type || type === "") return currentPrice;
+	const { rate: rates } = useGetExchangeRate();
+	console.log(product, "product");
 
-		if (type === "%") {
-			return currentPrice + (currentPrice * value) / 100;
-		}
+	const detectCurrencyRate = useCallback(
+		(text: string): number => {
+			const upper = text.toUpperCase();
 
-		return currentPrice + value;
-	}
+			let currency: "USD" | "EUR" | "RUB" = "RUB";
+
+			if (upper.includes("USD")) {
+				currency = "USD";
+			} else if (upper.includes("EUR")) {
+				currency = "EUR";
+			}
+
+			const found = rates.find(
+				(item: ExchangeRate) => item.currency_code.toUpperCase() === currency,
+			);
+
+			return found ? parseFloat(found.rate) : 1;
+		},
+		[rates],
+	);
+
+	const applyModifier = useCallback(
+		(
+			currentPrice: number,
+			type: string,
+			value: number,
+			modify: string,
+		): number => {
+			const modifySize = detectCurrencyRate(modify);
+
+			const price = value * modifySize + currentPrice;
+
+			if (!type || type === "") return price;
+
+			if (type === "%") {
+				return price + (price * value) / 100;
+			}
+
+			return price + value;
+		},
+		[detectCurrencyRate],
+	);
 
 	useEffect(() => {
 		let result = basePrice;
@@ -65,12 +102,12 @@ export default function ProductActivation({ product }: Props) {
 					const selected = opt.variants?.find(
 						(v) => String(v.value) === String(value),
 					);
-					console.log(selected, "selected");
 					if (selected && selected.modify_value && selected.modify_type) {
 						result = applyModifier(
 							result,
 							selected.modify_type,
 							selected.modify_value,
+							selected.modify,
 						);
 					}
 				}
@@ -82,6 +119,7 @@ export default function ProductActivation({ product }: Props) {
 								result,
 								opt.modify_type,
 								Number(opt.modify_value),
+								opt.modify,
 							);
 						}
 					} else if (typeof value === "object" && Array.isArray(opt.variants)) {
@@ -93,6 +131,7 @@ export default function ProductActivation({ product }: Props) {
 										result,
 										variant.modify_type,
 										variant.modify_value,
+										variant.modify,
 									);
 								}
 							}
@@ -103,7 +142,7 @@ export default function ProductActivation({ product }: Props) {
 		}
 
 		setTotalPrice(Math.round(result));
-	}, [formState, options, basePrice, setTotalPrice]);
+	}, [formState, options, basePrice, setTotalPrice, applyModifier]);
 
 	useEffect(() => {
 		const initialState: Record<string, any> = {};
@@ -160,7 +199,6 @@ export default function ProductActivation({ product }: Props) {
 	};
 
 	const handleRadioChange = (name: string, value: string) => {
-		console.log(value, "value");
 		setFormState((prev) => ({ ...prev, [name]: value }));
 	};
 

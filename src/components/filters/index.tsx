@@ -6,7 +6,6 @@ import Button from "../button";
 import { CatrgorySecondPlace, Platform, ProductTypes } from "../../hooks/types";
 import Radio from "../radio";
 import {
-	CATALOG_CATEGORY,
 	CATALOG_PLATFORMS,
 	CATALOG_SECOND_CAT,
 	CATALOG_TYPES,
@@ -82,8 +81,6 @@ export function Filers({
 		}
 	}, [contentTypes]);
 
-	console.log(currentTypes, "currentTypes");
-
 	const toggleItem = (
 		item: string,
 		list: string[],
@@ -158,8 +155,6 @@ export function Filers({
 		selectSecondCat,
 		setSelectSecondCat,
 	]);
-
-	console.log(category, "category");
 
 	return (
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>

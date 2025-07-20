@@ -47,7 +47,14 @@
 		position: relative;
 		transform: rotate(-15deg) translateY(8px) translateX(8px);
 		z-index: 2;
-		backdrop-filter: blur(2px);
+
+		&::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			backdrop-filter: blur(2px);
+			z-index: -1;
+		}
 
 		@media screen and (max-width: breakpoints.$md) {
 			transform: rotate(-10deg) translateY(-5px) translateX(5px);
@@ -84,6 +91,7 @@
 		@media screen and (min-width: breakpoints.$md) {
 			transition: 0.3s ease;
 			transform: rotate(-15deg) translateY(0px) translateX(8px);
+			will-change: transform;
 		}
 	}
 

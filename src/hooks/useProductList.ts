@@ -27,7 +27,6 @@ export function useProductList(
 	rows: number,
 	selectOptions: string = "default",
 ) {
-	console.log(page, "page");
 	const [data, setData] = useState<ProductResponse | null>(null);
 	const [loading, setLoading] = useState(true);
 

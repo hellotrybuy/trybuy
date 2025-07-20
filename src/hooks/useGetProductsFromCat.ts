@@ -36,6 +36,7 @@ interface UseGetCategories {
 	products: ProductDataCAT[] | [];
 	loading: boolean;
 	error: Error | null;
+	totalPages: number;
 }
 
 export function useGetProductsFromCat(
@@ -50,6 +51,8 @@ export function useGetProductsFromCat(
 	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<Error | null>(null);
+	const [totalPages, setTotalPages] = useState<number>(0);
+
 	const baseUrl = import.meta.env.VITE_API_URL;
 
 	const platforms = useMemo(() => {
@@ -73,18 +76,19 @@ export function useGetProductsFromCat(
 		const category = selectSecondCat ? selectSecondCat : category_id;
 
 		const offset = (page - 1) * rows;
+		console.log(offset, "offset");
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&limit=
-			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}`,
+					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&rows=
+			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}&page=${page}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);
 				}
 				const data: ProductDataCATResponse = await response.json();
-				console.log(data, "data.data");
 				setProducts(data.products);
+				setTotalPages(data.totalPages);
 			} catch (err) {
 				setError(err as Error);
 				setProducts(null);
@@ -105,5 +109,5 @@ export function useGetProductsFromCat(
 		selectSecondCat,
 	]);
 
-	return { products, loading, error };
+	return { products, loading, error, totalPages };
 }
