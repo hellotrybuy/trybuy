@@ -28,7 +28,7 @@ export function OtherProducts() {
 	}, [windowWidth]);
 
 	const visibleProducts = useMemo(() => {
-		return products.slice(0, cardsAmount);
+		return products.rows.slice(0, cardsAmount);
 	}, [products, cardsAmount]);
 
 	return (

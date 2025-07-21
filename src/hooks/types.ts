@@ -134,6 +134,14 @@ export interface ApiResponseGreatCatergory {
 	data: GreatCatergory[];
 }
 
+export interface ProductResponseLedaders {
+	data: {
+		rows: ProductData[];
+		page: number;
+		totalPage: number;
+	};
+}
+
 export interface ProductResponse {
 	data: ProductData[];
 	totalPages: number;

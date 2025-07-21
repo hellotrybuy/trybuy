@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Button from "../../../../components/button";
 import Title from "../../../../components/title";
 import { useProductList } from "../../../../hooks/useProductList";
@@ -11,18 +11,23 @@ const cnx = classNames.bind(styles);
 
 export function HomeLeaders() {
 	const [currentPage, setCurrentPage] = useState(1);
+	const loadMoreRef = useRef(null);
 
-	const { products } = useProductList(currentPage, 20);
+	const { products, loading } = useProductList(currentPage, 20);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
-	const changePage = () => {
-		setCurrentPage((prevPage) => prevPage + 1);
-	};
+	const totalPages = useMemo(() => {
+		return products.totalPage;
+	}, [products]);
+
+	const changePage = useCallback(() => {
+		if (totalPages >= currentPage) setCurrentPage((prevPage) => prevPage + 1);
+	}, [totalPages, currentPage]);
 
 	useEffect(() => {
-		if (products && products.length > 0) {
+		if (products && products.rows.length > 0) {
 			setCatalogData((prev) => {
-				const newProducts = products.filter(
+				const newProducts = products.rows.filter(
 					(newProduct) =>
 						!prev.some((existing) => existing.id === newProduct.id),
 				);
@@ -31,19 +36,43 @@ export function HomeLeaders() {
 		}
 	}, [products]);
 
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !loading) {
+					changePage();
+				}
+			},
+			{ threshold: 0.1 },
+		);
+
+		if (loadMoreRef.current) {
+			observer.observe(loadMoreRef.current);
+		}
+
+		return () => {
+			if (loadMoreRef.current) {
+				observer.unobserve(loadMoreRef.current);
+			}
+		};
+	}, [loading, loadMoreRef, changePage]);
+
 	return (
 		<section className={cnx("leaders")}>
 			<div className={cnx("leaders__inner")}>
 				<Title size="large">Лидеры продаж</Title>
 				<PopularCards data={catalogData} />
-				<Button
-					size="large"
-					className={cnx("leaders__btn")}
-					white
-					onClick={changePage}
-				>
-					Загрузить ещё
-				</Button>
+				{totalPages != currentPage && (
+					<Button
+						size="large"
+						className={cnx("leaders__btn")}
+						white
+						onClick={changePage}
+						ref={loadMoreRef}
+					>
+						Загрузить ещё
+					</Button>
+				)}
 			</div>
 		</section>
 	);

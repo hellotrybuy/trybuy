@@ -160,7 +160,7 @@ export function SellerPage() {
 								)}
 
 								<div className={cnx("seller-main__cards")}>
-									<ProductCards data={products} />
+									<ProductCards data={products.rows} />
 								</div>
 							</div>
 						</div>

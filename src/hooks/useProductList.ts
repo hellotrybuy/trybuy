@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ProductResponse } from "./types";
+import { ProductResponseLedaders } from "./types";
 
 export interface Product {
 	id: string;
@@ -27,7 +27,8 @@ export function useProductList(
 	rows: number,
 	selectOptions: string = "default",
 ) {
-	const [data, setData] = useState<ProductResponse | null>(null);
+	const [data, setData] = useState<ProductResponseLedaders | null>(null);
+	const [totalPages, setTotalPages] = useState(0);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -35,10 +36,7 @@ export function useProductList(
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
 
-			const offset = (page - 1) * rows;
-
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_popular&limit=
-			${rows.toString()}&offset=${offset.toString()}&sort=${selectOptions}`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_popular&page=${page}&limit=${rows.toString()}`;
 
 			try {
 				const res = await fetch(url.toString());
@@ -46,8 +44,9 @@ export function useProductList(
 				const text = await res.text();
 
 				try {
-					const json: ProductResponse = JSON.parse(text);
+					const json: ProductResponseLedaders = JSON.parse(text);
 					setData(json);
+					setTotalPages(json.data.totalPage);
 				} catch (parseErr) {
 					console.error("Ошибка JSON:", parseErr);
 				}
@@ -60,7 +59,8 @@ export function useProductList(
 	}, [page, rows, selectOptions]);
 
 	return {
-		products: data?.data ?? [],
+		products: data?.data ?? { rows: [], totalPage: 0 },
 		loading,
+		totalPages: totalPages,
 	};
 }
