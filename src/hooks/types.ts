@@ -25,6 +25,7 @@ export interface ProductData {
 	label: string;
 	sort_order: number;
 	prices_unit: string;
+	type_digi_product: string;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;

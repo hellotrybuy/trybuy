@@ -27,6 +27,7 @@ import {
 import { useGetPlatforms } from "../../hooks/useGetPlatforms";
 import { useGetProductTypes } from "../../hooks/useGetProductTypes";
 import { useGetCategoriesSecondPlace } from "../../hooks/useGetCategoriesSecondPlace";
+import ProductsSceleton from "../../widgets/productsSceleton";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -402,14 +403,9 @@ export function CatalogPage() {
 					</div>
 
 					{totalPages != currentPage && (
-						<Button
-							white
-							ref={loadMoreRef}
-							className={cnx("catalog__btn-more")}
-							onClick={changePage}
-						>
-							Загрузить ещё
-						</Button>
+						<div ref={loadMoreRef}>
+							<ProductsSceleton />
+						</div>
 					)}
 				</div>
 			</div>

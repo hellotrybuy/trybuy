@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Button from "../../../../components/button";
 import Title from "../../../../components/title";
 import { useProductList } from "../../../../hooks/useProductList";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 import { ProductData } from "../../../../hooks/types";
 import PopularCards from "../../../../widgets/popular-cards";
+import ProductsSceleton from "../../../../widgets/productsSceleton";
 
 const cnx = classNames.bind(styles);
 
 export function HomeLeaders() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const loadMoreRef = useRef(null);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	const { products, loading } = useProductList(currentPage, 20);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
@@ -63,15 +67,9 @@ export function HomeLeaders() {
 				<Title size="large">Лидеры продаж</Title>
 				<PopularCards data={catalogData} />
 				{totalPages != currentPage && (
-					<Button
-						size="large"
-						className={cnx("leaders__btn")}
-						white
-						onClick={changePage}
-						ref={loadMoreRef}
-					>
-						Загрузить ещё
-					</Button>
+					<div ref={loadMoreRef}>
+						<ProductsSceleton />
+					</div>
 				)}
 			</div>
 		</section>

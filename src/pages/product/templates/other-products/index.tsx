@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Title from "../../../../components/title";
 import { useProductList } from "../../../../hooks/useProductList";
-import ProductCards from "../../../../widgets/product-cards";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
+import PopularCards from "../../../../widgets/popular-cards";
 
 const cnx = classNames.bind(styles);
 
@@ -34,7 +34,7 @@ export function OtherProducts() {
 	return (
 		<div className={cnx("other")}>
 			<Title className={cnx("other__title")}>Вам может понравиться</Title>
-			<ProductCards data={visibleProducts} />
+			<PopularCards data={visibleProducts} />
 		</div>
 	);
 }

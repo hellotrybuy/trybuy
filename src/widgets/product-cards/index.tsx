@@ -18,7 +18,7 @@ export function ProductCards({ data, loading = false }: IProductCards) {
 		// Показываем несколько скелетонов при первой загрузке
 		return (
 			<div className={cnx("cards")}>
-				{Array(6)
+				{Array(20)
 					.fill(null)
 					.map((_, i) => (
 						<ProductCardSkeleton key={i} />
