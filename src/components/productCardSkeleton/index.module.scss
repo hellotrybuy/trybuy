@@ -1,50 +1,62 @@
 .skeleton-card {
 	display: flex;
 	flex-direction: column;
-	background: #1b1a21; // основной цвет сайта
-	border-radius: 8px;
-	padding: 12px;
+	justify-content: space-between;
+	gap: 10px;
+	max-width: 246px;
+	width: 100%;
+	background: #1b1a21;
+	border-radius: 20px;
 	box-sizing: border-box;
-}
-
-.image,
-.title,
-.price,
-.button {
-	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
-	background-size: 200% 100%;
-	border-radius: 6px;
-	animation: pulse 1.5s infinite ease-in-out;
 }
 
 .image {
 	width: 100%;
-	height: 140px;
-	margin-bottom: 12px;
-	border-radius: 6px;
+	height: 200px; // фиксируем как у картинки
+	border-radius: 10px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
 }
 
 .title {
-	width: 70%;
-	height: 20px;
-	margin-bottom: 8px;
-	border-radius: 4px;
+	width: 100%;
+	height: 32px;
+	border-radius: 6px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
 	animation-delay: 0.2s;
 }
 
+.review {
+	width: 70%;
+	height: 20px;
+	border-radius: 6px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
+	animation-delay: 0.3s;
+}
+
 .price {
-	width: 40%;
-	height: 18px;
-	margin-bottom: 12px;
-	border-radius: 4px;
+	width: 50%;
+	height: 22px;
+	border-radius: 6px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
 	animation-delay: 0.4s;
 }
 
 .button {
 	width: 100%;
 	height: 36px;
-	border-radius: 6px;
-	animation-delay: 0.6s;
+	border-radius: 10px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
+	animation-delay: 0.5s;
 }
 
 @keyframes pulse {

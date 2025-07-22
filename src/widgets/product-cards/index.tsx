@@ -7,7 +7,6 @@ import classNames from "classnames/bind";
 
 const cnx = classNames.bind(styles);
 
-// Временный пропс для мока
 interface IProductCards {
 	data: ProductData[] | ProductDataCAT[];
 	loading?: boolean;
@@ -15,9 +14,8 @@ interface IProductCards {
 
 export function ProductCards({ data, loading = false }: IProductCards) {
 	if (loading && (!data || data.length === 0)) {
-		// Показываем несколько скелетонов при первой загрузке
 		return (
-			<div className={cnx("cards")}>
+			<div className={cnx("cards", loading ? "loading" : "")}>
 				{Array(20)
 					.fill(null)
 					.map((_, i) => (
@@ -28,7 +26,7 @@ export function ProductCards({ data, loading = false }: IProductCards) {
 	}
 
 	return (
-		<div className={cnx("cards")}>
+		<div className={cnx("cards", loading ? "loading" : "")}>
 			{data.map((product) => (
 				<ProductCard key={product.id} product={product} />
 			))}

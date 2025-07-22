@@ -45,6 +45,7 @@ export function CatalogPage() {
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
 	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+	const [imagesLoaded, setImagesLoaded] = useState(false);
 
 	const { searchInput } = useSearchContext();
 
@@ -420,20 +421,15 @@ export function CatalogPage() {
 							</div>
 
 							<div className={cnx("main__cards")} key={categoryId}>
-								{dataIsLoaded ? (
-									<ProductCards data={catalogData} loading />
-								) : (
-									<ProductCards data={catalogData} />
+								{<ProductCards data={catalogData} />}
+								{totalPages != currentPage && (
+									<div ref={loadMoreRef}>
+										<ProductsSceleton isMargin={catalogData.length > 0} />
+									</div>
 								)}
 							</div>
 						</div>
 					</div>
-
-					{totalPages != currentPage && catalogData.length > 0 && (
-						<div ref={loadMoreRef}>
-							<ProductsSceleton />
-						</div>
-					)}
 				</div>
 			</div>
 		</div>

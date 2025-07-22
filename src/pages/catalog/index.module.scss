@@ -25,16 +25,8 @@
 		justify-content: space-between;
 	}
 
-	// &__aside {
-	// 	flex-basis: 231px;
-
-	// 	@media screen and (max-width: breakpoints.$lg) {
-	// 		flex-basis: unset;
-	// 		display: none !important;
-	// 	}
-	// }
-
 	&__main {
+		width: 100%;
 		@media screen and (max-width: breakpoints.$lg) {
 			flex: 1 1 100%;
 		}

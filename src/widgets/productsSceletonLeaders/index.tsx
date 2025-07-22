@@ -8,7 +8,7 @@ interface Props {
 	isMargin: boolean;
 }
 
-export function ProductsSceleton({ isMargin }: Props) {
+export function ProductsSceletonLeaders({ isMargin }: Props) {
 	return (
 		<div className={cnx("cards", isMargin ? "loading" : "")}>
 			{Array(20)
@@ -20,4 +20,4 @@ export function ProductsSceleton({ isMargin }: Props) {
 	);
 }
 
-export default ProductsSceleton;
+export default ProductsSceletonLeaders;

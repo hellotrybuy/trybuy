@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 import { ProductData } from "../../../../hooks/types";
 import PopularCards from "../../../../widgets/popular-cards";
-import ProductsSceleton from "../../../../widgets/productsSceleton";
+import ProductsSceletonLeaders from "../../../../widgets/productsSceletonLeaders";
 
 const cnx = classNames.bind(styles);
 
@@ -68,7 +68,7 @@ export function HomeLeaders() {
 				<PopularCards data={catalogData} />
 				{totalPages != currentPage && (
 					<div ref={loadMoreRef}>
-						<ProductsSceleton />
+						<ProductsSceletonLeaders isMargin={catalogData.length > 0} />
 					</div>
 				)}
 			</div>

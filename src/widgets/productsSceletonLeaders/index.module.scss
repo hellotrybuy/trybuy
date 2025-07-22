@@ -2,12 +2,12 @@
 
 .cards {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(auto-fit, 224px);
 	gap: 40px 25px;
 	justify-content: start;
 
-	@media screen and (max-width: 1232px) and (min-width: 990px) {
-		grid-template-columns: repeat(4, 1fr);
+	@media screen and (max-width: 1260px) and (min-width: 990px) {
+		grid-template-columns: repeat(5, 1fr);
 	}
 
 	@media screen and (max-width: breakpoints.$lg) {
@@ -17,9 +17,9 @@
 }
 
 .loading {
-	margin-top: 40px;
+	margin-top: 3px;
 
 	@media screen and (max-width: breakpoints.$lg) {
-		margin-top: 30px;
+		margin-top: 3px;
 	}
 }
