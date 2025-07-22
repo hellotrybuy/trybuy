@@ -12,6 +12,7 @@ interface Props {
 	setSearchValue: (value: React.SetStateAction<string>) => void;
 	searchValue: string;
 	setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	refProp: React.RefObject<HTMLDivElement>;
 }
 
 export function MainSearch({
@@ -20,15 +21,20 @@ export function MainSearch({
 	searchValue,
 	setSearchValue,
 	setIsSearchOpen,
+	refProp,
 }: Props) {
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside(ref, () => setIsSearchOpen(false));
+	useClickOutside([ref, refProp], () => setIsSearchOpen(false));
 
 	const openCatalog = useCallback(() => {
 		setIsCatalogOpen(true);
 		setIsSearchOpen(false);
 	}, [setIsCatalogOpen, setIsSearchOpen]);
+
+	const clearSearch = useCallback(() => {
+		setSearchValue("");
+	}, [setSearchValue]);
 
 	return (
 		<>
@@ -70,11 +76,25 @@ export function MainSearch({
 					type="text"
 					placeholder="Поиск"
 				/>
-				<img
-					className={cnx("actions__search-icon")}
-					src="/iconsFolder/navigation/search.svg"
-					alt="Поиск"
-				/>
+
+				{searchValue != "" ? (
+					<div
+						className={cnx("actions__search-container-circle")}
+						onClick={clearSearch}
+					>
+						<img
+							className={cnx("actions__search-shape")}
+							src="/iconsFolder/navigation/shape.svg"
+							alt="Поиск"
+						/>
+					</div>
+				) : (
+					<img
+						className={cnx("actions__search-icon")}
+						src="/iconsFolder/navigation/search.svg"
+						alt="Поиск"
+					/>
+				)}
 			</div>
 		</>
 	);

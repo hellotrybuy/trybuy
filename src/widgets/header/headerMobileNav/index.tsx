@@ -24,7 +24,7 @@ export function HeaderMobileNav({
 }: HeaderMobileNavProps) {
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside(ref, () => setIsSearchOpen(false));
+	useClickOutside([ref], () => setIsSearchOpen(false));
 	const openCatalog = useCallback(() => {
 		setIsCatalogOpen(!isCatalogOpen);
 		setIsSearchOpen(false);
@@ -35,13 +35,31 @@ export function HeaderMobileNav({
 		setIsCatalogOpen(false);
 	}, [setIsCatalogOpen, setIsSearchOpen]);
 
+	const clearSearch = useCallback(() => {
+		setSearchValue("");
+	}, [setSearchValue]);
+
 	return (
 		<div className={cnx("actions-mobile__search")} ref={ref}>
-			<img
-				className={cnx("actions-mobile__search-icon")}
-				src="/iconsFolder/navigation/search.svg"
-				alt="Поиск"
-			/>
+			{searchValue != "" ? (
+				<div
+					className={cnx("actions-mobile__search-container-circle")}
+					onClick={clearSearch}
+				>
+					<img
+						className={cnx("actions-mobile__search-shape")}
+						src="/iconsFolder/navigation/shape.svg"
+						alt="Поиск"
+					/>
+				</div>
+			) : (
+				<img
+					className={cnx("actions-mobile__search-icon")}
+					src="/iconsFolder/navigation/search.svg"
+					alt="Поиск"
+				/>
+			)}
+
 			<input
 				onClick={openSearch}
 				id="main-search-input"

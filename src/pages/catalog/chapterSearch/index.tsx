@@ -26,7 +26,7 @@ export function ChapterSearch({
 
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside(ref, () => setIsSearchOpen(false));
+	useClickOutside([ref], () => setIsSearchOpen(false));
 
 	return (
 		<div className={cnx("search")}>

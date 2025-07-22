@@ -26,6 +26,7 @@ export interface ProductData {
 	sort_order: number;
 	prices_unit: string;
 	type_digi_product: string;
+	type_name: string;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;
@@ -171,4 +172,9 @@ export interface CatrgorySecondPlaceRespose {
 export interface ExchangeRespose {
 	data: ExchangeRate[];
 	message: string;
+}
+
+export interface SearchResponse {
+	products: ProductData[];
+	totalPages: number;
 }

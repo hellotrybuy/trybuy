@@ -56,4 +56,23 @@
 		padding-right: 10px;
 		cursor: pointer;
 	}
+
+	&__search-container-circle {
+		width: 30px;
+		height: 30px;
+		margin-right: 5px;
+		cursor: pointer;
+		background: #ffffff33;
+		border-radius: 50%;
+		position: relative;
+	}
+
+	&__search-shape {
+		width: 15px;
+		height: 15px;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 }

@@ -16,7 +16,7 @@ export function Select({ value, options, onChange }: ISelect) {
 
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside(ref, () => setIsOpen(false));
+	useClickOutside([ref], () => setIsOpen(false));
 
 	const getLabel = () => {
 		return options.find((option) => option.value == value)?.label;

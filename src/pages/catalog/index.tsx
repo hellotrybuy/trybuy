@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs from "../../components/breadcrumbs";
@@ -12,6 +12,7 @@ import ProductCards from "../../widgets/product-cards";
 import {
 	CATALOG_CATEGORY,
 	CATALOG_PLATFORMS,
+	CATALOG_SEARCH,
 	CATALOG_SECOND_CAT,
 	CATALOG_TYPES,
 } from "../../constants/searchParams";
@@ -28,6 +29,7 @@ import { useGetPlatforms } from "../../hooks/useGetPlatforms";
 import { useGetProductTypes } from "../../hooks/useGetProductTypes";
 import { useGetCategoriesSecondPlace } from "../../hooks/useGetCategoriesSecondPlace";
 import ProductsSceleton from "../../widgets/productsSceleton";
+import { useSearchContext } from "../../context";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -42,6 +44,9 @@ export function CatalogPage() {
 	const platformsFromUrl = searchParams.get(CATALOG_PLATFORMS);
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
+	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+
+	const { searchInput } = useSearchContext();
 
 	const previewPlatforms = useMemo(() => {
 		if (platformsFromUrl) {
@@ -60,6 +65,7 @@ export function CatalogPage() {
 	}, [typesFromUrl]);
 
 	const [currentPage, setCurrentPage] = useState(0);
+	const [search, setSearch] = useState(searchFromUrl);
 	const [categoryId, setCategoryId] = useState(category);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const [selectedPlatforms, setSelectedPlatforms] =
@@ -80,6 +86,7 @@ export function CatalogPage() {
 		selectedPlatforms,
 		selectedType,
 		selectSecondCat,
+		search,
 	);
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
@@ -110,9 +117,9 @@ export function CatalogPage() {
 		});
 	};
 
-	const changePage = () => {
+	const changePage = useCallback(() => {
 		if (totalPages >= currentPage) setCurrentPage((prevPage) => prevPage + 1);
-	};
+	}, [totalPages, currentPage]);
 
 	const changePlatforms = (ids: string[]) => {
 		setSelectedPlatforms(ids);
@@ -132,6 +139,17 @@ export function CatalogPage() {
 		});
 	};
 
+	const changeSearch = useCallback(
+		(text: string) => {
+			setSearchParams((prev) => {
+				const newParams = new URLSearchParams(prev);
+				newParams.set(CATALOG_SEARCH, text);
+				return newParams;
+			});
+		},
+		[setSearchParams],
+	);
+
 	const changeCategorySecondPlace = (id: string) => {
 		setSelectSecondCat(id);
 		setSearchParams((prev) => {
@@ -142,6 +160,10 @@ export function CatalogPage() {
 	};
 
 	useEffect(() => {
+		changeSearch(searchInput);
+	}, [searchInput, changeSearch]);
+
+	useEffect(() => {
 		if (secondCategoryFromUrl) {
 			setSelectSecondCat(secondCategoryFromUrl);
 		} else {
@@ -149,6 +171,11 @@ export function CatalogPage() {
 		}
 		setCurrentPage(1);
 	}, [secondCategoryFromUrl]);
+
+	useEffect(() => {
+		setSearch(searchInput);
+		setCurrentPage(1);
+	}, [searchFromUrl, searchInput]);
 
 	useEffect(() => {
 		if (previewPlatforms.length > 0) {
@@ -203,7 +230,7 @@ export function CatalogPage() {
 	}, [productsFromCatLoading, loadMoreRef, changePage]);
 
 	useEffect(() => {
-		if (!productsFromCat || productsFromCat.length === 0) return;
+		if (!productsFromCat) return;
 
 		setCatalogData((prev) => {
 			const existingIds = new Set(prev.map((p) => p.id));
@@ -402,7 +429,7 @@ export function CatalogPage() {
 						</div>
 					</div>
 
-					{totalPages != currentPage && (
+					{totalPages != currentPage && catalogData.length > 0 && (
 						<div ref={loadMoreRef}>
 							<ProductsSceleton />
 						</div>

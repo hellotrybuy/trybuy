@@ -47,6 +47,7 @@ export function useGetProductsFromCat(
 	selectedPlatforms: string[],
 	selectedTypes: string[],
 	selectSecondCat: string = "",
+	searchFromUrl: string = "",
 ): UseGetCategories {
 	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -81,7 +82,7 @@ export function useGetProductsFromCat(
 			try {
 				const response = await fetch(
 					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&rows=
-			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}&page=${page}`,
+			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}&page=${page}&search=${searchFromUrl}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);
@@ -107,6 +108,7 @@ export function useGetProductsFromCat(
 		platforms,
 		productTypes,
 		selectSecondCat,
+		searchFromUrl,
 	]);
 
 	return { products, loading, error, totalPages };
