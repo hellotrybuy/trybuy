@@ -39,8 +39,6 @@ export function Header() {
 	// }, [])
 
 	const goCatalog = useCallback(() => {
-		console.log(searchInput, "searchInput");
-
 		navigate(`/catalog?search=${searchInput}`);
 	}, [searchInput, navigate]);
 

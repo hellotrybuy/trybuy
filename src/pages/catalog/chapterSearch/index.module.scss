@@ -5,6 +5,10 @@
 	display: flex;
 	gap: 20px;
 	align-items: center;
+
+	@media screen and (min-width: breakpoints.$lg) {
+		margin-left: 40px;
+	}
 }
 
 .dropdown {

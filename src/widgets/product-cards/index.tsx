@@ -13,10 +13,10 @@ interface IProductCards {
 }
 
 export function ProductCards({ data, loading = false }: IProductCards) {
-	if (loading && (!data || data.length === 0)) {
+	if (loading) {
 		return (
 			<div className={cnx("cards", loading ? "loading" : "")}>
-				{Array(20)
+				{Array(data.length || 8)
 					.fill(null)
 					.map((_, i) => (
 						<ProductCardSkeleton key={i} />

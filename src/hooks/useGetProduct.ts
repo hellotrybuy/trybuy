@@ -37,7 +37,7 @@ export function useGetProduct(id: string): UseGetProductResult {
 		};
 
 		fetchData();
-	}, [id]);
+	}, [id, baseUrl]);
 
 	return { product, loading, error };
 }

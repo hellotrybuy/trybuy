@@ -45,7 +45,6 @@ export function CatalogPage() {
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
 	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
-	const [imagesLoaded, setImagesLoaded] = useState(false);
 
 	const { searchInput } = useSearchContext();
 
@@ -251,10 +250,6 @@ export function CatalogPage() {
 		});
 	}, [productsFromCat, currentPage]);
 
-	const dataIsLoaded = useMemo(() => {
-		return productsFromCatLoading;
-	}, [productsFromCatLoading]);
-
 	if (loadingCat) return;
 
 	return (
@@ -282,6 +277,11 @@ export function CatalogPage() {
 										</li>
 									))}
 							</ul>
+							<ChapterSearch
+								selectValue={selectValue}
+								setSelectValue={setSelectValue}
+								values={selectOptions}
+							/>
 						</nav>
 					</div>
 					<div className={cnx("catalog__body")}>
@@ -323,11 +323,6 @@ export function CatalogPage() {
 									setSearchParams={setSearchParams}
 								/>
 							</div>
-							<ChapterSearch
-								selectValue={selectValue}
-								setSelectValue={setSelectValue}
-								values={selectOptions}
-							/>
 
 							<div className={cnx("main__box", "box", "_desktop")}>
 								<img
@@ -422,9 +417,15 @@ export function CatalogPage() {
 
 							<div className={cnx("main__cards")} key={categoryId}>
 								{<ProductCards data={catalogData} />}
-								{totalPages != currentPage && (
+								{totalPages != currentPage && catalogData.length > 0 && (
 									<div ref={loadMoreRef}>
 										<ProductsSceleton isMargin={catalogData.length > 0} />
+									</div>
+								)}
+								{!(catalogData.length > 0) && totalPages == 0 && (
+									<div className={cnx("notFound")}>
+										К сожалению, по текущему поисковому запросу в данной
+										категории товаров нет :(
 									</div>
 								)}
 							</div>

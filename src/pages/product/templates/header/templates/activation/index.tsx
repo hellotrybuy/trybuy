@@ -46,7 +46,6 @@ export default function ProductActivation({ product }: Props) {
 	}, [product]);
 
 	const { rate: rates } = useGetExchangeRate();
-	console.log(product, "product");
 
 	const detectCurrencyRate = useCallback(
 		(text: string): number => {
@@ -202,11 +201,11 @@ export default function ProductActivation({ product }: Props) {
 		setFormState((prev) => ({ ...prev, [name]: value }));
 	};
 
-	return (
-		<div className={cnx("activation")}>
-			<div className={cnx("activation__inner")}>
-				{options &&
-					options.map((el) => {
+	if (options) {
+		return (
+			<div className={cnx("activation")}>
+				<div className={cnx("activation__inner")}>
+					{options.map((el) => {
 						if (el.type === "radio")
 							return (
 								<RadioOptionGroup
@@ -240,7 +239,8 @@ export default function ProductActivation({ product }: Props) {
 							);
 						return null;
 					})}
+				</div>
 			</div>
-		</div>
-	);
+		);
+	} else return <></>;
 }

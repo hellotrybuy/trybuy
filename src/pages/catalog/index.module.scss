@@ -44,17 +44,26 @@
 }
 
 .categories {
+	&__nav {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	ul {
 		display: flex;
 		align-items: center;
 		gap: 8px;
 
 		margin-right: -20px;
-
+		mask-image: linear-gradient(to right, black 95%, transparent 100%);
+		max-width: 90%;
+		width: 100%;
 		overflow: auto;
 
 		@media screen and (max-width: breakpoints.$lg) {
 			margin-right: -15px;
+			max-width: 100%;
+			mask-image: none;
 		}
 
 		li {
@@ -306,4 +315,25 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 15px;
+}
+
+.notFound {
+	padding: 24px;
+	text-align: center;
+	border-radius: 20px;
+	background: linear-gradient(
+			109.15deg,
+			rgba(255, 255, 255, 0.05) 80.2%,
+			rgba(255, 255, 255, 0.05) 119.02%
+		),
+		linear-gradient(
+			129deg,
+			rgba(255, 255, 255, 0.05) 14.07%,
+			rgba(27, 26, 33, 0.05) 61.52%
+		),
+		linear-gradient(
+			115.66deg,
+			rgba(122, 40, 255, 0) 56.71%,
+			rgba(122, 40, 255, 0.05) 121.46%
+		);
 }

@@ -77,7 +77,6 @@ export function useGetProductsFromCat(
 		const category = selectSecondCat ? selectSecondCat : category_id;
 
 		const offset = (page - 1) * rows;
-		console.log(offset, "offset");
 		const fetchData = async () => {
 			try {
 				const response = await fetch(

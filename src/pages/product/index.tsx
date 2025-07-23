@@ -62,8 +62,8 @@ function InnerProductPage({ product }: { product: ProductData }) {
 						<ProductHeader product={product} />
 						<ProductPay />
 						<ProductDescription product={product} />
-						<ProductExtraInfo />
-						<ProductRewies />
+						<ProductExtraInfo product={product} />
+						<ProductRewies product={product} />
 					</div>
 					<aside className={cnx("product__aside", "aside")}>
 						<img

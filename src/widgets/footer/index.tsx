@@ -1,5 +1,7 @@
+import { Link } from "react-router";
 import Button from "../../components/button";
 import { CONTAINER } from "../../constants/classnames";
+import { useMainScreenCategories } from "../../hooks/useMainScreenCategories";
 import { Routes } from "../../routes";
 import {
 	CONTACT_INFO,
@@ -43,6 +45,8 @@ function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 }
 
 export function Footer() {
+	const { categories } = useMainScreenCategories();
+
 	return (
 		<footer className={cnx("footer")}>
 			<div className={CONTAINER}>
@@ -59,11 +63,12 @@ export function Footer() {
 					<div className={cnx("footer__column")}>
 						<h3 className={cnx("footer__title")}>Продукты</h3>
 						<ul>
-							{PRODUCTS.map((product) => (
-								<li key={product}>
-									<a href="#">{product}</a>
-								</li>
-							))}
+							{categories &&
+								categories.map((cat) => (
+									<li key={cat.id}>
+										<Link to={cat.collections_url}>{cat.collections_name}</Link>
+									</li>
+								))}
 						</ul>
 					</div>
 

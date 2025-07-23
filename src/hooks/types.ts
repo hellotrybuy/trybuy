@@ -27,6 +27,7 @@ export interface ProductData {
 	prices_unit: string;
 	type_digi_product: string;
 	type_name: string;
+	product_desc_add: string;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;
@@ -177,4 +178,14 @@ export interface ExchangeRespose {
 export interface SearchResponse {
 	products: ProductData[];
 	totalPages: number;
+}
+
+export interface RewiesData {
+	review_type: string;
+	review_info: string;
+	review_date: string;
+}
+
+export interface RewiesResponse {
+	data: RewiesData[];
 }
