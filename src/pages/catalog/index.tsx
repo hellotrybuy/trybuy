@@ -45,6 +45,7 @@ export function CatalogPage() {
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
 	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+	const categoryRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
 	const { searchInput } = useSearchContext();
 
@@ -230,6 +231,17 @@ export function CatalogPage() {
 	}, [productsFromCatLoading, loadMoreRef, changePage]);
 
 	useEffect(() => {
+		const el = categoryRefs.current[categoryId ?? ""];
+		if (el) {
+			el.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "nearest",
+			});
+		}
+	}, [categorys, categoryId]);
+
+	useEffect(() => {
 		if (!productsFromCat) return;
 
 		setCatalogData((prev) => {
@@ -263,12 +275,18 @@ export function CatalogPage() {
 								<li
 									className={cnx(categoryId == "" && "_active")}
 									onClick={() => changeCategory("")}
+									ref={(node) => {
+										categoryRefs.current[""] = node;
+									}}
 								>
 									<div>Все товары</div>
 								</li>
 								{categorys &&
 									categorys.map((el) => (
 										<li
+											ref={(node) => {
+												categoryRefs.current[el.id] = node;
+											}}
 											className={cnx(categoryId == el.id && "_active")}
 											key={el.id}
 											onClick={() => changeCategory(el.id)}

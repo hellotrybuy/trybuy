@@ -3,13 +3,7 @@ import Button from "../../components/button";
 import { CONTAINER } from "../../constants/classnames";
 import { useMainScreenCategories } from "../../hooks/useMainScreenCategories";
 import { Routes } from "../../routes";
-import {
-	CONTACT_INFO,
-	LEGAL_LINKS,
-	PRODUCTS,
-	SOCIAL_LINKS,
-	USER_LINKS,
-} from "./data";
+import { CONTACT_INFO, LEGAL_LINKS, SOCIAL_LINKS, USER_LINKS } from "./data";
 
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";

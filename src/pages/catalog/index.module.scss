@@ -56,7 +56,6 @@
 
 		margin-right: -20px;
 		mask-image: linear-gradient(to right, black 95%, transparent 100%);
-		max-width: 90%;
 		width: 100%;
 		overflow: auto;
 
@@ -67,6 +66,12 @@
 		}
 
 		li {
+			&:last-child {
+				@media screen and (min-width: breakpoints.$lg) {
+					margin-right: 30px;
+				}
+			}
+
 			div {
 				display: block;
 				cursor: pointer;
