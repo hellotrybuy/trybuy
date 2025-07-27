@@ -42,26 +42,27 @@ export function HomeMain() {
 		} else return "";
 	}, [data]);
 
-	const sliderData = useMemo((): NestedBlock[] => {
+	const sliderData = useMemo((): NestedBlock[][] => {
 		if (data.length > 0 && !loading) {
 			try {
 				const newData = data as BlockData[];
 				const parsed = JSON.parse(newData[0].nested_blocks) as NestedBlock[];
-				const dataDromParser = parsed.filter((block) => block.image);
+				const filtered = parsed.filter((block) => block.image);
 
-				return [
-					...dataDromParser,
-					...dataDromParser,
-					...dataDromParser,
-					...dataDromParser,
-					...dataDromParser,
-				];
+				const mid = Math.ceil(filtered.length / 2);
+				const firstHalf = filtered.slice(0, mid);
+				const secondHalf = filtered.slice(mid);
+
+				const repeatedFirst = Array(5).fill(firstHalf).flat();
+				const repeatedSecond = Array(5).fill(secondHalf).flat();
+
+				return [repeatedFirst, repeatedSecond];
 			} catch (e) {
 				console.error("Ошибка при парсинге nested_blocks:", e);
-				return [];
+				return [[], []];
 			}
 		}
-		return [];
+		return [[], []];
 	}, [data, loading]);
 
 	// Desktop sync
@@ -129,7 +130,7 @@ export function HomeMain() {
 								}}
 								onSwiper={setDesktopSwiperTop}
 							>
-								{sliderData.map((el: NestedBlock, index) => (
+								{sliderData[0].map((el: NestedBlock, index) => (
 									<SwiperSlide key={index} className={cnx("slide")}>
 										<Slide el={el} />
 									</SwiperSlide>
@@ -151,7 +152,7 @@ export function HomeMain() {
 								onSwiper={setDesktopSwiperBottom}
 							>
 								{sliderData.length > 0 &&
-									sliderData.map((el: NestedBlock, index) => (
+									sliderData[1].map((el: NestedBlock, index) => (
 										<SwiperSlide key={index} className={cnx("slide")}>
 											<Slide el={el} />
 										</SwiperSlide>
@@ -176,7 +177,7 @@ export function HomeMain() {
 								autoplay={{ delay: 3500 }}
 								onSwiper={setMobileSwiperTop}
 							>
-								{sliderData.map((el: NestedBlock, index) => (
+								{sliderData[0].map((el: NestedBlock, index) => (
 									<SwiperSlide key={index} className={cnx("slide")}>
 										<Slide el={el} />
 									</SwiperSlide>
@@ -191,7 +192,7 @@ export function HomeMain() {
 								autoplay={{ delay: 3500 }}
 								onSwiper={setMobileSwiperBottom}
 							>
-								{sliderData.map((el: NestedBlock, index) => (
+								{sliderData[1].map((el: NestedBlock, index) => (
 									<SwiperSlide key={index} className={cnx("slide")}>
 										<Slide el={el} />
 									</SwiperSlide>
