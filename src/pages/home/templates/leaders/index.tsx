@@ -6,34 +6,38 @@ import classNames from "classnames/bind";
 import { ProductData } from "../../../../hooks/types";
 import PopularCards from "../../../../widgets/popular-cards";
 import ProductsSceletonLeaders from "../../../../widgets/productsSceletonLeaders";
+import { useRecommList } from "../../../../hooks/useRecommList";
 
 const cnx = classNames.bind(styles);
 
 export function HomeLeaders() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const loadMoreRef = useRef(null);
+	const { products, loading, hasMore } = useRecommList(currentPage, 20);
+	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const { products, loading } = useProductList(currentPage, 20);
-	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
-
 	const totalPages = useMemo(() => {
-		return products.totalPage;
-	}, [products]);
+		return 10;
+	}, []);
 
 	const changePage = useCallback(() => {
-		if (totalPages >= currentPage) setCurrentPage((prevPage) => prevPage + 1);
-	}, [totalPages, currentPage]);
+		if (currentPage < totalPages) {
+			setCurrentPage((prevPage) => prevPage + 1);
+		}
+	}, [currentPage, totalPages]);
+
+	console.log(products, "catalogDatacatalogData");
 
 	useEffect(() => {
-		if (products && products.rows.length > 0) {
+		if (products && products.length > 0) {
 			setCatalogData((prev) => {
-				const newProducts = products.rows.filter(
-					(newProduct) =>
-						!prev.some((existing) => existing.id === newProduct.id),
+				const existingIds = new Set(prev.map((p) => p.id));
+				const newProducts = products.filter(
+					(product) => !existingIds.has(product.id),
 				);
 				return [...prev, ...newProducts];
 			});
@@ -59,14 +63,14 @@ export function HomeLeaders() {
 				observer.unobserve(loadMoreRef.current);
 			}
 		};
-	}, [loading, loadMoreRef, changePage]);
+	}, [loading, changePage]);
 
 	return (
 		<section className={cnx("leaders")}>
 			<div className={cnx("leaders__inner")}>
 				<Title size="large">Лидеры продаж</Title>
 				<PopularCards data={catalogData} />
-				{totalPages != currentPage && (
+				{hasMore && (
 					<div ref={loadMoreRef}>
 						<ProductsSceletonLeaders isMargin={catalogData.length > 0} />
 					</div>
@@ -75,4 +79,5 @@ export function HomeLeaders() {
 		</section>
 	);
 }
+
 export default HomeLeaders;

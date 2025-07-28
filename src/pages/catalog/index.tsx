@@ -48,6 +48,7 @@ export function CatalogPage() {
 	const categoryRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
 	const { searchInput } = useSearchContext();
+	console.log(searchInput, "searchInput");
 
 	const previewPlatforms = useMemo(() => {
 		if (platformsFromUrl) {

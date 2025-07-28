@@ -13,9 +13,11 @@ import OtherProducts from "./templates/other-products";
 import { useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PriceProvider, usePrice } from "./context";
 import { scrollFixed } from "../../lib/scroll-fixed";
+import DigisellerChat from "../../widgets/seller-chat";
+import { useClickOutside } from "../../hooks/useClickOutside";
 
 export default function ProductPage() {
 	const { id } = useParams();
@@ -38,6 +40,10 @@ export default function ProductPage() {
 function InnerProductPage({ product }: { product: ProductData }) {
 	const { totalPrice } = usePrice();
 	const cnx = classNames.bind(styles);
+	const refChat = useRef<HTMLDivElement>(null);
+	const [chaIsOpen, setChaIsOpen] = useState(false);
+
+	useClickOutside([refChat], () => setChaIsOpen(false));
 
 	const [isHidden, setIsHidden] = useState(false);
 
@@ -87,9 +93,19 @@ function InnerProductPage({ product }: { product: ProductData }) {
 								<br />
 								Аттестат продавца
 							</p>
-							<Button className={cnx("seller__btn")} white>
+							<Button
+								className={cnx("seller__btn")}
+								white
+								onClick={() => setChaIsOpen(!chaIsOpen)}
+							>
 								Написать продавцу
 							</Button>
+							<div ref={refChat}>
+								<DigisellerChat
+									sellerId={product[0].sellerId}
+									isOpen={chaIsOpen}
+								/>
+							</div>
 						</div>
 						<div className={cnx("aside__block", "payment")}>
 							<strong className={cnx("payment__title")}>Способы оплаты</strong>

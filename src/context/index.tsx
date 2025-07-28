@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
+import { CATALOG_SEARCH } from "../constants/searchParams";
 
 interface SearchContext {
 	searchInput: string;
@@ -8,7 +10,16 @@ interface SearchContext {
 const SearchContexnt = createContext<SearchContext | undefined>(undefined);
 
 export function SeacrchProvider({ children }: { children: React.ReactNode }) {
-	const [searchInput, setSearchInput] = useState("");
+	const [searchParams] = useSearchParams();
+
+	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+
+	const [searchInput, setSearchInput] = useState(searchFromUrl ?? "");
+
+	useEffect(() => {
+		const searchFromUrl = searchParams.get(CATALOG_SEARCH) ?? "";
+		setSearchInput(searchFromUrl);
+	}, [searchParams]);
 
 	return (
 		<SearchContexnt.Provider value={{ searchInput, setSearchInput }}>
