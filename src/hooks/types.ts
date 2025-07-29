@@ -83,6 +83,7 @@ export interface OptionItem {
 	modify_value: string;
 	modify_type: string;
 	modify: string;
+	id: string;
 }
 
 export interface OptionItemVariantItem {
@@ -92,6 +93,7 @@ export interface OptionItemVariantItem {
 	modify_value?: number;
 	text: string;
 	value: string;
+	id: string;
 }
 
 export interface GreatCatergory {

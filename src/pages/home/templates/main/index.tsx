@@ -81,8 +81,6 @@ export function HomeMain() {
 		}
 	}, [mobileSwiperTop, mobileSwiperBottom]);
 
-	console.log(sliderData, "sliderData");
-
 	const swiperProps = {
 		modules: [Controller, Navigation, Autoplay, FreeMode],
 		loop: true,

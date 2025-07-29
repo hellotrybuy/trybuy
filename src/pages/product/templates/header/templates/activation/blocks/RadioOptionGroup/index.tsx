@@ -56,6 +56,7 @@ export default function RadioOptionGroup({
 							value={elem.value}
 							onValueChange={(val) => onChange(option.name, val)}
 							checked={String(formValue) === String(elem.value)}
+							id={option.id}
 						/>
 					))}
 					{isExpanded &&
@@ -67,6 +68,7 @@ export default function RadioOptionGroup({
 								value={elem.value}
 								onValueChange={(val) => onChange(option.name, val)}
 								checked={String(formValue) === String(elem.value)}
+								id={option.id}
 							/>
 						))}
 				</div>
@@ -84,6 +86,7 @@ export default function RadioOptionGroup({
 							value={elem.value}
 							onValueChange={(val) => onChange(option.name, val)}
 							checked={String(formValue) === String(elem.value)}
+							id={option.id}
 						/>
 					))}
 				</div>

@@ -57,10 +57,6 @@ export function ProductRewies({ product }: Props) {
 		return (bad + good).toString();
 	}, [product]);
 
-	console.log(product[0], "product[0]");
-
-	console.log(rewies, "rewies");
-
 	return (
 		<div className={cnx("reviews")}>
 			<div className={cnx("reviews__top")}>

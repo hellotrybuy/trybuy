@@ -30,8 +30,6 @@ export function HomeLeaders() {
 		}
 	}, [currentPage, totalPages]);
 
-	console.log(products, "catalogDatacatalogData");
-
 	useEffect(() => {
 		if (products && products.length > 0) {
 			setCatalogData((prev) => {

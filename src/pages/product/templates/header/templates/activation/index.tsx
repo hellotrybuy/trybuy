@@ -25,7 +25,7 @@ export default function ProductActivation({ product }: Props) {
 		return JSON.parse(product[0].options) as OptionItem[];
 	}, [product]);
 
-	const { setTotalPrice } = usePrice();
+	const { setTotalPrice, setForm } = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
 	);
@@ -40,6 +40,10 @@ export default function ProductActivation({ product }: Props) {
 	const [formState, setFormState] = useState<
 		Record<string, string | boolean | Record<string, boolean>>
 	>({});
+
+	useEffect(() => {
+		setForm(formState);
+	}, [formState, setForm]);
 
 	const basePrice = useMemo(() => {
 		return parseFloat(product[0].price);
@@ -63,10 +67,34 @@ export default function ProductActivation({ product }: Props) {
 				(item: ExchangeRate) => item.currency_code.toUpperCase() === currency,
 			);
 
+			console.log(found);
+
 			return found ? parseFloat(found.rate) : 1;
 		},
 		[rates],
 	);
+
+	// const applyModifier = useCallback(
+	// 	(
+	// 		currentPrice: number,
+	// 		type: string,
+	// 		value: number,
+	// 		modify: string,
+	// 	): number => {
+	// 		const modifySize = detectCurrencyRate(modify);
+
+	// 		const price = value * modifySize + currentPrice;
+
+	// 		if (!type || type === "") return price;
+
+	// 		if (type === "%") {
+	// 			return price + (price * value) / 100;
+	// 		}
+
+	// 		return price + value;
+	// 	},
+	// 	[detectCurrencyRate],
+	// );
 
 	const applyModifier = useCallback(
 		(
@@ -75,20 +103,24 @@ export default function ProductActivation({ product }: Props) {
 			value: number,
 			modify: string,
 		): number => {
-			const modifySize = detectCurrencyRate(modify);
+			const currencyRate = detectCurrencyRate(modify);
 
-			const price = value * modifySize + currentPrice;
+			console.log(value, "value");
+			console.log(modify, "modify");
 
-			if (!type || type === "") return price;
-
-			if (type === "%") {
-				return price + (price * value) / 100;
+			if (!type || type === "") {
+				return currentPrice;
 			}
 
-			return price + value;
+			if (type === "%") {
+				return currentPrice + (currentPrice * value) / 100;
+			}
+
+			return currentPrice + value * currencyRate;
 		},
 		[detectCurrencyRate],
 	);
+	console.log(product, "product");
 
 	useEffect(() => {
 		let result = basePrice;

@@ -22,6 +22,7 @@ export default function TextOptionField({ option, value, onChange }: Props) {
 					warning={option.comment}
 					onChange={(e) => onChange(option.name, e.target.value)}
 					placeholder={option.label}
+					id={option.id}
 				/>
 			</div>
 		</div>

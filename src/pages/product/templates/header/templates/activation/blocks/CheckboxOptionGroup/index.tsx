@@ -29,6 +29,7 @@ export default function CheckboxOptionGroup({
 						value={elem.value}
 						checked={values[elem.value] || false}
 						onChange={() => onChange(option.name, elem.value)}
+						id={option.id}
 					/>
 				))}
 			</div>

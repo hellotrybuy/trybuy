@@ -66,7 +66,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 				<div className={cnx("product__inner")}>
 					<div className={cnx("product__main")}>
 						<ProductHeader product={product} />
-						<ProductPay />
+						<ProductPay product={product} />
 						<ProductDescription product={product} />
 						<ProductExtraInfo product={product} />
 						<ProductRewies product={product} />
