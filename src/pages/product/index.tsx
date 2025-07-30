@@ -104,7 +104,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 							</Button>
 							<div ref={refChat}>
 								<DigisellerChat
-									sellerId={product[0].sellerId}
+									sellerId={product[0].seller_id}
 									isOpen={chaIsOpen}
 								/>
 							</div>
