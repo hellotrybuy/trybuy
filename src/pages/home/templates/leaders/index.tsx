@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Title from "../../../../components/title";
-import { useProductList } from "../../../../hooks/useProductList";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 import { ProductData } from "../../../../hooks/types";

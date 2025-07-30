@@ -38,10 +38,11 @@ export default function ProductPage() {
 }
 
 function InnerProductPage({ product }: { product: ProductData }) {
-	const { totalPrice } = usePrice();
+	const { totalPrice, form } = usePrice();
 	const cnx = classNames.bind(styles);
 	const refChat = useRef<HTMLDivElement>(null);
 	const [chaIsOpen, setChaIsOpen] = useState(false);
+	console.log(form, "form123");
 
 	useClickOutside([refChat], () => setChaIsOpen(false));
 
@@ -66,7 +67,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 				<div className={cnx("product__inner")}>
 					<div className={cnx("product__main")}>
 						<ProductHeader product={product} />
-						<ProductPay product={product} />
+						<ProductPay product={product} form={form} />
 						<ProductDescription product={product} />
 						<ProductExtraInfo product={product} />
 						<ProductRewies product={product} />

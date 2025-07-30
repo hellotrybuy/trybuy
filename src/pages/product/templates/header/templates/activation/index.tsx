@@ -42,7 +42,7 @@ export default function ProductActivation({ product }: Props) {
 	>({});
 
 	useEffect(() => {
-		setForm(formState);
+		setForm((prev) => ({ ...prev, ...formState }));
 	}, [formState, setForm]);
 
 	const basePrice = useMemo(() => {

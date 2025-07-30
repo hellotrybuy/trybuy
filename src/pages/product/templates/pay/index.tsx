@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Button from "../../../../components/button";
 import {
 	PurchaseOptionsRequest,
@@ -41,7 +41,7 @@ function transformOptions(
 			result[fieldId] = value;
 		} else if (
 			(key.startsWith("option_radio_") || key.startsWith("option_")) &&
-			typeof value === "string"
+			(typeof value === "string" || typeof value === "number")
 		) {
 			const num = Number(value);
 			if (!isNaN(num)) {
@@ -103,7 +103,9 @@ interface Props {
 export function ProductPay({ product }: Props) {
 	const { totalPrice, form } = usePrice();
 
-	const newFormData = prepareOptionsForApi(transformOptions(form));
+	const newFormData = useMemo(() => {
+		return prepareOptionsForApi(transformOptions(form));
+	}, [form]);
 
 	const { sendRequest, data: code } = usePurchaseOptions();
 	const { sendPaymentForm } = useDigiSellerPayment();
@@ -116,17 +118,8 @@ export function ProductPay({ product }: Props) {
 		} as PurchaseOptionsRequest;
 	}, [newFormData, product]);
 
-	// console.log(product[0], "form");
-	// console.log(dataFromAPI, "dataFromAPI");
-
-	// product_id: number; // ID продукта (id_d)
-	// id_po: string; // ID предложения
-	// unit_cnt: number; // Количество единиц
-	// seller_id?: string; // ID продавца (agent)
-	// lang?: string; // Язык, по умолчанию "ru-RU"
-	// failpage?: string; // URL возврата при ошибке
-	// currency?: string; // Валюта, например, "GRN"
-	// payment_url?: string; // URL оплаты, по умолчанию "https://oplata.info/asp2/pay.asp"
+	console.log(product[0], "form");
+	console.log(dataFromAPI, "dataFromAPI");
 
 	if (code) {
 		sendPaymentForm({
