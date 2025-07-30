@@ -84,6 +84,7 @@ export interface OptionItem {
 	modify_type: string;
 	modify: string;
 	id: string;
+	required: number;
 }
 
 export interface OptionItemVariantItem {

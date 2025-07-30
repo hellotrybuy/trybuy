@@ -4,6 +4,14 @@
 	gap: 0 !important;
 }
 
+.rev {
+	margin-top: 30px;
+
+	@media screen and (max-width: breakpoints.$sm) {
+		margin-top: 0px;
+	}
+}
+
 .activation {
 	&__inner {
 		display: flex;

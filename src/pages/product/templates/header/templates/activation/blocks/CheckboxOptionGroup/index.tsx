@@ -9,12 +9,14 @@ interface Props {
 	option: OptionItem;
 	values: string | boolean | Record<string, boolean>;
 	onChange: (optionName: string, variantValue: string) => void;
+	isInvalid: boolean;
 }
 
 export default function CheckboxOptionGroup({
 	option,
 	values,
 	onChange,
+	isInvalid,
 }: Props) {
 	if (!values) return;
 	return (

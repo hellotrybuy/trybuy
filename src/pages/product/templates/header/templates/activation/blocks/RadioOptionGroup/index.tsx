@@ -15,6 +15,7 @@ interface Props {
 	toggleExpand: (name: string) => void;
 	formValue: string;
 	onChange: (name: string, value: string) => void;
+	isInvalid: boolean;
 }
 
 export default function RadioOptionGroup({
@@ -23,6 +24,7 @@ export default function RadioOptionGroup({
 	toggleExpand,
 	formValue,
 	onChange,
+	isInvalid,
 }: Props) {
 	const VISIBLE_COUNT = 5;
 	const visibleRadios = option.variants?.slice(0, VISIBLE_COUNT) || [];

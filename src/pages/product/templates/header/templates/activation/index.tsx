@@ -13,6 +13,7 @@ import TextOptionField from "./blocks/TextOptionField";
 import CheckboxOptionGroup from "./blocks/CheckboxOptionGroup";
 import { usePrice } from "../../../../context";
 import { useGetExchangeRate } from "../../../../../../hooks/useGetExchangeRate";
+import BalanceConvertor from "../../../../../../components/balanceConvertor";
 
 const cnx = classNames.bind(styles);
 
@@ -24,11 +25,18 @@ export default function ProductActivation({ product }: Props) {
 	const options = useMemo(() => {
 		return JSON.parse(product[0].options) as OptionItem[];
 	}, [product]);
+	const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>(
+		{},
+	);
 
-	const { setTotalPrice, setForm } = usePrice();
+	const { setTotalPrice, setForm, setCnt, setIsValidForm } = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
 	);
+
+	const isType_digi_product = useMemo(() => {
+		return product[0].type_digi_product == "unit";
+	}, [product]);
 
 	const toggleExpand = (optionName: string) => {
 		setExpandedRadios((prev) => ({
@@ -74,28 +82,6 @@ export default function ProductActivation({ product }: Props) {
 		[rates],
 	);
 
-	// const applyModifier = useCallback(
-	// 	(
-	// 		currentPrice: number,
-	// 		type: string,
-	// 		value: number,
-	// 		modify: string,
-	// 	): number => {
-	// 		const modifySize = detectCurrencyRate(modify);
-
-	// 		const price = value * modifySize + currentPrice;
-
-	// 		if (!type || type === "") return price;
-
-	// 		if (type === "%") {
-	// 			return price + (price * value) / 100;
-	// 		}
-
-	// 		return price + value;
-	// 	},
-	// 	[detectCurrencyRate],
-	// );
-
 	const applyModifier = useCallback(
 		(
 			currentPrice: number,
@@ -120,7 +106,40 @@ export default function ProductActivation({ product }: Props) {
 		},
 		[detectCurrencyRate],
 	);
-	console.log(product, "product");
+
+	useEffect(() => {
+		if (!options) return;
+
+		const newInvalidFields: Record<string, boolean> = {};
+
+		const isValid = options.every((opt) => {
+			if (opt.required !== 1) return true;
+
+			const value = formState[opt.name];
+			let valid = false;
+
+			if (opt.type === "text") {
+				valid = typeof value === "string" && value.trim() !== "";
+			} else if (opt.type === "radio") {
+				valid = typeof value === "string" && value !== "";
+			} else if (opt.type === "checkbox") {
+				if (typeof value === "boolean") {
+					valid = value === true;
+				} else if (typeof value === "object" && value !== null) {
+					valid = Object.values(value).some((v) => v === true);
+				}
+			}
+
+			if (!valid) {
+				newInvalidFields[opt.name] = true;
+			}
+
+			return valid;
+		});
+
+		setInvalidFields(newInvalidFields);
+		setIsValidForm(isValid);
+	}, [formState, options, setIsValidForm]);
 
 	useEffect(() => {
 		let result = basePrice;
@@ -233,10 +252,21 @@ export default function ProductActivation({ product }: Props) {
 		setFormState((prev) => ({ ...prev, [name]: value }));
 	};
 
+	useEffect(() => {
+		if (!isType_digi_product) {
+			setCnt(1);
+		}
+	}, [isType_digi_product, setCnt]);
+
 	if (options) {
 		return (
 			<div className={cnx("activation")}>
 				<div className={cnx("activation__inner")}>
+					{isType_digi_product && product[0].prices_unit != "" && (
+						<div className={cnx("rev")}>
+							<BalanceConvertor prices_unit={product[0].prices_unit} />
+						</div>
+					)}
 					{options.map((el) => {
 						if (el.type === "radio")
 							return (
@@ -247,6 +277,7 @@ export default function ProductActivation({ product }: Props) {
 									toggleExpand={toggleExpand}
 									formValue={formState[el.name] as string}
 									onChange={handleRadioChange}
+									isInvalid={invalidFields[el.name]}
 								/>
 							);
 						if (el.type === "text")
@@ -255,6 +286,7 @@ export default function ProductActivation({ product }: Props) {
 									key={el.name}
 									option={el}
 									value={formState[el.name] as string}
+									isInvalid={invalidFields[el.name]}
 									onChange={(name, value) =>
 										setFormState((prev) => ({ ...prev, [name]: value }))
 									}

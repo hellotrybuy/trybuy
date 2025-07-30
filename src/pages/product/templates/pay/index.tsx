@@ -101,7 +101,7 @@ interface Props {
 }
 
 export function ProductPay({ product }: Props) {
-	const { totalPrice, form } = usePrice();
+	const { totalPrice, form, cnt, isValidForm } = usePrice();
 
 	const newFormData = useMemo(() => {
 		return prepareOptionsForApi(transformOptions(form));
@@ -114,9 +114,9 @@ export function ProductPay({ product }: Props) {
 		return {
 			options: newFormData,
 			product_id: product[0].id_product,
-			unit_cnt: 1,
+			unit_cnt: cnt,
 		} as PurchaseOptionsRequest;
-	}, [newFormData, product]);
+	}, [newFormData, product, cnt]);
 
 	console.log(product[0], "form");
 	console.log(dataFromAPI, "dataFromAPI");
@@ -140,8 +140,7 @@ export function ProductPay({ product }: Props) {
 				className={cnx("pay__btn")}
 				size="large"
 				onClick={() => {
-					// console.log("Кнопка нажата, отправляем запрос");
-					sendRequest(dataFromAPI);
+					if (isValidForm) sendRequest(dataFromAPI);
 				}}
 			>
 				Купить
