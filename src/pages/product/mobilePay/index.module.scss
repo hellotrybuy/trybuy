@@ -1,0 +1,12 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/zIndex";
+
+.product {
+	&__buy-btn {
+		font-family: "Unbounded";
+		font-weight: 500;
+
+		width: 100%;
+	}
+}

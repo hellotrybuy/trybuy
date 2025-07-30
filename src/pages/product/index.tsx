@@ -18,6 +18,7 @@ import { PriceProvider, usePrice } from "./context";
 import { scrollFixed } from "../../lib/scroll-fixed";
 import DigisellerChat from "../../widgets/seller-chat";
 import { useClickOutside } from "../../hooks/useClickOutside";
+import MobilePay from "./mobilePay";
 
 export default function ProductPage() {
 	const { id } = useParams();
@@ -38,7 +39,7 @@ export default function ProductPage() {
 }
 
 function InnerProductPage({ product }: { product: ProductData }) {
-	const { totalPrice, form } = usePrice();
+	const { form } = usePrice();
 	const cnx = classNames.bind(styles);
 	const refChat = useRef<HTMLDivElement>(null);
 	const [chaIsOpen, setChaIsOpen] = useState(false);
@@ -135,9 +136,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 
 			{/* Mobile buy button */}
 			<div className={cnx("product__buy", isHidden && "product__buy__hidden")}>
-				<Button className={cnx("product__buy-btn")}>
-					{totalPrice} ₽ КУПИТЬ
-				</Button>
+				<MobilePay product={product} />
 			</div>
 		</div>
 	);
