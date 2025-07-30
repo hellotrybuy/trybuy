@@ -76,7 +76,7 @@ export default function ProductActivation({ product }: Props) {
 			);
 
 			if (
-				found.currency_code == "USD" &&
+				found?.currency_code == "USD" &&
 				product[0].price &&
 				product[0].price_usd
 			) {
