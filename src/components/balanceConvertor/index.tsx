@@ -66,7 +66,7 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		onlyInt ? String(Math.round(minCount * curs)) : String(minCount * curs),
 	);
 	const [valueIWillReceive, setValueIWillReceive] = useState(
-		onlyInt ? Math.round(minCount * curs) : minCount * curs,
+		onlyInt ? minCount * curs : minCount * curs,
 	);
 
 	console.log(valueIWillPay, "valueIWillPay");
@@ -90,9 +90,15 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 			const clamped = clampValue(num);
 			setValueIWillPay(clamped);
 
-			const receive = onlyInt ? Math.round(clamped * curs) : clamped * curs;
+			let receive: number;
+			if (onlyInt) {
+				receive = Math.round(clamped * curs);
+			} else {
+				receive = parseFloat((clamped * curs).toFixed(2));
+			}
+
 			setValueIWillReceive(receive);
-			setInputReceive(String(receive));
+			setInputReceive(receive.toString());
 		}
 	};
 

@@ -44,6 +44,8 @@ export default function RadioOptionGroup({
 
 	return (
 		<div className={cnx("activation__block")}>
+			{isInvalid && "невалидно"}
+
 			<h3 className={cnx("activation__title")}>{option.label}</h3>
 			<h4 className={cnx("activation__title__mini")}>
 				<DeliveryInfo rawHtml={option.comment} />

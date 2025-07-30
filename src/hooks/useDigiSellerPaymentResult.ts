@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 interface PaymentFormData {
 	product_id: number; // ID продукта (id_d)
-	id_po: string; // ID предложения
+	id_po?: string; // ID предложения
 	unit_cnt: number; // Количество единиц
 	seller_id?: string; // ID продавца (agent)
 	lang?: string; // Язык, по умолчанию "ru-RU"
@@ -27,11 +27,14 @@ export function useDigiSellerPayment(): UseDigiSellerPaymentResult {
 			lang: data.lang || "ru-RU",
 			agent: data.seller_id || "",
 			unit_cnt: data.unit_cnt.toString(),
-			id_po: data.id_po,
 			havetoshowoptions: "1",
 			_ow: "0",
 			failpage: data.failpage || encodeURIComponent(window.location.href),
 		};
+
+		if (data.id_po != "") {
+			fields.id_po = data.id_po;
+		}
 
 		if (data.currency) {
 			fields.curr = data.currency;

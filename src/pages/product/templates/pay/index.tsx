@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Button from "../../../../components/button";
 import {
 	PurchaseOptionsRequest,
@@ -101,7 +101,7 @@ interface Props {
 }
 
 export function ProductPay({ product }: Props) {
-	const { totalPrice, form, cnt, isValidForm } = usePrice();
+	const { totalPrice, form, cnt } = usePrice();
 
 	const newFormData = useMemo(() => {
 		return prepareOptionsForApi(transformOptions(form));
@@ -124,8 +124,8 @@ export function ProductPay({ product }: Props) {
 	if (code) {
 		sendPaymentForm({
 			product_id: product[0].id_product,
-			id_po: code.id_po.toString(),
-			unit_cnt: 1,
+			id_po: code.id_po ? code.id_po.toString() : "0",
+			unit_cnt: cnt,
 			seller_id: product[0].seller_id,
 		});
 	}
@@ -140,7 +140,8 @@ export function ProductPay({ product }: Props) {
 				className={cnx("pay__btn")}
 				size="large"
 				onClick={() => {
-					if (isValidForm) sendRequest(dataFromAPI);
+					// console.log("Кнопка нажата, отправляем запрос");
+					sendRequest(dataFromAPI);
 				}}
 			>
 				Купить

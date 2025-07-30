@@ -21,6 +21,8 @@ export default function CheckboxOptionGroup({
 	if (!values) return;
 	return (
 		<div className={cnx("activation__block")}>
+			{isInvalid && "невалидно"}
+
 			<h3 className={cnx("activation__title")}>{option.label}</h3>
 			<div className={cnx("activation__options")}>
 				{option.variants?.map((elem) => (

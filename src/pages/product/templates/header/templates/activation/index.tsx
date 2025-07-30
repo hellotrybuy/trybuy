@@ -25,10 +25,10 @@ export default function ProductActivation({ product }: Props) {
 	const options = useMemo(() => {
 		return JSON.parse(product[0].options) as OptionItem[];
 	}, [product]);
-	const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>(
-		{},
-	);
-
+	// const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>(
+	// 	{},
+	// );
+	const [invalidFields] = useState<Record<string, boolean>>({});
 	const { setTotalPrice, setForm, setCnt, setIsValidForm } = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
@@ -75,11 +75,20 @@ export default function ProductActivation({ product }: Props) {
 				(item: ExchangeRate) => item.currency_code.toUpperCase() === currency,
 			);
 
-			console.log(found);
+			if (
+				found.currency_code == "USD" &&
+				product[0].price &&
+				product[0].price_usd
+			) {
+				const priceDef = product[0].price;
+				const priceDefUsdt = parseFloat(product[0].price_usd);
+
+				return priceDef / priceDefUsdt;
+			}
 
 			return found ? parseFloat(found.rate) : 1;
 		},
-		[rates],
+		[rates, product],
 	);
 
 	const applyModifier = useCallback(
@@ -108,37 +117,41 @@ export default function ProductActivation({ product }: Props) {
 	);
 
 	useEffect(() => {
-		if (!options) return;
+		// if (!options) {
+		// 	setIsValidForm(true);
+		// 	return;
+		// }
 
-		const newInvalidFields: Record<string, boolean> = {};
+		// const newInvalidFields: Record<string, boolean> = {};
 
-		const isValid = options.every((opt) => {
-			if (opt.required !== 1) return true;
+		// const isValid = options.every((opt) => {
+		// 	if (opt.required !== 1) return true;
 
-			const value = formState[opt.name];
-			let valid = false;
+		// 	const value = formState[opt.name];
+		// 	let valid = false;
 
-			if (opt.type === "text") {
-				valid = typeof value === "string" && value.trim() !== "";
-			} else if (opt.type === "radio") {
-				valid = typeof value === "string" && value !== "";
-			} else if (opt.type === "checkbox") {
-				if (typeof value === "boolean") {
-					valid = value === true;
-				} else if (typeof value === "object" && value !== null) {
-					valid = Object.values(value).some((v) => v === true);
-				}
-			}
+		// 	if (opt.type === "text") {
+		// 		valid = typeof value === "string" && value.trim() !== "";
+		// 	} else if (opt.type === "radio") {
+		// 		valid = typeof value === "string" && value !== "";
+		// 	} else if (opt.type === "checkbox") {
+		// 		if (typeof value === "boolean") {
+		// 			valid = value === true;
+		// 		} else if (typeof value === "object" && value !== null) {
+		// 			valid = Object.values(value).some((v) => v === true);
+		// 		}
+		// 	}
 
-			if (!valid) {
-				newInvalidFields[opt.name] = true;
-			}
+		// 	if (!valid) {
+		// 		newInvalidFields[opt.name] = true;
+		// 	}
 
-			return valid;
-		});
+		// 	return valid;
+		// });
 
-		setInvalidFields(newInvalidFields);
-		setIsValidForm(isValid);
+		// setInvalidFields(newInvalidFields);
+		// setIsValidForm(isValid);
+		setIsValidForm(true);
 	}, [formState, options, setIsValidForm]);
 
 	useEffect(() => {
@@ -196,6 +209,7 @@ export default function ProductActivation({ product }: Props) {
 
 	useEffect(() => {
 		const initialState: Record<string, any> = {};
+		console.log(options, "options validat");
 
 		if (options) {
 			options.forEach((opt) => {
@@ -206,7 +220,8 @@ export default function ProductActivation({ product }: Props) {
 					const defaultVariant = opt.variants.find(
 						(variant) => Number(variant.default) === 1,
 					);
-					initialState[opt.name] = defaultVariant?.value ?? "";
+					// Приводим значение по умолчанию к строке или ставим пустую строку
+					initialState[opt.name] = defaultVariant?.value?.toString() ?? "";
 				}
 				if (opt.type === "checkbox") {
 					if (Array.isArray(opt.variants) && opt.variants.length > 0) {
@@ -299,6 +314,7 @@ export default function ProductActivation({ product }: Props) {
 									option={el}
 									values={formState[el.name]}
 									onChange={handleCheckboxChange}
+									isInvalid={invalidFields[el.name]}
 								/>
 							);
 						return null;
