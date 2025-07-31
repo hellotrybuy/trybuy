@@ -118,9 +118,6 @@ export function ProductPay({ product }: Props) {
 		} as PurchaseOptionsRequest;
 	}, [newFormData, product, cnt]);
 
-	console.log(product[0], "form");
-	console.log(dataFromAPI, "dataFromAPI");
-
 	if (code) {
 		sendPaymentForm({
 			product_id: product[0].id_product,
@@ -140,7 +137,6 @@ export function ProductPay({ product }: Props) {
 				className={cnx("pay__btn")}
 				size="large"
 				onClick={() => {
-					// console.log("Кнопка нажата, отправляем запрос");
 					sendRequest(dataFromAPI);
 				}}
 			>

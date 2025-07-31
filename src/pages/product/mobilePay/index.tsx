@@ -118,9 +118,6 @@ export function MobilePay({ product }: Props) {
 		} as PurchaseOptionsRequest;
 	}, [newFormData, product, cnt]);
 
-	console.log(product[0], "form");
-	console.log(dataFromAPI, "dataFromAPI");
-
 	if (code) {
 		sendPaymentForm({
 			product_id: product[0].id_product,

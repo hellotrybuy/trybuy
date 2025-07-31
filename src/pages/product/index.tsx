@@ -14,7 +14,7 @@ import { useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
 import { useEffect, useRef, useState } from "react";
-import { PriceProvider, usePrice } from "./context";
+import { PriceProvider } from "./context";
 import { scrollFixed } from "../../lib/scroll-fixed";
 import DigisellerChat from "../../widgets/seller-chat";
 import { useClickOutside } from "../../hooks/useClickOutside";
@@ -39,11 +39,9 @@ export default function ProductPage() {
 }
 
 function InnerProductPage({ product }: { product: ProductData }) {
-	const { form } = usePrice();
 	const cnx = classNames.bind(styles);
 	const refChat = useRef<HTMLDivElement>(null);
 	const [chaIsOpen, setChaIsOpen] = useState(false);
-	console.log(form, "form123");
 
 	useClickOutside([refChat], () => setChaIsOpen(false));
 

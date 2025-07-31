@@ -19,21 +19,22 @@ export interface PricesUnit {
 	unit_cnt_min: number;
 	unit_cnt_max: number;
 	unit_cnt_desc: string;
-	unit_only_int: number;
+	unit_only_int?: number;
 }
 
 function isPricesUnit(obj: any): obj is PricesUnit {
 	return (
-		obj &&
-		typeof obj.unit_name === "string" &&
-		typeof obj.unit_amount === "number" &&
-		typeof obj.unit_amount_desc === "string" &&
-		typeof obj.unit_currency === "string" &&
-		typeof obj.unit_cnt === "number" &&
-		typeof obj.unit_cnt_min === "number" &&
-		typeof obj.unit_cnt_max === "number" &&
-		typeof obj.unit_cnt_desc === "string" &&
-		typeof obj.unit_only_int === "number"
+		(obj &&
+			typeof obj.unit_name === "string" &&
+			typeof obj.unit_amount === "number" &&
+			typeof obj.unit_amount_desc === "string" &&
+			typeof obj.unit_currency === "string" &&
+			typeof obj.unit_cnt === "number" &&
+			typeof obj.unit_cnt_min === "number" &&
+			typeof obj.unit_cnt_max === "number" &&
+			typeof obj.unit_cnt_desc === "string" &&
+			typeof obj.unit_only_int === "number") ||
+		obj.unit_only_int === undefined
 	);
 }
 
@@ -53,10 +54,14 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		}
 	}, [prices_unit]);
 
-	const curs = useMemo(() => info.unit_amount / info.unit_cnt, [info]);
-	const minCount = info.unit_cnt_min;
-	const maxCount = info.unit_cnt_max;
-	const onlyInt = info.unit_only_int === 1;
+	const curs = useMemo(() => {
+		if (!info || info.unit_cnt === 0) return 1;
+		return info.unit_amount / info.unit_cnt;
+	}, [info]);
+
+	const minCount = info?.unit_cnt_min || 1;
+	const maxCount = info?.unit_cnt_max || 1;
+	const onlyInt = true;
 	const { setTotalPrice, setCnt } = usePrice();
 
 	const [inputPay, setInputPay] = useState(String(minCount));
@@ -68,9 +73,6 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 	const [valueIWillReceive, setValueIWillReceive] = useState(
 		onlyInt ? minCount * curs : minCount * curs,
 	);
-
-	console.log(valueIWillPay, "valueIWillPay");
-	console.log(valueIWillReceive, "valueIWillReceive");
 
 	function clampValue(value: number) {
 		let v = value;
@@ -149,7 +151,7 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		setInputPay(String(clampedPay));
 	};
 
-	const warningMessage = `Мин. сумма пополнения: ${minCount} ${info.unit_name}, Макс. сумма — ${maxCount} ${info.unit_name}`;
+	const warningMessage = `Мин. сумма пополнения: ${minCount} ${info?.unit_name}, Макс. сумма — ${maxCount} ${info?.unit_name}`;
 
 	useEffect(() => {
 		setTotalPrice(valueIWillReceive);
@@ -158,8 +160,6 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 	useEffect(() => {
 		setCnt(valueIWillPay);
 	}, [valueIWillPay, setCnt]);
-
-	console.log(valueIWillPay, "valueIWillPay");
 
 	return (
 		<div>
@@ -184,7 +184,9 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 				/>
 
 				<div className={cnx("container__item")}>
-					<div className={cnx("container__text")}>Получу, {info.unit_name}</div>
+					<div className={cnx("container__text")}>
+						Получу, {info?.unit_name}
+					</div>
 					<div className={cnx("container__field")}>
 						<InputField
 							value={inputPay}

@@ -25,7 +25,7 @@ export function useDigiSellerPayment(): UseDigiSellerPaymentResult {
 			id_d: data.product_id.toString(),
 			cart_uid: "",
 			lang: data.lang || "ru-RU",
-			agent: data.seller_id || "",
+			agent: "1254027",
 			unit_cnt: data.unit_cnt.toString(),
 			havetoshowoptions: "1",
 			_ow: "0",

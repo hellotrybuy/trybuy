@@ -100,9 +100,6 @@ export default function ProductActivation({ product }: Props) {
 		): number => {
 			const currencyRate = detectCurrencyRate(modify);
 
-			console.log(value, "value");
-			console.log(modify, "modify");
-
 			if (!type || type === "") {
 				return currentPrice;
 			}
@@ -155,61 +152,72 @@ export default function ProductActivation({ product }: Props) {
 	}, [formState, options, setIsValidForm]);
 
 	useEffect(() => {
-		let result = basePrice;
+		if (!isType_digi_product) {
+			let result = basePrice;
 
-		if (options) {
-			options.forEach((opt) => {
-				const value = formState[opt.name];
+			if (options) {
+				options.forEach((opt) => {
+					const value = formState[opt.name];
 
-				if (opt.type === "radio" && Array.isArray(opt.variants)) {
-					const selected = opt.variants?.find(
-						(v) => String(v.value) === String(value),
-					);
-					if (selected && selected.modify_value && selected.modify_type) {
-						result = applyModifier(
-							result,
-							selected.modify_type,
-							selected.modify_value,
-							selected.modify,
+					if (opt.type === "radio" && Array.isArray(opt.variants)) {
+						const selected = opt.variants?.find(
+							(v) => String(v.value) === String(value),
 						);
-					}
-				}
-
-				if (opt.type === "checkbox") {
-					if (typeof value === "boolean") {
-						if (value && opt.modify_value && opt.modify_type) {
+						if (selected && selected.modify_value && selected.modify_type) {
 							result = applyModifier(
 								result,
-								opt.modify_type,
-								Number(opt.modify_value),
-								opt.modify,
+								selected.modify_type,
+								selected.modify_value,
+								selected.modify,
 							);
 						}
-					} else if (typeof value === "object" && Array.isArray(opt.variants)) {
-						const group = value as Record<string, boolean>;
-						opt.variants?.forEach((variant) => {
-							if (group[variant.value]) {
-								if (variant.modify_value && variant.modify_type) {
-									result = applyModifier(
-										result,
-										variant.modify_type,
-										variant.modify_value,
-										variant.modify,
-									);
-								}
-							}
-						});
 					}
-				}
-			});
-		}
 
-		setTotalPrice(Math.round(result));
-	}, [formState, options, basePrice, setTotalPrice, applyModifier]);
+					if (opt.type === "checkbox") {
+						if (typeof value === "boolean") {
+							if (value && opt.modify_value && opt.modify_type) {
+								result = applyModifier(
+									result,
+									opt.modify_type,
+									Number(opt.modify_value),
+									opt.modify,
+								);
+							}
+						} else if (
+							typeof value === "object" &&
+							Array.isArray(opt.variants)
+						) {
+							const group = value as Record<string, boolean>;
+							opt.variants?.forEach((variant) => {
+								if (group[variant.value]) {
+									if (variant.modify_value && variant.modify_type) {
+										result = applyModifier(
+											result,
+											variant.modify_type,
+											variant.modify_value,
+											variant.modify,
+										);
+									}
+								}
+							});
+						}
+					}
+				});
+			}
+
+			setTotalPrice(Math.round(result));
+		}
+	}, [
+		formState,
+		options,
+		basePrice,
+		setTotalPrice,
+		applyModifier,
+		isType_digi_product,
+	]);
 
 	useEffect(() => {
 		const initialState: Record<string, any> = {};
-		console.log(options, "options validat");
 
 		if (options) {
 			options.forEach((opt) => {
@@ -272,6 +280,8 @@ export default function ProductActivation({ product }: Props) {
 			setCnt(1);
 		}
 	}, [isType_digi_product, setCnt]);
+
+	console.log(product[0].prices_unit, "product[0]");
 
 	if (options) {
 		return (
