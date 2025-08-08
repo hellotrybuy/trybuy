@@ -24,7 +24,7 @@ export function HomeGenries() {
 
 	const { categories } = useMainScreenCategories();
 
-	const { isMobile2 } = useIsMobile();
+	const { isMobile2, isBig } = useIsMobile();
 
 	const getGradint = (first: string, second: string) => {
 		return `radial-gradient(97.07% 97.07% at 100% 98.78%, ${first} 0%, ${second} 98.46%)`;
@@ -46,7 +46,7 @@ export function HomeGenries() {
 					<Swiper
 						modules={[Navigation, FreeMode]}
 						spaceBetween={isMobile2 ? 100 : 20}
-						slidesPerView={4}
+						slidesPerView={isBig ? 5 : 4}
 						slidesPerGroup={1}
 						navigation={{
 							prevEl: prevBtnRef.current,
