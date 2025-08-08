@@ -1,12 +1,9 @@
-@use "/src/scss/variables/transitions";
 @use "/src/scss/variables/breakpoints";
 
 .apps {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-
-	width: 174px;
+	gap: 5px;
 	height: 38px;
 	transform: translateY(3px);
 
@@ -19,72 +16,48 @@
 .app {
 	position: relative;
 	flex-shrink: 0;
-
 	width: 24px;
+	overflow: hidden;
+	border-radius: 90px;
+	transition: width 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+	display: flex;
+	align-items: center;
 
-	transition: transitions.$main;
-
-	@media screen and (min-width: breakpoints.$xl) {
-		&:hover {
-			// Для разных иконок приходиться ставить индивидульный размер
-			// Steam
-			&:nth-child(1) {
-				width: 91px;
-			}
-			// Xbox
-			&:nth-child(2) {
-				width: 79px;
-			}
-			// Playstation
-			&:nth-child(3) {
-				width: 119px;
-			}
-			// Nintendo
-			&:nth-child(4) {
-				width: 107px;
-			}
-			// Discord
-			&:nth-child(5) {
-				width: 107px;
-			}
-			// Microsoft
-			&:nth-child(6) {
-				width: 110px;
-			}
-
-			& img {
-				&:first-child {
-					opacity: 0;
-				}
-				&:last-child {
-					opacity: 1;
-				}
-			}
-		}
+	img {
+		flex-shrink: 0;
+		transition: filter 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 	}
 
-	& img {
-		opacity: 1;
-		transition: transitions.$main;
+	span {
+		white-space: nowrap;
+		margin-left: 8px;
+		transform: translateX(-20px);
+		opacity: 0;
+		transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+			opacity 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+	}
+}
 
-		pointer-events: none;
+.app:hover {
+	@media screen and (min-width: breakpoints.$lg) {
+		background: radial-gradient(
+			94.54% 94.54% at 0% 100%,
+			#f3f3f3 71.87%,
+			#b6b6b6 100%
+		);
+		max-width: 500px;
+		color: #373737;
+		font-size: 14px;
+		font-family: Mont;
+		padding: 6px;
 
-		&:first-child {
-			position: absolute;
-			top: 50%;
-			transform: translateY(-60%);
-
-			@media screen and (max-width: breakpoints.$xl) {
-				position: static;
-				transform: unset;
-			}
+		img {
+			filter: invert(1);
 		}
 
-		&:last-child {
-			opacity: 0;
-			@media screen and (max-width: breakpoints.$xl) {
-				display: none;
-			}
+		span {
+			transform: translateX(0);
+			opacity: 1;
 		}
 	}
 }

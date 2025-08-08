@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-
 import "./scss/global.scss";
 
 import Footer from "./widgets/footer";
@@ -12,9 +11,33 @@ import Navigation from "./pages/navigation";
 import { usePreventZoom } from "./hooks/usePreventZoom";
 import { SellerPage } from "./pages/seller";
 import { SeacrchProvider } from "./context";
+import { useCheckSecure } from "./hooks/useCheckSecure";
+import { SecurePage } from "./pages/secure";
+
+const DEV_UNLOCK_CODE = "533529";
+const STORAGE_KEY = "secureAccessToken";
+
+const isTokenValid = () => {
+	const tokenData = localStorage.getItem(STORAGE_KEY);
+	if (!tokenData) return false;
+	try {
+		const { code, expiresAt } = JSON.parse(tokenData);
+		if (code !== DEV_UNLOCK_CODE) return false;
+		return Date.now() < expiresAt;
+	} catch {
+		return false;
+	}
+};
 
 function App() {
 	usePreventZoom();
+
+	const { isStopSite } = useCheckSecure();
+
+	if (isStopSite === 1 && !isTokenValid()) {
+		return <SecurePage />;
+	}
+
 	return (
 		<BrowserRouter>
 			<SeacrchProvider>
@@ -33,7 +56,6 @@ function App() {
 					<MobileNavigation />
 					<Footer />
 
-					{/* Bg */}
 					<div className="bg-elements">
 						<div></div>
 						<div></div>

@@ -154,7 +154,7 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 	const warningMessage = `Мин. сумма пополнения: ${minCount} ${info?.unit_name}, Макс. сумма — ${maxCount} ${info?.unit_name}`;
 
 	useEffect(() => {
-		setTotalPrice(valueIWillReceive);
+		setTotalPrice(Math.round(valueIWillReceive));
 	}, [valueIWillReceive, setTotalPrice]);
 
 	useEffect(() => {

@@ -65,7 +65,7 @@ export function CatalogPage() {
 		}
 	}, [typesFromUrl]);
 
-	const [currentPage, setCurrentPage] = useState(0);
+	const [currentPage, setCurrentPage] = useState(1);
 	const [search, setSearch] = useState(searchFromUrl);
 	const [categoryId, setCategoryId] = useState(category);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
@@ -210,6 +210,7 @@ export function CatalogPage() {
 	}, []);
 
 	useEffect(() => {
+		console.log("Observe element:", loadMoreRef.current);
 		const observer = new IntersectionObserver(
 			(entries) => {
 				if (entries[0].isIntersecting && !productsFromCatLoading) {
@@ -228,7 +229,7 @@ export function CatalogPage() {
 				observer.unobserve(loadMoreRef.current);
 			}
 		};
-	}, [productsFromCatLoading, loadMoreRef, changePage]);
+	}, [productsFromCatLoading, loadMoreRef, changePage, totalPages, loadingCat]);
 
 	useEffect(() => {
 		const el = categoryRefs.current[categoryId ?? ""];
@@ -435,11 +436,18 @@ export function CatalogPage() {
 
 							<div className={cnx("main__cards")} key={categoryId}>
 								{<ProductCards data={catalogData} />}
-								{totalPages != currentPage && catalogData.length > 0 && (
-									<div ref={loadMoreRef}>
+								{totalPages > currentPage && (
+									<div
+										ref={loadMoreRef}
+										className={cnx("ref-load")}
+										style={{
+											minHeight: "100px",
+										}}
+									>
 										<ProductsSceleton isMargin={catalogData.length > 0} />
 									</div>
 								)}
+
 								{!(catalogData.length > 0) && totalPages == 0 && (
 									<div className={cnx("notFound")}>
 										К сожалению, по текущему поисковому запросу в данной

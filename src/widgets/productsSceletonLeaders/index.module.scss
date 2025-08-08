@@ -6,7 +6,7 @@
 	gap: 40px 25px;
 	justify-content: start;
 
-	@media screen and (max-width: 1260px) and (min-width: 990px) {
+	@media screen and (max-width: 1510px) and (min-width: 990px) {
 		grid-template-columns: repeat(5, 1fr);
 	}
 

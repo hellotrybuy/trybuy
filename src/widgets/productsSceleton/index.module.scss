@@ -2,13 +2,10 @@
 
 .cards {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: 40px 25px;
 	justify-content: start;
-
-	@media screen and (max-width: 1232px) and (min-width: 990px) {
-		grid-template-columns: repeat(4, 1fr);
-	}
+	min-height: 200px;
 
 	@media screen and (max-width: breakpoints.$lg) {
 		grid-template-columns: repeat(auto-fit, minmax(159px, 1fr));
