@@ -11,6 +11,12 @@
 	box-sizing: border-box;
 	text-align: center;
 	position: relative;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		flex-direction: column;
+		width: 100%;
+		gap: 5px;
+	}
 }
 
 .logo {
@@ -31,6 +37,10 @@
 	flex-direction: column;
 	gap: 25px;
 	align-items: center;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		width: 100%;
+	}
 }
 
 .title {
@@ -102,6 +112,14 @@
 	flex-direction: column;
 	font-family: Mont;
 	font-weight: 600;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		position: unset;
+		left: unset;
+		bottom: unset;
+		transform: unset;
+		width: 100%;
+	}
 }
 
 .inp {

@@ -2,6 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useCheckSecure } from "../../hooks/useCheckSecure";
 import styles from "./secure.module.scss";
 import classNames from "classnames/bind";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const cn = classNames.bind(styles);
 
@@ -91,8 +92,54 @@ export const SecurePage: FC = () => {
 		}
 	};
 
+	const { isMobile } = useIsMobile();
+
 	if (loading) return null;
 	if (isStopSite !== 1 || authorized) return null;
+
+	if (isMobile) {
+		<div className={cn("secure-wrapper")}>
+			<div className={cn("secure-box")}>
+				<img
+					className={cn("logo")}
+					src="/iconsFolder/common/logo.svg"
+					alt="TryBuy"
+				/>
+				<h1 className={cn("title")}>Мы временно на техническом обслуживании</h1>
+				<div className={cn("description")}>
+					<p>Наша площадка сейчас проходит плановое обновление.</p>
+					<p>
+						Мы улучшаем платформу, чтобы сделать покупки и продажи ещё удобнее,
+						быстрее и безопаснее. Благодарим за понимание и терпение 🙏
+					</p>
+					<p>Скоро снова увидимся!</p>
+				</div>
+
+				<div className={cn("field")}>
+					<div>Вход для администраторов</div>
+					<div className={cn("inp")}>
+						{code.map((char, idx) => (
+							<input
+								key={idx}
+								type="text"
+								inputMode="numeric"
+								maxLength={1}
+								value={char}
+								onChange={(e) => handleChange(e.target.value, idx)}
+								onKeyDown={(e) => handleKeyDown(e, idx)}
+								ref={(el) => {
+									inputsRef.current[idx] = el;
+								}}
+								className={cn("code-input")}
+								autoComplete="off"
+								spellCheck={false}
+							/>
+						))}
+					</div>
+				</div>
+			</div>
+		</div>;
+	}
 
 	return (
 		<div className={cn("secure-wrapper")}>
