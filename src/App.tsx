@@ -13,6 +13,7 @@ import { SellerPage } from "./pages/seller";
 import { SeacrchProvider } from "./context";
 import { useCheckSecure } from "./hooks/useCheckSecure";
 import { SecurePage } from "./pages/secure";
+import DownloadBanner from "./widgets/downloadBanner";
 
 const DEV_UNLOCK_CODE = "533529";
 const STORAGE_KEY = "secureAccessToken";
@@ -43,6 +44,7 @@ function App() {
 			<SeacrchProvider>
 				<div className="wrapper">
 					<Header />
+					<DownloadBanner />
 					<main className="main">
 						<Routes>
 							<Route path="/" element={<Home />} />

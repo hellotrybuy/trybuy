@@ -1,0 +1,216 @@
+.banner {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: #333940;
+	color: white;
+	padding: 12px 20px;
+	border-radius: 0 0 16px 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: 600;
+	z-index: 1000;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+	&__content {
+		flex-grow: 1;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&__text {
+			display: flex;
+			flex-direction: column;
+			gap: 5px;
+			width: fit-content;
+			max-width: 210px;
+
+			&__tag {
+				font-family: Unbounded;
+				font-weight: 400;
+				font-style: Regular;
+				font-size: 12px;
+				line-height: 128%;
+				letter-spacing: -2%;
+			}
+
+			&__desk {
+				font-family: Mont;
+				font-weight: 600;
+				font-style: Regular;
+				font-size: 9px;
+				line-height: 110%;
+				letter-spacing: 0%;
+			}
+		}
+	}
+
+	&__close {
+		border: none;
+		background-color: white;
+		font-size: 20px;
+		cursor: pointer;
+		position: relative;
+		width: 36px;
+		height: 36px;
+		border-radius: 90px;
+
+		img {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			filter: invert(1);
+		}
+	}
+}
+
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1500;
+}
+
+.modalContent {
+	background-color: #333940;
+	padding: 24px 32px;
+	border-radius: 12px;
+	max-width: 400px;
+	width: 90%;
+	text-align: center;
+
+	h2 {
+		margin-bottom: 20px;
+		font-family: Unbounded;
+		font-weight: 400;
+		font-style: Regular;
+		font-size: 12px;
+		line-height: 140%;
+		letter-spacing: 0%;
+	}
+
+	p {
+		color: #222;
+	}
+}
+
+.banner_hidden {
+	transform: translateY(-120%);
+	opacity: 0;
+	pointer-events: none;
+	transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+// <div className={cnx("ios__instr")}>
+// 	<div className={cnx("ios__instr__item")}>
+// 		<div className={cnx("ios__instr__item__num")}>1</div>
+// 		<div className={cnx("ios__instr__item__text")}>asdasdadasdasd</div>
+// 	</div>
+// </div>
+.ios__instr {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 10px;
+
+	&__item {
+		display: flex;
+		gap: 11px;
+		align-items: center;
+
+		&__goHome {
+			font-family: Mont;
+			font-weight: 800;
+			font-style: Regular;
+			font-size: 9px;
+			leading-trim: NONE;
+			line-height: 110%;
+			letter-spacing: 0%;
+		}
+
+		&__num {
+			width: 24px;
+			height: 24px;
+			background-color: #d9d9d9;
+			border-radius: 5px;
+			position: relative;
+
+			p {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-family: Unbounded;
+				font-weight: 400;
+				font-style: Regular;
+				font-size: 12px;
+				line-height: 140%;
+				letter-spacing: 0%;
+				text-align: center;
+				margin: 0;
+			}
+		}
+
+		&__text {
+			font-family: Mont;
+			font-weight: 600;
+			font-size: 9px;
+			leading-trim: NONE;
+			line-height: 110%;
+			letter-spacing: 0%;
+			display: flex;
+			gap: 2px;
+			flex-direction: column;
+
+			&__flex {
+				display: flex;
+				gap: 2px;
+			}
+
+			p {
+				color: white;
+			}
+
+			a {
+				text-decoration: underline;
+				font-size: 800;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+.flex {
+	flex-direction: row !important;
+	align-items: center;
+	gap: 11px;
+}
+
+.flexHome {
+	flex-direction: row !important;
+	align-items: center;
+	gap: 5px;
+}
+
+.icon {
+	margin-top: -7px;
+}
+
+.downTypes {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+
+	img {
+		cursor: pointer;
+	}
+}
