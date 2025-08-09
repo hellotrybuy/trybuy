@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 
 import { CONTAINER } from "../../constants/classnames";
 import ProductHeader from "./templates/header";
-import Breadcrumbs from "../../components/breadcrumbs";
+import Breadcrumbs, { Crumb } from "../../components/breadcrumbs";
 import ProductPay from "./templates/pay";
 import ProductDescription from "./templates/description";
 import ProductExtraInfo from "./templates/extra-info";
@@ -13,7 +13,7 @@ import OtherProducts from "./templates/other-products";
 import { useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PriceProvider } from "./context";
 import { scrollFixed } from "../../lib/scroll-fixed";
 import DigisellerChat from "../../widgets/seller-chat";
@@ -59,9 +59,21 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		window.addEventListener("scroll", computeScroll);
 	}, [isHidden]);
 
+	const crumbs: Crumb[] = useMemo(() => {
+		return [
+			{ label: "Главная", href: "/" },
+			{ label: "Каталог", href: "/catalog" },
+			{
+				label: product[0].name,
+				href: `/catalog/${product[0].id_product}`,
+				isActive: true,
+			},
+		];
+	}, [product]);
+
 	return (
 		<div className={cnx("product")}>
-			<Breadcrumbs />
+			<Breadcrumbs crumbs={crumbs} />
 			<div className={CONTAINER}>
 				<div className={cnx("product__inner")}>
 					<div className={cnx("product__main")}>

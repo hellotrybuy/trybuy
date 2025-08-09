@@ -5,7 +5,7 @@ const cnx = classNames.bind(styles);
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import Breadcrumbs from "../../components/breadcrumbs";
+import Breadcrumbs, { Crumb } from "../../components/breadcrumbs";
 import Button from "../../components/button";
 import { CONTAINER } from "../../constants/classnames";
 import ProductCards from "../../widgets/product-cards";
@@ -211,8 +211,9 @@ export function CatalogPage() {
 		window.scrollTo(0, 0);
 	}, []);
 
+	console.log("Observe element:", catalogData);
+
 	useEffect(() => {
-		console.log("Observe element:", loadMoreRef.current);
 		const observer = new IntersectionObserver(
 			(entries) => {
 				if (entries[0].isIntersecting && !productsFromCatLoading) {
@@ -274,13 +275,16 @@ export function CatalogPage() {
 		return null;
 	}, [commerceProucts]);
 
-	console.log(commerceProuct, "productsproductsproducts");
+	const crumbs: Crumb[] = [
+		{ label: "Главная", href: "/" },
+		{ label: "Каталог", href: "/catalog", isActive: true },
+	];
 
 	if (loadingCat) return;
 
 	return (
 		<div className={cnx("catalog")}>
-			<Breadcrumbs />
+			<Breadcrumbs crumbs={crumbs} />
 			<div className={CONTAINER}>
 				<div className={cnx("catalog__inner")}>
 					<div className={cnx("catalog__categories", "categories")}>

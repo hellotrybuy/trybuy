@@ -66,7 +66,7 @@ export function ProductCard({
 
 			{/* Основная карточка */}
 			<Link
-				to={`/product/${product.id_product}`}
+				to={`/catalog/product/${product.id_product}`}
 				className={cnx("link")}
 				style={{ display: isImageLoaded ? "block" : "none" }} // 👈 скрыта до загрузки
 			>

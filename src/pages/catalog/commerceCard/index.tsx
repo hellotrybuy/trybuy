@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import cnx from "classnames/bind";
 import styles from "../index.module.scss";
 import Button from "../../../components/button";
+import { Link } from "react-router";
 
 const cx = cnx.bind(styles);
 
@@ -28,9 +29,9 @@ export function CommerceCard({ product }) {
 		return `https://test.try-buy.ru/${image}`;
 	};
 
-	const handleClick = () => {
-		window.location.href = `/product/${product.id_product}`;
-	};
+	// const handleClick = () => {
+	// 	window.location.href = `/catalog/product/${product.id_product}`;
+	// };
 
 	if (isMobile) {
 		return (
@@ -46,10 +47,14 @@ export function CommerceCard({ product }) {
 						<strong className={cx("box__price")}>{product.price} руб.</strong>
 					</div>
 				</div>
-
-				<Button className={cx("box__btn")} onClick={handleClick}>
-					Купить
-				</Button>
+				<Link
+					to={`/catalog/product/${product.id_product}`}
+					style={{
+						width: "100%",
+					}}
+				>
+					<Button className={cx("box__btn")}>Купить</Button>
+				</Link>
 			</div>
 		);
 	}
@@ -103,9 +108,11 @@ export function CommerceCard({ product }) {
 				</div>
 				<b className={cx("box__title")}>{product.name}</b>
 				<div className={cx("box__actions")}>
-					<Button className={cx("box__btn")} onClick={handleClick}>
-						Купить за {product.price} ₽
-					</Button>
+					<Link to={`/catalog/product/${product.id_product}`}>
+						<Button className={cx("box__btn")}>
+							Купить за {product.price} ₽
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>

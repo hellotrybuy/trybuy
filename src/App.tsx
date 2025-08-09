@@ -52,7 +52,7 @@ function App() {
 							<Route path="/product" element={<ProductPage />} />
 							<Route path="/catalog" element={<CatalogPage />} />
 							<Route path="/seller" element={<SellerPage />} />
-							<Route path="/product/:id" element={<ProductPage />} />
+							<Route path="/catalog/product/:id" element={<ProductPage />} />
 						</Routes>
 					</main>
 					<MobileNavigation />

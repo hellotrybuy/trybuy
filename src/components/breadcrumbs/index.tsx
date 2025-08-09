@@ -4,7 +4,7 @@ import { CONTAINER } from "../../constants/classnames";
 
 const cnx = classNames.bind(styles);
 
-type Crumb = {
+export type Crumb = {
 	label: string;
 	href?: string;
 	isActive?: boolean;
