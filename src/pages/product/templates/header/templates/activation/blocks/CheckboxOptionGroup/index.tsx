@@ -1,5 +1,6 @@
 import Checkbox from "../../../../../../../../components/filters/checkbox";
 import { OptionItem } from "../../../../../../../../hooks/types";
+import { usePrice } from "../../../../../../context";
 import styles from "../../index.module.scss";
 import classNames from "classnames/bind";
 
@@ -18,11 +19,14 @@ export default function CheckboxOptionGroup({
 	onChange,
 	isInvalid,
 }: Props) {
-	if (!values) return;
+	const { formSubmitted } = usePrice();
+
+	if (!values) return null;
+
+	const showInvalid = (formSubmitted || isInvalid) && isInvalid;
+
 	return (
 		<div className={cnx("activation__block")}>
-			{isInvalid && "невалидно"}
-
 			<h3 className={cnx("activation__title")}>{option.label}</h3>
 			<div className={cnx("activation__options")}>
 				{option.variants?.map((elem) => (
@@ -34,6 +38,7 @@ export default function CheckboxOptionGroup({
 						checked={values[elem.value] || false}
 						onChange={() => onChange(option.name, elem.value)}
 						id={option.id}
+						invalid={showInvalid}
 					/>
 				))}
 			</div>

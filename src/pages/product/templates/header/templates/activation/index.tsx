@@ -28,8 +28,14 @@ export default function ProductActivation({ product }: Props) {
 	// const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>(
 	// 	{},
 	// );
-	const [invalidFields] = useState<Record<string, boolean>>({});
-	const { setTotalPrice, setForm, setCnt, setIsValidForm } = usePrice();
+	const {
+		setTotalPrice,
+		setForm,
+		setCnt,
+		validateForm,
+		invalidFields,
+		formSubmitted,
+	} = usePrice();
 	const [expandedRadios, setExpandedRadios] = useState<Record<string, boolean>>(
 		{},
 	);
@@ -114,42 +120,10 @@ export default function ProductActivation({ product }: Props) {
 	);
 
 	useEffect(() => {
-		// if (!options) {
-		// 	setIsValidForm(true);
-		// 	return;
-		// }
-
-		// const newInvalidFields: Record<string, boolean> = {};
-
-		// const isValid = options.every((opt) => {
-		// 	if (opt.required !== 1) return true;
-
-		// 	const value = formState[opt.name];
-		// 	let valid = false;
-
-		// 	if (opt.type === "text") {
-		// 		valid = typeof value === "string" && value.trim() !== "";
-		// 	} else if (opt.type === "radio") {
-		// 		valid = typeof value === "string" && value !== "";
-		// 	} else if (opt.type === "checkbox") {
-		// 		if (typeof value === "boolean") {
-		// 			valid = value === true;
-		// 		} else if (typeof value === "object" && value !== null) {
-		// 			valid = Object.values(value).some((v) => v === true);
-		// 		}
-		// 	}
-
-		// 	if (!valid) {
-		// 		newInvalidFields[opt.name] = true;
-		// 	}
-
-		// 	return valid;
-		// });
-
-		// setInvalidFields(newInvalidFields);
-		// setIsValidForm(isValid);
-		setIsValidForm(true);
-	}, [formState, options, setIsValidForm]);
+		if (formSubmitted) {
+			validateForm(options);
+		}
+	}, [formState, formSubmitted]);
 
 	useEffect(() => {
 		if (!isType_digi_product) {
@@ -281,11 +255,29 @@ export default function ProductActivation({ product }: Props) {
 		}
 	}, [isType_digi_product, setCnt]);
 
-	console.log(product[0].prices_unit, "product[0]");
+	const showInvalidGlobal = useMemo(() => {
+		return formSubmitted && Object.values(invalidFields).some(Boolean);
+	}, [formSubmitted, invalidFields]);
+
+	const [showWarning, setShowWarning] = useState(showInvalidGlobal);
+
+	useEffect(() => {
+		setShowWarning(showInvalidGlobal);
+	}, [showInvalidGlobal]);
 
 	if (options) {
 		return (
 			<div className={cnx("activation")}>
+				{showWarning && (
+					<div className={cnx("warning")}>
+						<p> Пожалуйста проверьте, что заполнены все необходимые поля</p>
+						<img
+							src="/iconsFolder/common/close.svg"
+							alt="Закрыть"
+							onClick={() => setShowWarning(false)}
+						/>
+					</div>
+				)}
 				<div className={cnx("activation__inner")}>
 					{isType_digi_product && product[0].prices_unit != "" && (
 						<div className={cnx("rev")}>
@@ -311,7 +303,6 @@ export default function ProductActivation({ product }: Props) {
 									key={el.name}
 									option={el}
 									value={formState[el.name] as string}
-									isInvalid={invalidFields[el.name]}
 									onChange={(name, value) =>
 										setFormState((prev) => ({ ...prev, [name]: value }))
 									}

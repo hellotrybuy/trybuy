@@ -12,7 +12,30 @@
 	}
 }
 
+.warning {
+	background-color: #d9831b;
+	z-index: 3;
+	top: 100%;
+
+	padding: 13px;
+	display: flex;
+	width: 350px;
+	border-radius: 15px;
+	position: absolute;
+
+	@media screen and (max-width: breakpoints.$sm) {
+		width: 100%;
+	}
+
+	img {
+		margin-bottom: auto;
+		margin-top: -1px;
+		cursor: pointer;
+	}
+}
+
 .activation {
+	position: relative;
 	&__inner {
 		display: flex;
 		flex-direction: column;

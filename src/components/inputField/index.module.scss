@@ -1,6 +1,10 @@
 @use "/src/scss/variables/breakpoints";
 @use "/src/scss/variables/colors";
 
+.isInvalid {
+	border: 1px solid #dc8d2d !important;
+}
+
 .replenishment {
 	&__inner {
 		display: flex;

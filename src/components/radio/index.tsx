@@ -7,7 +7,7 @@ const cnx = classNames.bind(styles);
 interface IRadio extends InputHTMLAttributes<HTMLInputElement> {
 	caption: string;
 	className?: string;
-	onValueChange?: (value: string) => void; // кастомный коллбэк
+	onValueChange?: (value: string) => void;
 }
 
 export function Radio({
@@ -19,9 +19,9 @@ export function Radio({
 	...attributes
 }: IRadio) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		onChange?.(e); // вызов стандартного onChange, если передан
+		onChange?.(e);
 		if (onValueChange) {
-			onValueChange(e.target.value); // <-- правильное значение!
+			onValueChange(e.target.value);
 		}
 	};
 

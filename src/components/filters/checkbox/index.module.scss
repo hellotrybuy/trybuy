@@ -1,6 +1,10 @@
 @use "/src/scss/variables/breakpoints";
 @use "/src/scss/variables/colors";
 
+.isInvalid {
+	border: 1px solid #dc8d2d !important;
+}
+
 .checkbox {
 	position: relative;
 
@@ -31,6 +35,7 @@
 		border-radius: 4px;
 		background: #696969;
 		border: 1px #696969 solid;
+		box-sizing: border-box;
 
 		&::after {
 			content: "";
