@@ -21,7 +21,8 @@ export default function TextOptionField({ option, value, onChange }: Props) {
 		setTouched(true);
 	};
 
-	const isInvalid = (touched || formSubmitted) && !value.trim();
+	const isInvalid =
+		(touched || formSubmitted) && !value.trim() && option.required == 1;
 
 	return (
 		<div className={cnx("activation__block")}>

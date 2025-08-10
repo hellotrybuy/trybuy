@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import Breadcrumbs, { Crumb } from "../../components/breadcrumbs";
-import Button from "../../components/button";
 import { CONTAINER } from "../../constants/classnames";
 import ProductCards from "../../widgets/product-cards";
 import {

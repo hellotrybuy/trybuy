@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import cnx from "classnames/bind";
 import styles from "../index.module.scss";
 import Button from "../../../components/button";

@@ -25,9 +25,7 @@ export default function ProductActivation({ product }: Props) {
 	const options = useMemo(() => {
 		return JSON.parse(product[0].options) as OptionItem[];
 	}, [product]);
-	// const [invalidFields, setInvalidFields] = useState<Record<string, boolean>>(
-	// 	{},
-	// );
+
 	const {
 		setTotalPrice,
 		setForm,
@@ -258,6 +256,8 @@ export default function ProductActivation({ product }: Props) {
 	const showInvalidGlobal = useMemo(() => {
 		return formSubmitted && Object.values(invalidFields).some(Boolean);
 	}, [formSubmitted, invalidFields]);
+
+	console.log(showInvalidGlobal, "showInvalidGlobal");
 
 	const [showWarning, setShowWarning] = useState(showInvalidGlobal);
 

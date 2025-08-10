@@ -19,7 +19,7 @@ interface PriceContextType {
 	formSubmitted: boolean;
 	setFormSubmitted: (value: boolean) => void;
 
-	validateForm: (options: OptionItem[]) => boolean;
+	validateForm: (options: OptionItem[], force?: boolean) => boolean;
 }
 
 const PriceContext = createContext<PriceContextType | undefined>(undefined);
@@ -33,8 +33,8 @@ export function PriceProvider({ children }: { children: React.ReactNode }) {
 	);
 	const [formSubmitted, setFormSubmitted] = useState(false);
 
-	const validateForm = (options: OptionItem[]) => {
-		if (!formSubmitted) {
+	const validateForm = (options: OptionItem[], force = false) => {
+		if (!formSubmitted && !force) {
 			setInvalidFields({});
 			return false;
 		}

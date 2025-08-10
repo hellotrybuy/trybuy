@@ -142,6 +142,7 @@ export function ProductPay({ product }: Props) {
 					if (
 						!validateForm(
 							product[0]?.options ? JSON.parse(product[0].options) : [],
+							true,
 						)
 					) {
 						console.log("Форма не заполнена");
