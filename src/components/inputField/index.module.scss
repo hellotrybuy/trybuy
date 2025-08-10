@@ -3,6 +3,7 @@
 
 .isInvalid {
 	border: 1px solid #dc8d2d !important;
+	transition: 0.3s ease;
 }
 
 .replenishment {
@@ -60,6 +61,7 @@
 		padding: 0 16px;
 		border: 1px rgb(255, 255, 255, 0.2) solid;
 		background-color: #42454f;
+		transition: 0.3s ease;
 
 		@media screen and (max-width: breakpoints.$lg) {
 			flex: 1 1 100%;

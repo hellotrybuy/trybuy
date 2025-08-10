@@ -101,7 +101,7 @@ interface Props {
 }
 
 export function MobilePay({ product }: Props) {
-	const { totalPrice, form, cnt } = usePrice();
+	const { totalPrice, form, cnt, validateForm, setFormSubmitted } = usePrice();
 
 	const newFormData = useMemo(() => {
 		return prepareOptionsForApi(transformOptions(form));
@@ -132,6 +132,17 @@ export function MobilePay({ product }: Props) {
 			className={cnx("product__buy-btn")}
 			size="large"
 			onClick={() => {
+				setFormSubmitted(true);
+
+				if (
+					!validateForm(
+						product[0]?.options ? JSON.parse(product[0].options) : [],
+						true,
+					)
+				) {
+					console.log("Форма не заполнена");
+					return;
+				}
 				sendRequest(dataFromAPI);
 			}}
 		>
