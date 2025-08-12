@@ -13,6 +13,7 @@ interface HeaderMobileNavProps {
 	isCatalogOpen: boolean;
 	setIsCatalogOpen: (value: boolean) => void;
 	setIsSearchOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	refProp: React.RefObject<HTMLDivElement>;
 }
 
 export function HeaderMobileNav({
@@ -21,10 +22,11 @@ export function HeaderMobileNav({
 	isCatalogOpen,
 	setIsCatalogOpen,
 	setIsSearchOpen,
+	refProp,
 }: HeaderMobileNavProps) {
 	const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside([ref], () => setIsSearchOpen(false));
+	useClickOutside([ref, refProp], () => setIsSearchOpen(false));
 	const openCatalog = useCallback(() => {
 		setIsCatalogOpen(!isCatalogOpen);
 		setIsSearchOpen(false);

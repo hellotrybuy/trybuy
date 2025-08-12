@@ -1,29 +1,46 @@
 import { useEffect, useState } from "react";
-import { SearchResponse } from "./types";
+
+export interface Category {
+	id: number;
+	name: string;
+	url: string;
+	cnt: number;
+	preview: string;
+}
+
+export interface Type {
+	id: number;
+	name: string;
+	url: string;
+}
+
+export interface CategoriesAndTypes {
+	categories: Category[];
+	types: Type[];
+}
 
 export function useSearch(search: string = "") {
-	const [data, setData] = useState<SearchResponse | null>(null);
-	const [totalPages, setTotalPages] = useState(0);
+	const [data, setData] = useState<CategoriesAndTypes | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchSearch = async () => {
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
-
-			const url = `${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&search=${search}`;
+			const url = `${baseUrl}/engine/functions/ajax/search.php?search=${encodeURIComponent(
+				search,
+			)}`;
 
 			try {
-				const res = await fetch(url.toString());
-
+				const res = await fetch(url);
 				const text = await res.text();
 
 				try {
-					const json: SearchResponse = JSON.parse(text);
+					const json: CategoriesAndTypes = JSON.parse(text);
 					setData(json);
-					setTotalPages(json.totalPages);
 				} catch (parseErr) {
 					console.error("Ошибка JSON:", parseErr);
+					setData(null);
 				}
 			} finally {
 				setLoading(false);
@@ -34,8 +51,8 @@ export function useSearch(search: string = "") {
 	}, [search]);
 
 	return {
-		products: data?.products ?? [],
+		categories: data?.categories ?? [],
+		types: data?.types ?? [],
 		loading,
-		totalPages: totalPages,
 	};
 }

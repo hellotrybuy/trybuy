@@ -210,8 +210,6 @@ export function CatalogPage() {
 		window.scrollTo(0, 0);
 	}, []);
 
-	console.log("Observe element:", catalogData);
-
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -243,8 +241,6 @@ export function CatalogPage() {
 			});
 		}
 	}, [categorys, categoryId]);
-
-	console.log(productsFromCat, "productsFromCat");
 
 	useEffect(() => {
 		if (!productsFromCat) return;

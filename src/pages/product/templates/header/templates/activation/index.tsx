@@ -257,8 +257,6 @@ export default function ProductActivation({ product }: Props) {
 		return formSubmitted && Object.values(invalidFields).some(Boolean);
 	}, [formSubmitted, invalidFields]);
 
-	console.log(showInvalidGlobal, "showInvalidGlobal");
-
 	const [showWarning, setShowWarning] = useState(showInvalidGlobal);
 
 	useEffect(() => {
