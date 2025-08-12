@@ -118,7 +118,9 @@ export function Header() {
 												<Link
 													to={`/catalog/?search=${encodeURIComponent(
 														category.name,
-													)}`}
+													)}&main_category=${
+														category.parent_id
+													}&second_category=${category.id}`}
 													className={cnx("item")}
 													onClick={() => {
 														setIsSearchOpen(false);
@@ -147,7 +149,11 @@ export function Header() {
 														<Link
 															to={`/catalog?content_type=${
 																type.url
-															}&search=${encodeURIComponent(category.name)}`}
+															}&search=${encodeURIComponent(
+																category.name,
+															)}&main_category=${
+																category.parent_id
+															}&second_category=${category.id}`}
 															className={cnx("item")}
 															onClick={() => {
 																setIsSearchOpen(false);

@@ -6,6 +6,7 @@ export interface Category {
 	url: string;
 	cnt: number;
 	preview: string;
+	parent_id: number;
 }
 
 export interface Type {

@@ -2,7 +2,6 @@ import { FC } from "react";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 import { CONTAINER } from "../../constants/classnames";
-import Button from "../../components/button";
 import { Link } from "react-router";
 
 const cnx = classNames.bind(styles);

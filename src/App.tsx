@@ -15,6 +15,7 @@ import { useCheckSecure } from "./hooks/useCheckSecure";
 import { SecurePage } from "./pages/secure";
 import DownloadBanner from "./widgets/downloadBanner";
 import NotFoundPage from "./pages/not_found";
+import TextPage from "./pages/textPage";
 
 const DEV_UNLOCK_CODE = "533529";
 const STORAGE_KEY = "secureAccessToken";
@@ -55,6 +56,13 @@ function App() {
 							<Route path="/catalog" element={<CatalogPage />} />
 							<Route path="/seller" element={<SellerPage />} />
 							<Route path="/catalog/product/:id" element={<ProductPage />} />
+
+							{/* Типовые странички */}
+							<Route path="/rules" element={<TextPage />} />
+							<Route path="/support" element={<TextPage />} />
+							<Route path="/customer_oferta" element={<TextPage />} />
+							<Route path="/seller_offerta" element={<TextPage />} />
+							<Route path="/privacy" element={<TextPage />} />
 						</Routes>
 					</main>
 					<MobileNavigation />
