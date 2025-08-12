@@ -92,6 +92,15 @@
 	}
 }
 
+.catalog__main__down {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row-reverse;
+	gap: 20px;
+	justify-content: space-between;
+	width: 100%;
+}
+
 // .aside {
 // 	display: flex;
 // 	flex-direction: column;

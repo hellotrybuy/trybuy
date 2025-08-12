@@ -1,9 +1,14 @@
-@use "/src/scss/variables/transitions";
-@use "/src/scss/variables/zIndex";
-
 .filter {
 	position: relative;
-	z-index: zIndex.$z-index-100;
+	z-index: 1000;
+
+	&__swipe {
+		background-color: #d9d9d933;
+		width: 96px;
+		height: 6px;
+		margin: 0 auto;
+		border-radius: 50px;
+	}
 
 	&__btn {
 		position: relative;
@@ -21,79 +26,56 @@
 		background: linear-gradient(90deg, #0077ff, #222834);
 
 		animation: filter 7s ease-in infinite forwards;
-		// animation-iteration-count: 2;
-	}
-
-	&__con {
-		overflow-y: auto;
-		height: 90%;
 	}
 
 	&__body {
 		position: fixed;
 		z-index: 50;
-		top: 90px;
-		right: -100%;
+
+		bottom: -100%;
+		left: 0;
 
 		width: 100vw;
-		height: calc(100vh - 190px);
+		height: 80vh;
 
 		padding: 30px 40px;
-		border-radius: 20px 0 0 20px;
+		padding-top: 15px;
+		border-radius: 20px 20px 0 0;
 		background: radial-gradient(farthest-corner at 100% 50%, #242f42, #222834);
 
-		overflow: hidden;
-		overflow-y: scroll;
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		transition: bottom 0.3s ease-in-out;
 
 		&._open {
-			transform: translateX(-98%);
+			bottom: 0;
 		}
 	}
 
-	&__body-inner {
-		display: flex;
-		flex-direction: column;
-		gap: 40px;
-
-		touch-action: pan-y;
-		height: 80%;
-
+	&__con {
+		height: 90%;
 		overflow-y: auto;
-		flex: 1 1 auto;
-		min-height: 0;
-	}
-
-	&__block {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	&__title {
-		font-family: "Inter", sans-serif;
-		font-weight: 600;
-	}
-
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
+		padding-bottom: 50px;
+		padding-top: 50px;
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black 15%,
+			black 85%,
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black 15%,
+			black 85%,
+			transparent 100%
+		);
 	}
 
 	&__close {
-		position: absolute;
-		top: 30px;
-		right: 30px;
-
-		display: flex;
-		align-items: center;
-		justify-content: center;
-
-		width: 44px;
-		height: 44px;
-
-		border-radius: 100%;
-		background-color: #333940;
+		width: 100%;
 	}
 }
 

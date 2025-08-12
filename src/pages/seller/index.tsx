@@ -15,6 +15,7 @@ import Button from "../../components/button";
 import ProductCards from "../../widgets/product-cards";
 import { SellerHeader } from "./blocks/sellerHeader";
 import { useProductList } from "../../hooks/useProductList";
+import { FilterButton } from "../catalog/filterButton";
 
 const cnx = classNames.bind(styles);
 
@@ -24,7 +25,9 @@ export function SellerPage() {
 	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 	const [selectedType, setSelectedType] = useState<string[]>([]);
 	const [selectSecondCat, setSelectSecondCat] = useState("");
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+	const toggleFilter = () => setIsFilterOpen((v) => !v);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
 	const { products } = useProductList(1, 15);
 	return (
@@ -83,12 +86,20 @@ export function SellerPage() {
 										"seller-filter-mobile",
 									)}
 								>
-									<Select
-										onChange={(newValue) => setSelectValue(newValue)}
-										value={selectValue}
-										options={selectOptions}
-									/>
+									<div className={cnx("catalog__main__down")}>
+										<Select
+											onChange={(newValue) => setSelectValue(newValue)}
+											value={selectValue}
+											options={selectOptions}
+										/>
+										<FilterButton
+											onClick={toggleFilter}
+											isOpen={isFilterOpen}
+										/>
+									</div>
 									<FilterMobile
+										isOpen={isFilterOpen}
+										onClose={() => setIsFilterOpen(false)}
 										category={""}
 										platforms={[]}
 										selectedPlatforms={selectedPlatforms}

@@ -1,0 +1,16 @@
+.filter__btn {
+	background: radial-gradient(
+		54.17% 54.17% at 73.61% 27.78%,
+		#3d97ff 0%,
+		#0077ff 100%
+	);
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	text-wrap: nowrap;
+	padding: 5px 10px;
+	font-family: "Mont";
+	font-weight: 400;
+	color: #ffffff;
+}

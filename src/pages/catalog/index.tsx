@@ -16,7 +16,6 @@ import {
 	CATALOG_TYPES,
 } from "../../constants/searchParams";
 import Select from "../../components/select";
-import FilterMobile from "../../widgets/mobile-filter";
 import { Filers } from "../../components/filters";
 import { ChapterSearch } from "./chapterSearch";
 import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
@@ -31,6 +30,8 @@ import ProductsSceleton from "../../widgets/productsSceleton";
 import { useSearchContext } from "../../context";
 import { useGetCommerceProduct } from "../../hooks/useGetCommerceProduct";
 import { CommerceCard } from "./commerceCard";
+import { FilterButton } from "./filterButton";
+import { FilterMobile } from "../../widgets/mobile-filter";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -94,6 +95,9 @@ export function CatalogPage() {
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
 	const { categorys, loading: loadingCat } = useGetGreatCategories();
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+	const toggleFilter = () => setIsFilterOpen((v) => !v);
 
 	const { platforms } = useGetPlatforms(categoryId);
 	const { types: productTypes } = useGetProductTypes(categoryId);
@@ -336,12 +340,17 @@ export function CatalogPage() {
 						</div>
 						<div className={cnx("catalog__main", "main")}>
 							<div className={cnx("catalog__filter-mobile", "filter-mobile")}>
-								<Select
-									onChange={(newValue) => setSelectValue(newValue)}
-									value={selectValue}
-									options={selectOptions}
-								/>
+								<div className={cnx("catalog__main__down")}>
+									<Select
+										onChange={(newValue) => setSelectValue(newValue)}
+										value={selectValue}
+										options={selectOptions}
+									/>
+									<FilterButton onClick={toggleFilter} isOpen={isFilterOpen} />
+								</div>
 								<FilterMobile
+									isOpen={isFilterOpen}
+									onClose={() => setIsFilterOpen(false)}
 									platforms={platforms}
 									category={categoryId}
 									selectedPlatforms={selectedPlatforms}
