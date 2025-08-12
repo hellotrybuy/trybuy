@@ -35,12 +35,18 @@ function hasPriceModifier(options: OptionItem[]): boolean {
 	});
 }
 
-export function ProductCard({
-	raiting = "5.0",
-	reviewsCount = 1000,
-	product,
-}: Props) {
+export function ProductCard({ reviewsCount = 1000, product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+	const totalReviews = useMemo(() => {
+		return Number(product.good_reviews) + Number(product.bad_reviews);
+	}, [product]);
+
+	const raiting = useMemo(() => {
+		return totalReviews === 0
+			? 0
+			: (Number(product.good_reviews) / totalReviews) * 5;
+	}, [product, totalReviews]);
 
 	const options = useMemo(() => {
 		if (product.options == undefined) return "";
@@ -85,10 +91,12 @@ export function ProductCard({
 						<div className={cnx("card__review")}>
 							<div className={cnx("card__review-block")}>
 								<img src="/iconsFolder/common/star.svg" alt="Рейтинг" />
-								<span>{raiting}</span>
+								<span>{raiting.toFixed(1)}</span>
 							</div>
 							<div className={cnx("card__review-block")}>
-								<span>{reviewsCount}+ Оценок</span>
+								<span>
+									{totalReviews >= 1000 ? `1000+` : totalReviews} Оценок
+								</span>
 							</div>
 						</div>
 						<strong className={cnx("card__bottom")}>{price}</strong>

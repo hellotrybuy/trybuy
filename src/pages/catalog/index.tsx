@@ -244,6 +244,8 @@ export function CatalogPage() {
 		}
 	}, [categorys, categoryId]);
 
+	console.log(productsFromCat, "productsFromCat");
+
 	useEffect(() => {
 		if (!productsFromCat) return;
 
@@ -263,7 +265,7 @@ export function CatalogPage() {
 			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
 			return [...prev, ...filteredNew];
 		});
-	}, [productsFromCat, currentPage]);
+	}, [productsFromCat, currentPage, categoryId]);
 
 	const { products: commerceProucts } = useGetCommerceProduct(categoryId);
 

@@ -102,6 +102,7 @@ interface Props {
 
 export function ProductPay({ product }: Props) {
 	const { totalPrice, form, cnt, validateForm, setFormSubmitted } = usePrice();
+	console.log(product, "ad");
 
 	const newFormData = useMemo(() => {
 		return prepareOptionsForApi(transformOptions(form));

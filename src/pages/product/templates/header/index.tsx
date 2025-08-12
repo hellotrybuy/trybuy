@@ -25,6 +25,16 @@ export function ProductHeader({ product }: Props) {
 		return (bad + good).toString();
 	}, [product]);
 
+	const totalReviews = useMemo(() => {
+		return Number(product[0].good_reviews) + Number(product[0].bad_reviews);
+	}, [product]);
+
+	const raiting = useMemo(() => {
+		return totalReviews === 0
+			? 0
+			: (Number(product[0].good_reviews) / totalReviews) * 5;
+	}, [product, totalReviews]);
+
 	return (
 		<div className={cnx("header")}>
 			<div className={cnx("header__top", "top")}>
@@ -34,13 +44,13 @@ export function ProductHeader({ product }: Props) {
 						<div className={cnx("top__info-reviews")}>
 							<div className={cnx("top__info-star")}>
 								<img src="/iconsFolder/common/star.svg" alt="Оценка" />
-								<span>{"5.0"}</span>
+								<span>{raiting.toFixed(1)}</span>
 							</div>
 							<span>{reviewsCount ?? 0} отзывов</span>
 						</div>
 					</div>
 					<div className={cnx("top__info-block")}>
-						{product[0].sales ?? 0} продано
+						{product[0].cnt ?? 0} продано
 					</div>
 				</div>
 			</div>

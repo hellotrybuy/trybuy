@@ -61,22 +61,18 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 
 	const minCount = info?.unit_cnt_min || 1;
 	const maxCount = info?.unit_cnt_max || 1;
-	const onlyInt = true;
 	const { setTotalPrice, setCnt } = usePrice();
 
-	const [inputPay, setInputPay] = useState(String(minCount));
+	const [inputPay, setInputPay] = useState(String(Math.floor(minCount)));
 	const [valueIWillPay, setValueIWillPay] = useState(minCount);
 
 	const [inputReceive, setInputReceive] = useState(
-		onlyInt ? String(Math.round(minCount * curs)) : String(minCount * curs),
+		String(Math.ceil(minCount * curs)),
 	);
-	const [valueIWillReceive, setValueIWillReceive] = useState(
-		onlyInt ? minCount * curs : minCount * curs,
-	);
+	const [valueIWillReceive, setValueIWillReceive] = useState(minCount * curs);
 
 	function clampValue(value: number) {
 		let v = value;
-		if (onlyInt) v = Math.round(v);
 		if (v < minCount) v = minCount;
 		if (v > maxCount) v = maxCount;
 		return v;
@@ -86,19 +82,13 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		const raw = e.target.value;
 		const sanitized = raw.replace(/[^0-9.]/g, "");
 		setInputPay(sanitized);
-
 		const num = Number(sanitized);
 		if (!isNaN(num)) {
 			const clamped = clampValue(num);
-			setValueIWillPay(clamped);
+			const floored = Math.floor(clamped);
+			setValueIWillPay(floored);
 
-			let receive: number;
-			if (onlyInt) {
-				receive = Math.round(clamped * curs);
-			} else {
-				receive = parseFloat((clamped * curs).toFixed(2));
-			}
-
+			const receive = Math.ceil(floored * curs);
 			setValueIWillReceive(receive);
 			setInputReceive(receive.toString());
 		}
@@ -110,13 +100,13 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		if (num > maxCount) num = maxCount;
 
 		const clamped = clampValue(num);
-		setValueIWillPay(clamped);
+		const floored = Math.floor(clamped);
+		setValueIWillPay(floored);
+		setInputPay(String(floored));
 
-		setInputPay(String(clamped));
-
-		const receive = onlyInt ? Math.round(clamped * curs) : clamped * curs;
+		const receive = Math.ceil(floored * curs);
 		setValueIWillReceive(receive);
-		setInputReceive(String(receive));
+		setInputReceive(receive.toString());
 	};
 
 	const handleReceiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,11 +116,11 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 
 		const num = Number(sanitized);
 		if (!isNaN(num)) {
-			const pay = onlyInt ? Math.round(num / curs) : num / curs;
+			const pay = num / curs;
 			const clampedPay = clampValue(pay);
-
-			setValueIWillPay(clampedPay);
-			setValueIWillReceive(num);
+			const flooredPay = Math.floor(clampedPay);
+			setValueIWillPay(flooredPay);
+			setValueIWillReceive(Math.ceil(num));
 		}
 	};
 
@@ -139,16 +129,15 @@ export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
 		if (isNaN(num) || num < minCount * curs) num = minCount * curs;
 		if (num > maxCount * curs) num = maxCount * curs;
 
-		if (onlyInt) num = Math.round(num);
+		const ceiled = Math.ceil(num);
+		setValueIWillReceive(ceiled);
+		setInputReceive(ceiled.toString());
 
-		setValueIWillReceive(num);
-		setInputReceive(String(num));
-
-		const pay = onlyInt ? Math.round(num / curs) : num / curs;
+		const pay = ceiled / curs;
 		const clampedPay = clampValue(pay);
-
-		setValueIWillPay(clampedPay);
-		setInputPay(String(clampedPay));
+		const flooredPay = Math.floor(clampedPay);
+		setValueIWillPay(flooredPay);
+		setInputPay(flooredPay.toString());
 	};
 
 	const warningMessage = `Мин. сумма пополнения: ${minCount} ${info?.unit_name}, Макс. сумма — ${maxCount} ${info?.unit_name}`;
