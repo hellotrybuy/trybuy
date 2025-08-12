@@ -29,10 +29,6 @@ export function CommerceCard({ product }) {
 		return `https://test.try-buy.ru/${image}`;
 	};
 
-	// const handleClick = () => {
-	// 	window.location.href = `/catalog/product/${product.id_product}`;
-	// };
-
 	if (isMobile) {
 		return (
 			<div className={cx("main__box", "box", "_mobile")}>

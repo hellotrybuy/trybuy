@@ -160,7 +160,7 @@ export function Filers({
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
 			<div className={cnx("aside__filter", "filter")}>
 				<strong className={cnx("filter__title")}>
-					{category == "151" || !category ? "Платформа" : "Категории"}
+					{!category ? "Платформа" : "Категории"}
 				</strong>
 				{firstBlock}
 			</div>

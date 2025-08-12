@@ -32,6 +32,7 @@ import { useGetCommerceProduct } from "../../hooks/useGetCommerceProduct";
 import { CommerceCard } from "./commerceCard";
 import { FilterButton } from "./filterButton";
 import { FilterMobile } from "../../widgets/mobile-filter";
+import { useGetCommerceProductWithFallback } from "../../hooks/useGetCommerceProductWithFallback";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -267,19 +268,24 @@ export function CatalogPage() {
 		});
 	}, [productsFromCat, currentPage, categoryId]);
 
-	const { products: commerceProucts } = useGetCommerceProduct(categoryId);
-
-	const commerceProuct = useMemo(() => {
-		if (commerceProucts && commerceProucts.length > 0) {
-			return commerceProucts[0];
-		}
-		return null;
-	}, [commerceProucts]);
+	const { product: commerceProucts, loading: commerceLoading } =
+		useGetCommerceProductWithFallback(
+			categoryId ?? "",
+			selectSecondCat ?? null,
+		);
 
 	const crumbs: Crumb[] = [
 		{ label: "Главная", href: "/" },
 		{ label: "Каталог", href: "/catalog", isActive: true },
 	];
+
+	const [lastCommerceProduct, setLastCommerceProduct] = useState(null);
+
+	useEffect(() => {
+		if (!commerceLoading && commerceProucts) {
+			setLastCommerceProduct(commerceProucts);
+		}
+	}, [commerceLoading, commerceProucts]);
 
 	if (loadingCat) return;
 
@@ -366,7 +372,9 @@ export function CatalogPage() {
 								/>
 							</div>
 
-							{commerceProuct && <CommerceCard product={commerceProuct} />}
+							{lastCommerceProduct && (
+								<CommerceCard product={lastCommerceProduct} />
+							)}
 
 							<div className={cnx("main__cards")} key={categoryId}>
 								{<ProductCards data={catalogData} />}
