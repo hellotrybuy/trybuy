@@ -14,6 +14,7 @@ import { SeacrchProvider } from "./context";
 import { useCheckSecure } from "./hooks/useCheckSecure";
 import { SecurePage } from "./pages/secure";
 import DownloadBanner from "./widgets/downloadBanner";
+import NotFoundPage from "./pages/not_found";
 
 const DEV_UNLOCK_CODE = "533529";
 const STORAGE_KEY = "secureAccessToken";
@@ -47,6 +48,7 @@ function App() {
 					<DownloadBanner />
 					<main className="main">
 						<Routes>
+							<Route path="*" element={<NotFoundPage />} />
 							<Route path="/" element={<Home />} />
 							<Route path="/nav" element={<Navigation />} />
 							<Route path="/product" element={<ProductPage />} />

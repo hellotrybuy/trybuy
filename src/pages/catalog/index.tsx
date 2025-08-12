@@ -28,7 +28,6 @@ import { useGetProductTypes } from "../../hooks/useGetProductTypes";
 import { useGetCategoriesSecondPlace } from "../../hooks/useGetCategoriesSecondPlace";
 import ProductsSceleton from "../../widgets/productsSceleton";
 import { useSearchContext } from "../../context";
-import { useGetCommerceProduct } from "../../hooks/useGetCommerceProduct";
 import { CommerceCard } from "./commerceCard";
 import { FilterButton } from "./filterButton";
 import { FilterMobile } from "../../widgets/mobile-filter";

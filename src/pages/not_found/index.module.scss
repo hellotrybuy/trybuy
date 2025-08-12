@@ -1,0 +1,98 @@
+@use "/src/scss/variables/colors";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/breakpoints";
+
+.page {
+	width: 100%;
+	height: 100%;
+}
+
+.container {
+	margin: auto;
+	background: #23262f;
+	width: 100%;
+	padding: 50px;
+	position: relative;
+	border-radius: 20px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.gradient {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 60%;
+	top: 0;
+	height: inherit;
+	filter: blur(20px);
+}
+
+.content {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	align-items: center;
+}
+
+.h1 {
+	font-family: Unbounded;
+	font-weight: 700;
+	font-style: Bold;
+	font-size: 64px;
+	line-height: 128%;
+	letter-spacing: 2%;
+	text-align: center;
+
+	@media screen and (max-width: 600px) {
+		font-size: 48px;
+	}
+}
+
+h2 {
+	font-family: Unbounded;
+	font-weight: 500;
+	font-style: Medium;
+	font-size: 24px;
+	line-height: 140%;
+	letter-spacing: 0%;
+	text-align: center;
+
+	@media screen and (max-width: 600px) {
+		font-size: 16px;
+	}
+}
+
+.text {
+	font-weight: 400;
+	font-style: Regular;
+	font-size: 14px;
+	line-height: 100%;
+	letter-spacing: -1%;
+	text-align: center;
+	width: 500px;
+
+	@media screen and (max-width: 600px) {
+		font-size: 12px;
+		width: 90%;
+	}
+}
+
+.button {
+	border-radius: 20px;
+	padding: 10px 15px;
+	border-radius: 20px;
+
+	transition: 0.2s;
+	background: radial-gradient(at 0% 0%, #0077ff, #3d97ff);
+
+	&:hover {
+		transition: 0.2s;
+		background: radial-gradient(at 0% 0%, #f7f6f8, #f7f6f8);
+		color: #3f3f3f;
+	}
+}
