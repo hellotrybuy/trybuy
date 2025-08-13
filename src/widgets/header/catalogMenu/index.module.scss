@@ -53,6 +53,7 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(217px, 1fr));
 	gap: 55px 35px;
+	text-align: left;
 
 	@media screen and (max-width: breakpoints.$md) {
 		grid-template-columns: repeat(1, 1fr);
@@ -88,8 +89,15 @@
 	}
 
 	&__title {
-		font-weight: 600;
+		font-family: Mont;
+		font-weight: 700;
+		font-style: SemiBold;
+		font-size: 16px;
+		leading-trim: NONE;
+		line-height: 128%;
+		letter-spacing: -2%;
 		color: #242730;
+		text-align: left;
 	}
 
 	&__list {
@@ -104,6 +112,13 @@
 		li {
 			color: #242730;
 			transition: transitions.$main;
+			font-family: Mont;
+			font-weight: 600;
+			font-style: Regular;
+			font-size: 14px;
+			leading-trim: NONE;
+			line-height: 128%;
+			letter-spacing: -2%;
 
 			&:hover {
 				color: #1480fb;

@@ -29,9 +29,7 @@ export function Header() {
 		window.open("https://oplata.info/info/", "_blank");
 	};
 
-	const { categories, types } = useSearch(
-		searchInput.length >= 2 ? searchInput : "",
-	);
+	const { categories } = useSearch(searchInput.length >= 2 ? searchInput : "");
 
 	const categoriesFromView = useMemo(() => {
 		return categories.slice(0, 8);
@@ -108,7 +106,7 @@ export function Header() {
 							className={cnx("actions__search-dropdown", "dropdown")}
 							ref={ref}
 						>
-							{/* Сначала список категорий */}
+							{/* Список категорий */}
 							{categoriesFromView.length > 0 && (
 								<ul>
 									{categoriesFromView
@@ -136,15 +134,18 @@ export function Header() {
 								</ul>
 							)}
 
-							{/* Теперь для каждой категории выводим её + все типы */}
-							{categoriesFromView.length > 0 && types.length > 0 && (
+							{/* Для каждой категории выводим её типы */}
+							{categoriesFromView.some((cat) => cat.types?.length > 0) && (
 								<>
 									<div className={cnx("dropdown__section-title")}></div>
 									<ul className={cnx("dropdown__section-types")}>
 										{categoriesFromView
-											.filter((category) => category.cnt !== 0)
-											.map((category) =>
-												types.map((type) => (
+											.filter(
+												(category) =>
+													category.cnt !== 0 && category.types?.length,
+											)
+											.flatMap((category) =>
+												category.types.map((type) => (
 													<li key={`${category.id}-${type.id}`}>
 														<Link
 															to={`/catalog?content_type=${

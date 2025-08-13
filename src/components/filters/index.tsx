@@ -127,23 +127,25 @@ export function Filers({
 			return (
 				<ul>
 					{currentPlatforms &&
-						currentPlatforms.map((platform) => (
-							<li key={platform.id}>
-								<Checkbox
-									caption={platform.platform_name}
-									checked={selectedPlatforms.includes(
-										platform.platform_url.toString(),
-									)}
-									onChange={() =>
-										toggleItem(
+						currentPlatforms
+							.filter((it) => it.platform_url !== "")
+							.map((platform) => (
+								<li key={platform.id}>
+									<Checkbox
+										caption={platform.platform_name}
+										checked={selectedPlatforms.includes(
 											platform.platform_url.toString(),
-											selectedPlatforms,
-											setSelectedPlatforms,
-										)
-									}
-								/>
-							</li>
-						))}
+										)}
+										onChange={() =>
+											toggleItem(
+												platform.platform_url.toString(),
+												selectedPlatforms,
+												setSelectedPlatforms,
+											)
+										}
+									/>
+								</li>
+							))}
 				</ul>
 			);
 		}
@@ -155,6 +157,8 @@ export function Filers({
 		selectSecondCat,
 		setSelectSecondCat,
 	]);
+
+	console.log(currentPlatforms, "currentPlatforms");
 
 	return (
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>

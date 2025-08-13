@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 
+export interface Type {
+	id: number;
+	name: string;
+	url: string;
+}
+
 export interface Category {
 	id: number;
 	name: string;
@@ -7,21 +13,15 @@ export interface Category {
 	cnt: number;
 	preview: string;
 	parent_id: number;
-}
-
-export interface Type {
-	id: number;
-	name: string;
-	url: string;
-}
-
-export interface CategoriesAndTypes {
-	categories: Category[];
 	types: Type[];
 }
 
+export interface CategoriesResponse {
+	categories: Category[];
+}
+
 export function useSearch(search: string = "") {
-	const [data, setData] = useState<CategoriesAndTypes | null>(null);
+	const [data, setData] = useState<CategoriesResponse | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -37,8 +37,10 @@ export function useSearch(search: string = "") {
 				const text = await res.text();
 
 				try {
-					const json: CategoriesAndTypes = JSON.parse(text);
-					setData(json);
+					const json = JSON.parse(text);
+					const categories: Category[] = json.categories ?? [];
+
+					setData({ categories });
 				} catch (parseErr) {
 					console.error("Ошибка JSON:", parseErr);
 					setData(null);
@@ -53,7 +55,6 @@ export function useSearch(search: string = "") {
 
 	return {
 		categories: data?.categories ?? [],
-		types: data?.types ?? [],
 		loading,
 	};
 }
