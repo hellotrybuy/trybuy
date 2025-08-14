@@ -293,6 +293,7 @@ export default function ProductActivation({ product }: Props) {
 									formValue={formState[el.name] as string}
 									onChange={handleRadioChange}
 									isInvalid={invalidFields[el.name]}
+									product={product}
 								/>
 							);
 						if (el.type === "text")
@@ -314,6 +315,7 @@ export default function ProductActivation({ product }: Props) {
 									values={formState[el.name]}
 									onChange={handleCheckboxChange}
 									isInvalid={invalidFields[el.name]}
+									product={product}
 								/>
 							);
 						return null;

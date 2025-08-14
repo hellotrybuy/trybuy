@@ -58,10 +58,10 @@
 
 	&__title {
 		font-family: "Unbounded";
-		font-size: 20px;
+		font-size: 16px;
 
 		&__mini {
-			font-size: 16px;
+			font-size: 14px;
 		}
 
 		@media screen and (max-width: breakpoints.$lg) {
@@ -106,5 +106,24 @@
 		&--rotated {
 			transform: rotate(0deg);
 		}
+	}
+}
+
+.itemD {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	flex-wrap: wrap;
+
+	&__text {
+		font-family: Mont;
+		font-weight: 600;
+		font-style: Regular;
+		font-size: 16px;
+		leading-trim: NONE;
+		line-height: 100%;
+		letter-spacing: 0%;
+		vertical-align: middle;
+		color: rgba(48, 145, 255, 1);
 	}
 }

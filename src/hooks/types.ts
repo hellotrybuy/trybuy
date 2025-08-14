@@ -28,6 +28,7 @@ export interface ProductData {
 	type_digi_product: string;
 	type_name: string;
 	product_desc_add: string;
+	price_usd: string;
 	sale_info: {
 		common_base_price: string | null;
 		common_price_usd: string | null;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Link } from "react-router";
 import Button from "../button";
 import styles from "./index.module.scss";
@@ -35,9 +36,9 @@ function hasPriceModifier(options: OptionItem[]): boolean {
 	});
 }
 
-export function ProductCard({ reviewsCount = 1000, product }: Props) {
+export function ProductCard({ product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
-	console.log(reviewsCount);
+
 	const totalReviews = useMemo(() => {
 		return Number(product.good_reviews) + Number(product.bad_reviews);
 	}, [product]);

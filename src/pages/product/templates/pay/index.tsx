@@ -130,7 +130,7 @@ export function ProductPay({ product }: Props) {
 	return (
 		<div className={cnx("pay")}>
 			<div className={cnx("pay__price")}>
-				<b>{totalPrice} ₽</b>
+				<b>{totalPrice > 0 ? totalPrice : 1} ₽</b>
 			</div>
 			<a href="#">У меня есть промокод</a>
 			<Button

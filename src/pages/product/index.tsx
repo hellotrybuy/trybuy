@@ -10,7 +10,7 @@ import ProductExtraInfo from "./templates/extra-info";
 import ProductRewies from "./templates/reviews";
 import Button from "../../components/button";
 import OtherProducts from "./templates/other-products";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -92,7 +92,9 @@ function InnerProductPage({ product }: { product: ProductData }) {
 						<div className={cnx("aside__block", "seller")}>
 							<span className={cnx("seller__caption")}>продавец</span>
 							<div className={cnx("seller__top")}>
-								<strong>{product[0].seller_name}</strong>
+								<Link to={"/seller"}>
+									<strong>{product[0].seller_name}</strong>
+								</Link>
 								<div className={cnx("seller__star")}>
 									<img src="/iconsFolder/common/star.svg" alt="Оценка" />
 									<span>5,0</span>

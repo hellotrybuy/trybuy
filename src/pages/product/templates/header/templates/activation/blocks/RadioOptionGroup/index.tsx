@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import Button from "../../../../../../../../components/button";
 import Radio from "../../../../../../../../components/radio";
-import { OptionItem } from "../../../../../../../../hooks/types";
+import {
+	OptionItem,
+	OptionItemVariantItem,
+	ProductData,
+} from "../../../../../../../../hooks/types";
 import { useIsMobile } from "../../../../../../../../hooks/useIsMobile";
 import DeliveryInfo from "../../../../../../utils/DeliveryInfo";
 import styles from "../../index.module.scss";
@@ -16,6 +20,7 @@ interface Props {
 	formValue: string;
 	onChange: (name: string, value: string) => void;
 	isInvalid: boolean;
+	product: ProductData;
 }
 
 export default function RadioOptionGroup({
@@ -25,11 +30,37 @@ export default function RadioOptionGroup({
 	formValue,
 	onChange,
 	isInvalid,
+	product,
 }: Props) {
 	const VISIBLE_COUNT = 5;
 	const visibleRadios = option.variants?.slice(0, VISIBLE_COUNT) || [];
 	const hiddenRadios = option.variants?.slice(VISIBLE_COUNT) || [];
 	const radioCount = option.variants?.length || 0;
+	console.log(product);
+
+	const cntSumm = (elem: OptionItemVariantItem) => {
+		if (elem) {
+			if (elem.modify_type == "USD" && elem.modify) {
+				const curs = Number(product[0].price) / Number(product[0].price_usd);
+
+				const res = Math.ceil(Number(elem.modify_value) * curs);
+
+				if (res > 0) {
+					return `(+${Math.ceil(Number(elem.modify_value) * curs)} руб.)`;
+				} else {
+					return `(${Math.ceil(Number(elem.modify_value) * curs)} руб.)`;
+				}
+			}
+
+			if (elem.modify) {
+				if (elem.modify_value > 0) {
+					return `(+${elem.modify_value} руб.)`;
+				} else {
+					return `(${elem.modify_value} руб.)`;
+				}
+			}
+		}
+	};
 
 	const { isMobile } = useIsMobile();
 	const [isTwoColumn, setIsTwoColumn] = useState(false);
@@ -53,18 +84,7 @@ export default function RadioOptionGroup({
 			{isMobile ? (
 				<div className={cnx("activation__options")}>
 					{visibleRadios.map((elem) => (
-						<Radio
-							key={elem.value}
-							caption={elem.text}
-							name={option.name}
-							value={elem.value}
-							onValueChange={(val) => onChange(option.name, val)}
-							checked={String(formValue) === String(elem.value)}
-							id={option.id}
-						/>
-					))}
-					{isExpanded &&
-						hiddenRadios.map((elem) => (
+						<div className={cnx("itemD")}>
 							<Radio
 								key={elem.value}
 								caption={elem.text}
@@ -74,6 +94,23 @@ export default function RadioOptionGroup({
 								checked={String(formValue) === String(elem.value)}
 								id={option.id}
 							/>
+							<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
+						</div>
+					))}
+					{isExpanded &&
+						hiddenRadios.map((elem) => (
+							<div className={cnx("itemD")}>
+								<Radio
+									key={elem.value}
+									caption={elem.text}
+									name={option.name}
+									value={elem.value}
+									onValueChange={(val) => onChange(option.name, val)}
+									checked={String(formValue) === String(elem.value)}
+									id={option.id}
+								/>
+								<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
+							</div>
 						))}
 				</div>
 			) : (
@@ -83,15 +120,18 @@ export default function RadioOptionGroup({
 					})}
 				>
 					{option.variants.map((elem) => (
-						<Radio
-							key={elem.value}
-							caption={elem.text}
-							name={option.name}
-							value={elem.value}
-							onValueChange={(val) => onChange(option.name, val)}
-							checked={String(formValue) === String(elem.value)}
-							id={option.id}
-						/>
+						<div className={cnx("itemD")}>
+							<Radio
+								key={elem.value}
+								caption={elem.text}
+								name={option.name}
+								value={elem.value}
+								onValueChange={(val) => onChange(option.name, val)}
+								checked={String(formValue) === String(elem.value)}
+								id={option.id}
+							/>
+							<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
+						</div>
 					))}
 				</div>
 			)}

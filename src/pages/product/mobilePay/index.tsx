@@ -146,7 +146,7 @@ export function MobilePay({ product }: Props) {
 				sendRequest(dataFromAPI);
 			}}
 		>
-			{totalPrice} ₽ КУПИТЬ
+			{totalPrice > 0 ? totalPrice : 1} ₽ КУПИТЬ
 		</Button>
 	);
 }

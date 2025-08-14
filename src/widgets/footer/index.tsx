@@ -3,10 +3,11 @@ import Button from "../../components/button";
 import { CONTAINER } from "../../constants/classnames";
 import { useMainScreenCategories } from "../../hooks/useMainScreenCategories";
 import { Routes } from "../../routes";
-import { CONTACT_INFO, LEGAL_LINKS, SOCIAL_LINKS, USER_LINKS } from "./data";
+import { CONTACT_INFO, LEGAL_LINKS, USER_LINKS } from "./data";
 
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
+import { useGetSiteSettingsMin } from "../../hooks/useGetSiteSettingsMin";
 
 const cnx = classNames.bind(styles);
 
@@ -40,6 +41,21 @@ function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 
 export function Footer() {
 	const { categories } = useMainScreenCategories();
+	const { data } = useGetSiteSettingsMin();
+
+	const socialLinks = [
+		{ href: data?.vk_url, src: "/iconsFolder/social/vk.svg", alt: "VK" },
+		{
+			href: data?.ds_url || "",
+			src: "/iconsFolder/social/instagram.svg",
+			alt: "instagram",
+		},
+		{
+			href: data?.tg_url,
+			src: "/iconsFolder/social/telegram.svg",
+			alt: "Telegram",
+		},
+	];
 
 	return (
 		<footer className={cnx("footer")}>
@@ -100,7 +116,7 @@ export function Footer() {
 							<div className={cnx("contacts__block")}>
 								<span>А также социалочки</span>
 								<div className={cnx("contacts__socials")}>
-									{SOCIAL_LINKS.map((social) => (
+									{socialLinks.map((social) => (
 										<a
 											key={social.alt}
 											href={social.href}
