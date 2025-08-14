@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useLocation } from "react-router";
 import { useGetPages, PageData } from "../../hooks/useGetPages";
 import styles from "./index.module.scss";
@@ -11,6 +11,10 @@ const cnx = classNames.bind(styles);
 export const TextPage: FC = () => {
 	const location = useLocation();
 	const { pages, loading, error } = useGetPages();
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
 	if (loading)
 		return (

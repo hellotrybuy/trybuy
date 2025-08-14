@@ -9,6 +9,10 @@
 	width: 100%;
 	transition: 0.2s ease-in all;
 
+	@media screen and (max-width: breakpoints.$sm) {
+		top: 0;
+	}
+
 	&__inner {
 		position: relative;
 

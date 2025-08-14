@@ -22,11 +22,8 @@ export function CommerceCard({ product }) {
 	const rating =
 		totalReviews === 0 ? 0 : (Number(product.good_reviews) / totalReviews) * 5;
 
-	const getImage = (image: string) => {
-		if (image == null) {
-			return `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`;
-		}
-		return `https://test.try-buy.ru/${image}`;
+	const getImage = () => {
+		return `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`;
 	};
 
 	if (isMobile) {
@@ -35,7 +32,7 @@ export function CommerceCard({ product }) {
 				<div className={cx("box__top")}>
 					<img
 						className={cx("box__img")}
-						src={getImage(product.icon) || ""}
+						src={getImage() || ""}
 						alt={product.platform_name || "Platform"}
 					/>
 					<div className={cx("box__info-mobile")}>
@@ -60,7 +57,7 @@ export function CommerceCard({ product }) {
 		<div className={cx("main__box", "box", "_desktop")}>
 			<img
 				className={cx("box__img")}
-				src={getImage(product.icon) || ""}
+				src={getImage() || ""}
 				alt={product.platform_name || "Platform"}
 			/>
 			<div className={cx("box__main")}>

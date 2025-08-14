@@ -24,7 +24,7 @@ function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 			)}
 		>
 			<div className={cnx("copyright__main")}>
-				<span>(c) GameMart 2024</span>
+				<span>(c) TRYBUY 2025</span>
 				{LEGAL_LINKS.map((link) => (
 					<a key={link.label} href={link.href}>
 						{link.label}
@@ -71,7 +71,7 @@ export function Footer() {
 						<ul>
 							{USER_LINKS.map((link) => (
 								<li key={link.label}>
-									<a href={link.href}>{link.label}</a>
+									<Link to={link.href}>{link.label}</Link>
 								</li>
 							))}
 						</ul>
@@ -85,7 +85,10 @@ export function Footer() {
 									<span>{label}</span>
 									<a href={`mailto:${email}`}>{email}</a>
 									{hasTelegram && (
-										<a href="#" aria-label="Поддержка в Telegram">
+										<a
+											href="https://t.me/sup_trybuy"
+											aria-label="Поддержка в Telegram"
+										>
 											<img
 												src="/iconsFolder/social/telegram-extended.svg"
 												alt="Поддержка"

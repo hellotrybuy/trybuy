@@ -9,17 +9,26 @@ export const PRODUCTS = [
 
 export const USER_LINKS = [
 	{ label: "Часто задаваемые вопросы", href: "#" },
-	{ label: "Условия возврата", href: "#" },
+	{ label: "Правила площадки", href: "rules" },
+	{
+		label: "Публичная оферта для продавцов",
+		href: "seller_offerta",
+	},
+	{
+		label: "Публичная оферта для покупателей",
+		href: "customer_oferta",
+	},
+	{ label: "Политика конфиденциальности", href: "privacy" },
 ];
 
 export const CONTACT_INFO = [
 	{
 		label: "По вопросам сотрудничества",
-		email: "hello@gamemart.com",
+		email: "hello@try-buy.ru",
 	},
 	{
 		label: "Техническая поддержка",
-		email: "support@gamemart.com",
+		email: "support@try-buy.ru",
 		hasTelegram: true,
 	},
 ];

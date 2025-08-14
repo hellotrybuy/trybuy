@@ -66,7 +66,7 @@ export function MobileNavigation() {
 						</a>
 					</li>
 					<li>
-						<a href={Routes.HOME}>
+						<a href="https://t.me/sup_trybuy">
 							<img src="/iconsFolder/navigation/help.svg" alt="Помощь" />
 							<span>Помощь</span>
 						</a>

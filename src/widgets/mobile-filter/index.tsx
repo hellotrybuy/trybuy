@@ -136,9 +136,9 @@ export function FilterMobile({
 				<Button
 					className={cnx("filter__close")}
 					onClick={onClose}
-					aria-label="Закрыть фильтры"
+					aria-label="Применить фильтры"
 				>
-					Закрыть
+					Применить
 				</Button>
 			</div>
 		</div>
