@@ -70,8 +70,8 @@ export default function CheckboxOptionGroup({
 							onChange={() => onChange(option.name, elem.value)}
 							id={option.id}
 							invalid={showInvalid}
+							price={cntSumm(elem)}
 						/>
-						<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
 					</div>
 				))}
 			</div>

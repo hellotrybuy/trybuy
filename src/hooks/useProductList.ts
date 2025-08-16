@@ -36,7 +36,7 @@ export function useProductList(
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
 
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_popular&page=${page}&limit=${rows.toString()}`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_product_popular&page=${page}&limit=${rows.toString()}`;
 
 			try {
 				const res = await fetch(url.toString());

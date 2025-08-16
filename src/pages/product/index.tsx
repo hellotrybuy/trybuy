@@ -121,7 +121,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 								/>
 							</div>
 						</div>
-						<div className={cnx("aside__block", "payment")}>
+						{/* <div className={cnx("aside__block", "payment")}>
 							<strong className={cnx("payment__title")}>Способы оплаты</strong>
 							<div className={cnx("payment__grid")}>
 								<img src="/mock/apple-pay.png" alt="Apple pay" />
@@ -140,7 +140,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 								<img src="/mock/unionpay.png" alt="Union pay" />
 								<img src="/mock/wepay.png" alt="Wepay" />
 							</div>
-						</div>
+						</div> */}
 					</aside>
 				</div>
 				<OtherProducts />

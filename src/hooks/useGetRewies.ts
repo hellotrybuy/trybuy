@@ -33,7 +33,7 @@ export function useGetRewies({
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data?action=show_reviews_product&product_id=${id}&offset=${offset}&limit=${row}&type=${type}`,
+					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_reviews_product&product_id=${id}&offset=${offset}&limit=${row}&type=${type}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);

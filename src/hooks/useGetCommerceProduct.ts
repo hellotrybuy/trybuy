@@ -53,7 +53,7 @@ export function useGetCommerceProduct(category_id: string): UseGetCategories {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data?action=get_commerce_product&categoryId=${category_id}`,
+					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=get_commerce_product&categoryId=${category_id}`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);

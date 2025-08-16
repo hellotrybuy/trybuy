@@ -9,7 +9,7 @@ export function useGetExchangeRate() {
 		const fetchPlatforms = async () => {
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_currency_arrow`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_currency_arrow`;
 
 			try {
 				const res = await fetch(url.toString());

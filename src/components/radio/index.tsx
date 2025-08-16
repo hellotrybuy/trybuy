@@ -8,6 +8,7 @@ interface IRadio extends InputHTMLAttributes<HTMLInputElement> {
 	caption: string;
 	className?: string;
 	onValueChange?: (value: string) => void;
+	price?: string;
 }
 
 export function Radio({
@@ -16,6 +17,7 @@ export function Radio({
 	onValueChange,
 	value,
 	onChange,
+	price = "",
 	...attributes
 }: IRadio) {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +36,9 @@ export function Radio({
 				onChange={handleChange}
 			/>
 			<div className={cnx("radio__checkmark")}></div>
-			<span className={cnx("radio__caption")}>{caption}</span>
+			<div className={cnx("radio__caption")}>
+				{caption} <span className={cnx("itemD__text")}>{price}</span>
+			</div>
 		</label>
 	);
 }

@@ -27,7 +27,7 @@ export function useCheckSecure(): UseCheckSecureResult {
 		async function fetchData() {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data?action=show_settings_min`,
+					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_settings_min`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);

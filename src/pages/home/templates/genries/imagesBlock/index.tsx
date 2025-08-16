@@ -16,7 +16,7 @@ export default function ImagesBlock({
 	const isBigPicture = index != 3 && index != 5;
 
 	const getImage = (image: string) => {
-		return `https://test.try-buy.ru/${image}`;
+		return `https://try-buy.ru/${image}`;
 	};
 
 	if (!isBigPicture) {

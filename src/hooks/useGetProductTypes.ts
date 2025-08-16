@@ -10,7 +10,7 @@ export function useGetProductTypes(category_id: string) {
 			const fetchPlatforms = async () => {
 				setLoading(true);
 				const baseUrl = import.meta.env.VITE_API_URL;
-				const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_types_by_category&categoryId=${category_id}`;
+				const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_types_by_category&categoryId=${category_id}`;
 				try {
 					const res = await fetch(url.toString());
 

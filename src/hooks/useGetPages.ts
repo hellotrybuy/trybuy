@@ -29,7 +29,7 @@ export function useGetPages(): UseGetPages {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/ajax/ajax_data?action=show_pages`,
+					`${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_pages`,
 				);
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);

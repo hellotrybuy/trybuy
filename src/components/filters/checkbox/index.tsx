@@ -11,6 +11,7 @@ interface ICheckbox extends InputHTMLAttributes<HTMLInputElement> {
 	checked?: boolean;
 	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	invalid?: boolean;
+	price?: string;
 }
 export function Checkbox({
 	className,
@@ -18,6 +19,7 @@ export function Checkbox({
 	caption,
 	checked,
 	onChange,
+	price = "",
 	...attributes
 }: ICheckbox) {
 	return (
@@ -29,7 +31,9 @@ export function Checkbox({
 				onChange={onChange}
 			/>
 			<div className={cnx("checkbox__checkmark", { isInvalid: invalid })}></div>
-			<span className={cnx("checkbox__caption")}>{caption}</span>
+			<div className={cnx("checkbox__caption")}>
+				{caption} <span className={cnx("itemD__text")}>{price}</span>
+			</div>
 		</label>
 	);
 }

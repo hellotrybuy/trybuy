@@ -22,7 +22,7 @@ export function useGetShowHeaderMenu() {
 		const fetchPlatforms = async () => {
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_header_menu`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_header_menu`;
 
 			try {
 				const res = await fetch(url.toString());

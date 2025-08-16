@@ -92,9 +92,9 @@ export default function RadioOptionGroup({
 								value={elem.value}
 								onValueChange={(val) => onChange(option.name, val)}
 								checked={String(formValue) === String(elem.value)}
+								price={cntSumm(elem)}
 								id={option.id}
 							/>
-							<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
 						</div>
 					))}
 					{isExpanded &&
@@ -108,8 +108,8 @@ export default function RadioOptionGroup({
 									onValueChange={(val) => onChange(option.name, val)}
 									checked={String(formValue) === String(elem.value)}
 									id={option.id}
+									price={cntSumm(elem)}
 								/>
-								<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
 							</div>
 						))}
 				</div>
@@ -129,8 +129,8 @@ export default function RadioOptionGroup({
 								onValueChange={(val) => onChange(option.name, val)}
 								checked={String(formValue) === String(elem.value)}
 								id={option.id}
+								price={cntSumm(elem)}
 							/>
-							<div className={cnx("itemD__text")}>{cntSumm(elem)}</div>
 						</div>
 					))}
 				</div>

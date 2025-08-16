@@ -19,7 +19,7 @@ export function useRecommList(
 			setLoading(true);
 			const baseUrl = import.meta.env.VITE_API_URL;
 			const offset = (page - 1) * rows;
-			const url = `${baseUrl}/engine/functions/ajax/ajax_data?action=show_product_recomm&limit=${rows}&offset=${offset}`;
+			const url = `${baseUrl}/engine/functions/ajax/ajax_data.php?action=show_product_recomm&limit=${rows}&offset=${offset}`;
 
 			try {
 				const res = await fetch(url);
