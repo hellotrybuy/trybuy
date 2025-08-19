@@ -201,3 +201,45 @@
 .swiper {
 	// overflow: visible !important;
 }
+
+.skeletonPc {
+	position: relative;
+
+	height: 362px;
+
+	border-radius: 20px;
+	padding: 0 44px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	animation: pulse 3s infinite ease-in-out;
+	background-size: 400% 100%;
+	overflow: hidden;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		display: none;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
+.skeletonMob {
+	position: relative;
+
+	height: 225px;
+
+	border-radius: 20px;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	animation: pulse 3s infinite ease-in-out;
+	background-size: 400% 100%;
+	overflow: hidden;
+
+	@media screen and (min-width: breakpoints.$lg) {
+		display: none;
+	}
+}

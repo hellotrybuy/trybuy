@@ -101,109 +101,113 @@ export function HomeMain() {
 	return (
 		<div>
 			{sliderData.length > 0 &&
-				sliderData[0].length > 0 &&
-				sliderData[1].length > 0 && (
-					<div className={cnx("desktop")}>
-						<div className={cnx("desktop__text")}>
-							<h2 className={cnx("desktop__title")}>
-								{infoData != "" && infoData.title}
-							</h2>
-							<h3 className={cnx("desktop__subtitle")}>
-								{infoData != "" && infoData.title_2}
-							</h3>
-						</div>
+			sliderData[0].length > 0 &&
+			sliderData[1].length > 0 ? (
+				<div className={cnx("desktop")}>
+					<div className={cnx("desktop__text")}>
+						<h2 className={cnx("desktop__title")}>
+							{infoData != "" && infoData.title}
+						</h2>
+						<h3 className={cnx("desktop__subtitle")}>
+							{infoData != "" && infoData.title_2}
+						</h3>
+					</div>
 
-						<div className={cnx("desktop__bg")}>
-							<div></div>
-							<div></div>
-						</div>
+					<div className={cnx("desktop__bg")}>
+						<div></div>
+						<div></div>
+					</div>
 
-						<div className={cnx("swiper-container", "_top")}>
-							{sliderData.length > 0 && (
-								<Swiper
-									className={cnx("swiper")}
-									{...swiperProps}
-									spaceBetween={15}
-									navigation={{
-										prevEl: prevBtnRef.current,
-										nextEl: nextBtnRef.current,
-									}}
-									onSwiper={setDesktopSwiperTop}
-								>
-									{sliderData[0].map((el: NestedBlock, index) => (
+					<div className={cnx("swiper-container", "_top")}>
+						{sliderData.length > 0 && (
+							<Swiper
+								className={cnx("swiper")}
+								{...swiperProps}
+								spaceBetween={15}
+								navigation={{
+									prevEl: prevBtnRef.current,
+									nextEl: nextBtnRef.current,
+								}}
+								onSwiper={setDesktopSwiperTop}
+							>
+								{sliderData[0].map((el: NestedBlock, index) => (
+									<SwiperSlide key={index} className={cnx("slide")}>
+										<Slide el={el} />
+									</SwiperSlide>
+								))}
+							</Swiper>
+						)}
+					</div>
+
+					<div className={cnx("swiper-container", "_bottom")}>
+						{sliderData.length > 0 && (
+							<Swiper
+								className={cnx("swiper")}
+								{...swiperProps}
+								spaceBetween={15}
+								navigation={{
+									prevEl: prevBtnRef.current,
+									nextEl: nextBtnRef.current,
+								}}
+								onSwiper={setDesktopSwiperBottom}
+							>
+								{sliderData.length > 0 &&
+									sliderData[1].map((el: NestedBlock, index) => (
 										<SwiperSlide key={index} className={cnx("slide")}>
 											<Slide el={el} />
 										</SwiperSlide>
 									))}
-								</Swiper>
-							)}
-						</div>
-
-						<div className={cnx("swiper-container", "_bottom")}>
-							{sliderData.length > 0 && (
-								<Swiper
-									className={cnx("swiper")}
-									{...swiperProps}
-									spaceBetween={15}
-									navigation={{
-										prevEl: prevBtnRef.current,
-										nextEl: nextBtnRef.current,
-									}}
-									onSwiper={setDesktopSwiperBottom}
-								>
-									{sliderData.length > 0 &&
-										sliderData[1].map((el: NestedBlock, index) => (
-											<SwiperSlide key={index} className={cnx("slide")}>
-												<Slide el={el} />
-											</SwiperSlide>
-										))}
-								</Swiper>
-							)}
-						</div>
+							</Swiper>
+						)}
 					</div>
-				)}
+				</div>
+			) : (
+				<div className={cnx("skeletonPc")}></div>
+			)}
 
 			{sliderData.length > 0 &&
-				sliderData[0].length > 0 &&
-				sliderData[1].length > 0 && (
-					<div className={cnx("mobile")}>
-						<h1 className={cnx("mobile__title")}>
-							{infoData != "" && infoData.title}
-						</h1>
-						<div className={cnx("mobile__swipers")}>
-							<div className={cnx("mobile__swiper", "_top")}>
-								<Swiper
-									className={cnx("swiper")}
-									{...swiperProps}
-									spaceBetween={8}
-									autoplay={{ delay: 3500 }}
-									onSwiper={setMobileSwiperTop}
-								>
-									{sliderData[0].map((el: NestedBlock, index) => (
-										<SwiperSlide key={index} className={cnx("slide")}>
-											<Slide el={el} />
-										</SwiperSlide>
-									))}
-								</Swiper>
-							</div>
-							<div className={cnx("mobile__swiper", "_bottom")}>
-								<Swiper
-									className={cnx("swiper")}
-									{...swiperProps}
-									spaceBetween={8}
-									autoplay={{ delay: 3500 }}
-									onSwiper={setMobileSwiperBottom}
-								>
-									{sliderData[1].map((el: NestedBlock, index) => (
-										<SwiperSlide key={index} className={cnx("slide")}>
-											<Slide el={el} />
-										</SwiperSlide>
-									))}
-								</Swiper>
-							</div>
+			sliderData[0].length > 0 &&
+			sliderData[1].length > 0 ? (
+				<div className={cnx("mobile")}>
+					<h1 className={cnx("mobile__title")}>
+						{infoData != "" && infoData.title}
+					</h1>
+					<div className={cnx("mobile__swipers")}>
+						<div className={cnx("mobile__swiper", "_top")}>
+							<Swiper
+								className={cnx("swiper")}
+								{...swiperProps}
+								spaceBetween={8}
+								autoplay={{ delay: 3500 }}
+								onSwiper={setMobileSwiperTop}
+							>
+								{sliderData[0].map((el: NestedBlock, index) => (
+									<SwiperSlide key={index} className={cnx("slide")}>
+										<Slide el={el} />
+									</SwiperSlide>
+								))}
+							</Swiper>
+						</div>
+						<div className={cnx("mobile__swiper", "_bottom")}>
+							<Swiper
+								className={cnx("swiper")}
+								{...swiperProps}
+								spaceBetween={8}
+								autoplay={{ delay: 3500 }}
+								onSwiper={setMobileSwiperBottom}
+							>
+								{sliderData[1].map((el: NestedBlock, index) => (
+									<SwiperSlide key={index} className={cnx("slide")}>
+										<Slide el={el} />
+									</SwiperSlide>
+								))}
+							</Swiper>
 						</div>
 					</div>
-				)}
+				</div>
+			) : (
+				<div className={cnx("skeletonMob")}></div>
+			)}
 		</div>
 	);
 }

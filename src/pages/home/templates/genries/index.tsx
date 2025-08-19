@@ -43,58 +43,55 @@ export function HomeGenries() {
 				<div className={cnx("genries__title", "_mobile")}>Категории</div>
 
 				<div className={cnx("genries__swiper")}>
-					<Swiper
-						modules={[Navigation, FreeMode]}
-						spaceBetween={isMobile2 ? 100 : 20}
-						slidesPerView={isBig ? 5 : 4}
-						slidesPerGroup={1}
-						navigation={{
-							prevEl: prevBtnRef.current,
-							nextEl: nextBtnRef.current,
-						}}
-						grabCursor
-						onInit={(swiper) => setSwiper(swiper)}
-						className={cnx("slider")}
-					>
-						{[...categories].map((genre, index) => (
-							<SwiperSlide key={index} className={cnx("slide")}>
-								<Link
-									to={genre.collections_url}
-									key={genre.id}
-									onMouseEnter={() => setHoveredIndex(index)}
-									onMouseLeave={() => setHoveredIndex(null)}
-									className={cnx("genre")}
-									style={{
-										background: getGradint(
-											genre.collections_color_1,
-											genre.collections_color_2,
-										),
-									}}
-								>
-									<p className={cnx("genre__title")}>
-										{genre.collections_name}
-									</p>
-									{index == 3 ? (
-										<PsAnim isHovered={hoveredIndex === index} />
-									) : (
-										<ImagesBlock
-											images={genre.screenshots}
-											isHovered={hoveredIndex === index}
-											index={index}
-										/>
-									)}
-
-									{/* <img
-										src={`https://test.try-buy.ru/${genre.screenshots[0]}`}
-										alt=""
-										// className={cnx(genre.classNames)}
-										// style={genre.style}
-									/> */}
-								</Link>
-							</SwiperSlide>
-						))}
-						{isMobile2 && <SwiperSlide></SwiperSlide>}
-					</Swiper>
+					{categories.length > 0 ? (
+						<Swiper
+							modules={[Navigation, FreeMode]}
+							spaceBetween={isMobile2 ? 100 : 20}
+							slidesPerView={isBig ? 5 : 4}
+							slidesPerGroup={1}
+							navigation={{
+								prevEl: prevBtnRef.current,
+								nextEl: nextBtnRef.current,
+							}}
+							grabCursor
+							onInit={(swiper) => setSwiper(swiper)}
+							className={cnx("slider")}
+						>
+							{[...categories].map((genre, index) => (
+								<SwiperSlide key={index} className={cnx("slide")}>
+									<Link
+										to={genre.collections_url}
+										key={genre.id}
+										onMouseEnter={() => setHoveredIndex(index)}
+										onMouseLeave={() => setHoveredIndex(null)}
+										className={cnx("genre")}
+										style={{
+											background: getGradint(
+												genre.collections_color_1,
+												genre.collections_color_2,
+											),
+										}}
+									>
+										<p className={cnx("genre__title")}>
+											{genre.collections_name}
+										</p>
+										{index == 3 ? (
+											<PsAnim isHovered={hoveredIndex === index} />
+										) : (
+											<ImagesBlock
+												images={genre.screenshots}
+												isHovered={hoveredIndex === index}
+												index={index}
+											/>
+										)}
+									</Link>
+								</SwiperSlide>
+							))}
+							{isMobile2 && <SwiperSlide></SwiperSlide>}
+						</Swiper>
+					) : (
+						<div className={cnx("sceleton")}></div>
+					)}
 				</div>
 
 				{/* <div className={cnx("genries__grid")}>
