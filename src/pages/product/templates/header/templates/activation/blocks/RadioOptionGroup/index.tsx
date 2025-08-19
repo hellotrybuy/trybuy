@@ -36,7 +36,6 @@ export default function RadioOptionGroup({
 	const visibleRadios = option.variants?.slice(0, VISIBLE_COUNT) || [];
 	const hiddenRadios = option.variants?.slice(VISIBLE_COUNT) || [];
 	const radioCount = option.variants?.length || 0;
-	console.log(product);
 
 	const cntSumm = (elem: OptionItemVariantItem) => {
 		if (elem) {

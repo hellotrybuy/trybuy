@@ -48,6 +48,7 @@ export function useGetProductsFromCat(
 	selectedTypes: string[],
 	selectSecondCat: string = "",
 	searchFromUrl: string = "",
+	refreshKey?: number,
 ): UseGetCategories {
 	const [products, setProducts] = useState<ProductDataCAT[] | []>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -108,6 +109,7 @@ export function useGetProductsFromCat(
 		productTypes,
 		selectSecondCat,
 		searchFromUrl,
+		refreshKey,
 	]);
 
 	return { products, loading, error, totalPages };

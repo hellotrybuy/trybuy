@@ -77,6 +77,8 @@ export function CatalogPage() {
 		useState<string[]>(previewTypesFromUrl);
 	const [selectSecondCat, setSelectSecondCat] = useState(secondCategoryFromUrl);
 	const loadMoreRef = useRef(null);
+	const [refreshKey, setRefreshKey] = useState(0);
+
 	const {
 		products: productsFromCat,
 		loading: productsFromCatLoading,
@@ -90,12 +92,18 @@ export function CatalogPage() {
 		selectedType,
 		selectSecondCat,
 		search,
+		refreshKey,
 	);
+
+	console.log(categoryId, "categoryId");
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
 	const { categorys, loading: loadingCat } = useGetGreatCategories();
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+	// console.log(productsFromCat, "productsFromCat");
+	// console.log(catalogData, "catalogData");
 
 	const toggleFilter = () => setIsFilterOpen((v) => !v);
 
@@ -164,6 +172,10 @@ export function CatalogPage() {
 			return newParams;
 		});
 	};
+
+	useEffect(() => {
+		setRefreshKey(Date.now());
+	}, []);
 
 	useEffect(() => {
 		changeSearch(searchInput);
@@ -247,6 +259,11 @@ export function CatalogPage() {
 	}, [categorys, categoryId]);
 
 	useEffect(() => {
+		setCatalogData([]);
+		setCurrentPage(1);
+	}, [categoryId, selectedPlatforms, selectedType, selectSecondCat, search]);
+
+	useEffect(() => {
 		if (!productsFromCat) return;
 
 		setCatalogData((prev) => {
@@ -265,7 +282,7 @@ export function CatalogPage() {
 			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
 			return [...prev, ...filteredNew];
 		});
-	}, [productsFromCat, currentPage, categoryId]);
+	}, [productsFromCat, currentPage, categoryId, refreshKey]);
 
 	const { product: commerceProucts, loading: commerceLoading } =
 		useGetCommerceProductWithFallback(
@@ -286,8 +303,6 @@ export function CatalogPage() {
 		}
 	}, [commerceLoading, commerceProucts]);
 
-	if (loadingCat) return;
-
 	return (
 		<div className={cnx("catalog")}>
 			<Breadcrumbs crumbs={crumbs} />
@@ -295,18 +310,18 @@ export function CatalogPage() {
 				<div className={cnx("catalog__inner")}>
 					<div className={cnx("catalog__categories", "categories")}>
 						<nav className={cnx("categories__nav")}>
-							<ul>
-								<li
-									className={cnx(categoryId == "" && "_active")}
-									onClick={() => changeCategory("")}
-									ref={(node) => {
-										categoryRefs.current[""] = node;
-									}}
-								>
-									<div>Все товары</div>
-								</li>
-								{categorys &&
-									categorys.map((el) => (
+							{categorys ? (
+								<ul>
+									<li
+										className={cnx(categoryId == "" && "_active")}
+										onClick={() => changeCategory("")}
+										ref={(node) => {
+											categoryRefs.current[""] = node;
+										}}
+									>
+										<div>Все товары</div>
+									</li>
+									{categorys.map((el) => (
 										<li
 											ref={(node) => {
 												categoryRefs.current[el.id] = node;
@@ -318,7 +333,11 @@ export function CatalogPage() {
 											<div>{el.name}</div>
 										</li>
 									))}
-							</ul>
+								</ul>
+							) : (
+								<div className={cnx("categories_sceleton")}></div>
+							)}
+
 							<ChapterSearch
 								selectValue={selectValue}
 								setSelectValue={setSelectValue}
@@ -376,20 +395,23 @@ export function CatalogPage() {
 							)}
 
 							<div className={cnx("main__cards")} key={categoryId}>
-								{<ProductCards data={catalogData} />}
+								{productsFromCatLoading && catalogData.length === 0 ? (
+									<ProductsSceleton isMargin={false} />
+								) : (
+									<ProductCards data={catalogData} />
+								)}
+
 								{totalPages > currentPage && (
 									<div
 										ref={loadMoreRef}
 										className={cnx("ref-load")}
-										style={{
-											minHeight: "100px",
-										}}
+										style={{ minHeight: "100px" }}
 									>
 										<ProductsSceleton isMargin={catalogData.length > 0} />
 									</div>
 								)}
 
-								{!(catalogData.length > 0) && totalPages == 0 && (
+								{!productsFromCatLoading && catalogData.length === 0 && (
 									<div className={cnx("notFound")}>
 										К сожалению, по текущему поисковому запросу в данной
 										категории товаров нет :(
