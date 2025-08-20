@@ -11,7 +11,7 @@ export function ReviewsCount({ count }: Props) {
 	return (
 		<div className={cnx("review-block")}>
 			<div className={cnx("card__review-block")}>
-				<span>{count}+ Оценок</span>
+				<span>{count} Оценок</span>
 			</div>
 		</div>
 	);

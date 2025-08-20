@@ -71,6 +71,8 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		];
 	}, [product]);
 
+	console.log(product, "asd");
+
 	return (
 		<div className={cnx("product")}>
 			<Breadcrumbs crumbs={crumbs} />
@@ -92,7 +94,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 						<div className={cnx("aside__block", "seller")}>
 							<span className={cnx("seller__caption")}>продавец</span>
 							<div className={cnx("seller__top")}>
-								<Link to={"/seller"}>
+								<Link to={`/sellers/${product[0].seller_id}`}>
 									<strong>{product[0].seller_name}</strong>
 								</Link>
 								<div className={cnx("seller__star")}>

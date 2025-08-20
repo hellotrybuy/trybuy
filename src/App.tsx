@@ -54,7 +54,7 @@ function App() {
 							<Route path="/nav" element={<Navigation />} />
 							<Route path="/product" element={<ProductPage />} />
 							<Route path="/catalog" element={<CatalogPage />} />
-							<Route path="/seller" element={<SellerPage />} />
+							<Route path="/sellers/:id" element={<SellerPage />} />
 							<Route path="/catalog/product/:id" element={<ProductPage />} />
 
 							{/* Типовые странички */}

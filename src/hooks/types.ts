@@ -2,6 +2,7 @@ import { ProductDataCAT } from "./useGetProductsFromCat";
 
 export interface ProductData {
 	id: string;
+	seller_id: number;
 	id_prev: string;
 	seller_name: string;
 	id_product: string;

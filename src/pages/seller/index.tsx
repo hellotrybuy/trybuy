@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 import { selectOptions } from "../catalog";
 import { CATALOG_CATEGORY } from "../../constants/searchParams";
 import { CatalogType } from "../../types";
@@ -16,16 +16,22 @@ import ProductCards from "../../widgets/product-cards";
 import { SellerHeader } from "./blocks/sellerHeader";
 import { useProductList } from "../../hooks/useProductList";
 import { FilterButton } from "../catalog/filterButton";
+import { useGetSeller } from "../../hooks/useGetSeller";
 
 const cnx = classNames.bind(styles);
 
 export function SellerPage() {
 	const [searchParams] = useSearchParams();
+	const { id } = useParams();
+
 	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
 	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
 	const [selectedType, setSelectedType] = useState<string[]>([]);
 	const [selectSecondCat, setSelectSecondCat] = useState("");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+	const { seller } = useGetSeller(id);
+	console.log(seller, "platforms");
 
 	const toggleFilter = () => setIsFilterOpen((v) => !v);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
@@ -35,7 +41,7 @@ export function SellerPage() {
 			<Breadcrumbs />
 			<div className={CONTAINER}>
 				<div className={cnx("containerSeller")}>
-					<SellerHeader />
+					<SellerHeader seller={seller} />
 					<div className={cnx("seller__inner")}>
 						<div className={cnx("seller-categories")}>
 							<nav className={cnx("seller-categories__nav")}>
