@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams, useSearchParams } from "react-router";
-import { selectOptions } from "../catalog";
-import { CATALOG_CATEGORY } from "../../constants/searchParams";
+import CatalogPage, { selectOptions } from "../catalog";
+import {
+	CATALOG_CATEGORY,
+	CATALOG_PLATFORMS,
+	CATALOG_SEARCH,
+	CATALOG_SECOND_CAT,
+	CATALOG_TYPES,
+} from "../../constants/searchParams";
 import { CatalogType } from "../../types";
-import { useState } from "react";
-import Breadcrumbs from "../../components/breadcrumbs";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Breadcrumbs, { Crumb } from "../../components/breadcrumbs";
 import { CONTAINER } from "../../constants/classnames";
 import styles from "./index.module.scss";
 import classNames from "classnames/bind";
@@ -17,71 +24,359 @@ import { SellerHeader } from "./blocks/sellerHeader";
 import { useProductList } from "../../hooks/useProductList";
 import { FilterButton } from "../catalog/filterButton";
 import { useGetSeller } from "../../hooks/useGetSeller";
+import { useGetProductsFromCatSeller } from "../../hooks/useGetProductsFromCatSeller";
+import { useSearchContext } from "../../context";
+import { ProductDataCAT } from "../../hooks/useGetProductsFromCat";
+import ProductsSceleton from "../../widgets/productsSceleton";
+import { useGetPlatforms } from "../../hooks/useGetPlatforms";
+import { useGetProductTypes } from "../../hooks/useGetProductTypes";
+import { useGetCategoriesSecondPlace } from "../../hooks/useGetCategoriesSecondPlace";
+import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
+import { ChapterSearch } from "../catalog/chapterSearch";
 
 const cnx = classNames.bind(styles);
 
 export function SellerPage() {
-	const [searchParams] = useSearchParams();
 	const { id } = useParams();
 
-	const category = searchParams.get(CATALOG_CATEGORY) as CatalogType;
-	const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-	const [selectedType, setSelectedType] = useState<string[]>([]);
-	const [selectSecondCat, setSelectSecondCat] = useState("");
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+	const [searchParams, setSearchParams] = useSearchParams();
+	const category = searchParams.get(CATALOG_CATEGORY);
+	const platformsFromUrl = searchParams.get(CATALOG_PLATFORMS);
+	const typesFromUrl = searchParams.get(CATALOG_TYPES);
+	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
+	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+	const categoryRefs = useRef<Record<string, HTMLLIElement | null>>({});
+
+	const { searchInput } = useSearchContext();
+
+	const previewPlatforms = useMemo(() => {
+		if (platformsFromUrl) {
+			return platformsFromUrl.split("__");
+		} else {
+			return [];
+		}
+	}, [platformsFromUrl]);
+
+	const previewTypesFromUrl = useMemo(() => {
+		if (typesFromUrl) {
+			return typesFromUrl.split("__");
+		} else {
+			return [];
+		}
+	}, [typesFromUrl]);
+
+	const [currentPage, setCurrentPage] = useState(1);
+	const [search, setSearch] = useState(searchFromUrl);
+	const [categoryId, setCategoryId] = useState(category);
+	const [selectedPlatforms, setSelectedPlatforms] =
+		useState<string[]>(previewPlatforms);
+	const [selectedType, setSelectedType] =
+		useState<string[]>(previewTypesFromUrl);
+	const [selectSecondCat, setSelectSecondCat] = useState(secondCategoryFromUrl);
+	const loadMoreRef = useRef(null);
+	const [refreshKey, setRefreshKey] = useState(0);
+
 	const { seller } = useGetSeller(id);
-	console.log(seller, "platforms");
+	const { categorys, loading: loadingCat } = useGetGreatCategories();
+
+	const { platforms } = useGetPlatforms(categoryId);
+	const { types: productTypes } = useGetProductTypes(categoryId);
+	const { platforms: categorySecondPlace } =
+		useGetCategoriesSecondPlace(categoryId);
 
 	const toggleFilter = () => setIsFilterOpen((v) => !v);
 	const [selectValue, setSelectValue] = useState(selectOptions[0].value);
-	const { products } = useProductList(1, 15);
+	const {
+		products,
+		loading: productsFromCatLoading,
+		totalPages,
+	} = useGetProductsFromCatSeller(
+		categoryId,
+		currentPage,
+		20,
+		selectValue,
+		selectedPlatforms,
+		selectedType,
+		selectSecondCat,
+		search,
+		id,
+		refreshKey,
+	);
+
+	console.log(products, "products");
+
+	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
+
+	useEffect(() => {
+		setCatalogData([]);
+		setCurrentPage(1);
+	}, [categoryId, selectedPlatforms, selectedType, selectSecondCat, search]);
+
+	useEffect(() => {
+		if (!products) return;
+
+		setCatalogData((prev) => {
+			const existingIds = new Set(prev.map((p) => p.id));
+			const uniqueNew = products.filter(
+				(p: ProductDataCAT, index, self) =>
+					self.findIndex(
+						(x: ProductDataCAT) => x.id_product === p.id_product,
+					) === index,
+			);
+
+			if (currentPage === 1) {
+				return uniqueNew;
+			}
+
+			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
+			return [...prev, ...filteredNew];
+		});
+	}, [products, currentPage, categoryId, refreshKey]);
+
+	const changeCategory = (id: string) => {
+		setCurrentPage(1);
+		setCategoryId(id);
+		setSelectedPlatforms([]);
+		setSelectedType([]);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.delete(CATALOG_PLATFORMS);
+			newParams.delete(CATALOG_TYPES);
+			newParams.delete(CATALOG_SECOND_CAT);
+			if (id === "") {
+				newParams.delete(CATALOG_CATEGORY);
+			} else {
+				newParams.set(CATALOG_CATEGORY, id);
+			}
+			return newParams;
+		});
+	};
+
+	const changePage = useCallback(() => {
+		if (totalPages >= currentPage) setCurrentPage((prevPage) => prevPage + 1);
+	}, [totalPages, currentPage]);
+
+	const changePlatforms = (ids: string[]) => {
+		setSelectedPlatforms(ids);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.set(CATALOG_PLATFORMS, ids.join("__"));
+			return newParams;
+		});
+	};
+
+	const changeContentTypes = (ids: string[]) => {
+		setSelectedType(ids);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.set(CATALOG_TYPES, ids.join("__"));
+			return newParams;
+		});
+	};
+
+	const changeSearch = useCallback(
+		(text: string) => {
+			setSearchParams((prev) => {
+				const newParams = new URLSearchParams(prev);
+				newParams.set(CATALOG_SEARCH, text);
+				return newParams;
+			});
+		},
+		[setSearchParams],
+	);
+
+	const changeCategorySecondPlace = (id: string) => {
+		setSelectSecondCat(id);
+		setSearchParams((prev) => {
+			const newParams = new URLSearchParams(prev);
+			newParams.set(CATALOG_SECOND_CAT, id);
+			return newParams;
+		});
+	};
+
+	useEffect(() => {
+		setRefreshKey(Date.now());
+	}, []);
+
+	useEffect(() => {
+		changeSearch(searchInput);
+	}, [searchInput, changeSearch]);
+
+	useEffect(() => {
+		if (secondCategoryFromUrl) {
+			setSelectSecondCat(secondCategoryFromUrl);
+		} else {
+			setSelectSecondCat("");
+		}
+		setCurrentPage(1);
+	}, [secondCategoryFromUrl]);
+
+	useEffect(() => {
+		setSearch(searchInput);
+		setCurrentPage(1);
+	}, [searchFromUrl, searchInput]);
+
+	useEffect(() => {
+		if (previewPlatforms.length > 0) {
+			setSelectedPlatforms(previewPlatforms);
+		} else {
+			setSelectedPlatforms([]);
+		}
+		setCurrentPage(1);
+	}, [previewPlatforms]);
+
+	useEffect(() => {
+		if (previewTypesFromUrl.length > 0) {
+			setSelectedType(previewTypesFromUrl);
+		} else {
+			setSelectedType([]);
+		}
+		setCurrentPage(1);
+	}, [previewTypesFromUrl]);
+
+	useEffect(() => {
+		if (category) {
+			setCategoryId(category);
+		} else {
+			setCategoryId("");
+		}
+		setCurrentPage(1);
+	}, [category]);
+
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !productsFromCatLoading) {
+					changePage();
+				}
+			},
+			{ threshold: 0.1 },
+		);
+
+		if (loadMoreRef.current) {
+			observer.observe(loadMoreRef.current);
+		}
+
+		return () => {
+			if (loadMoreRef.current) {
+				observer.unobserve(loadMoreRef.current);
+			}
+		};
+	}, [productsFromCatLoading, loadMoreRef, changePage, totalPages, loadingCat]);
+
+	useEffect(() => {
+		const el = categoryRefs.current[categoryId ?? ""];
+		if (el) {
+			el.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "nearest",
+			});
+		}
+	}, [categorys, categoryId]);
+
+	useEffect(() => {
+		setCatalogData([]);
+		setCurrentPage(1);
+	}, [categoryId, selectedPlatforms, selectedType, selectSecondCat, search]);
+
+	useEffect(() => {
+		if (!products) return;
+
+		setCatalogData((prev) => {
+			const existingIds = new Set(prev.map((p) => p.id));
+			const uniqueNew = products.filter(
+				(p: ProductDataCAT, index, self) =>
+					self.findIndex(
+						(x: ProductDataCAT) => x.id_product === p.id_product,
+					) === index,
+			);
+
+			if (currentPage === 1) {
+				return uniqueNew;
+			}
+
+			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
+			return [...prev, ...filteredNew];
+		});
+	}, [products, currentPage, categoryId, refreshKey]);
+
+	const crumbs: Crumb[] = [
+		{ label: "Главная", href: "/" },
+		{ label: "Продавцы", href: "/sellers" },
+		{
+			label: seller?.seller_name,
+			href: `/sellers/${seller?.seller_id}`,
+			isActive: true,
+		},
+	];
+
 	return (
 		<div className={cnx("seller")}>
-			<Breadcrumbs />
+			<Breadcrumbs crumbs={crumbs} />
 			<div className={CONTAINER}>
 				<div className={cnx("containerSeller")}>
 					<SellerHeader seller={seller} />
 					<div className={cnx("seller__inner")}>
 						<div className={cnx("seller-categories")}>
-							<nav className={cnx("seller-categories__nav")}>
-								<ul>
-									<li className={cnx(category !== "games" && "_active")}>
-										<a href={Routes.CATALOG}>Все товары</a>
-									</li>
-									<li className={cnx(category === "games" && "_active")}>
-										<a href={`${Routes.CATALOG}?${CATALOG_CATEGORY}=games`}>
-											Игры
-										</a>
-									</li>
-									<li>
-										<a href="#">Программное обеспечение</a>
-									</li>
-									<li>
-										<a href="#">Сервисы и соцсети</a>
-									</li>
-									<li>
-										<a href="#">Внутриигровые ценности</a>
-									</li>
-								</ul>
+							<nav className={cnx("categories__nav")}>
+								{categorys ? (
+									<ul>
+										<li
+											className={cnx(categoryId == "" && "_active")}
+											onClick={() => changeCategory("")}
+											ref={(node) => {
+												categoryRefs.current[""] = node;
+											}}
+										>
+											<div>Все товары</div>
+										</li>
+										{categorys.map((el) => (
+											<li
+												ref={(node) => {
+													categoryRefs.current[el.id] = node;
+												}}
+												className={cnx(categoryId == el.id && "_active")}
+												key={el.id}
+												onClick={() => changeCategory(el.id)}
+											>
+												<div>{el.name}</div>
+											</li>
+										))}
+									</ul>
+								) : (
+									<div className={cnx("categories_sceleton")}></div>
+								)}
+
+								<ChapterSearch
+									selectValue={selectValue}
+									setSelectValue={setSelectValue}
+									values={selectOptions}
+								/>
 							</nav>
 						</div>
 
 						<div className={cnx("seller__body")}>
 							<div className={cnx("seller__filters")}>
 								<Filers
-									platforms={[]}
+									platforms={platforms}
+									category={categoryId}
 									selectedPlatforms={selectedPlatforms}
-									setSelectedPlatforms={setSelectedPlatforms}
-									contentTypes={[]}
+									setSelectedPlatforms={changePlatforms}
+									contentTypes={productTypes}
 									selectedTypes={selectedType}
-									setSelectedTypes={setSelectedType}
-									searchParams={null}
-									setSearchParams={null}
-									categorySecondPlace={[]}
+									setSelectedTypes={changeContentTypes}
+									setSelectSecondCat={changeCategorySecondPlace}
 									selectSecondCat={selectSecondCat}
-									setSelectSecondCat={setSelectSecondCat}
-									category={""}
+									categorySecondPlace={categorySecondPlace}
+									searchParams={searchParams}
+									setSearchParams={setSearchParams}
 								/>
 							</div>
 
@@ -106,18 +401,18 @@ export function SellerPage() {
 									<FilterMobile
 										isOpen={isFilterOpen}
 										onClose={() => setIsFilterOpen(false)}
-										category={""}
-										platforms={[]}
+										platforms={platforms}
+										category={categoryId}
 										selectedPlatforms={selectedPlatforms}
-										contentTypes={[]}
+										setSelectedPlatforms={changePlatforms}
+										contentTypes={productTypes}
 										selectedTypes={selectedType}
-										setSelectedTypes={setSelectedType}
-										setSelectedPlatforms={setSelectedPlatforms}
-										searchParams={null}
-										categorySecondPlace={[]}
+										setSelectedTypes={changeContentTypes}
+										setSelectSecondCat={changeCategorySecondPlace}
 										selectSecondCat={selectSecondCat}
-										setSelectSecondCat={setSelectSecondCat}
-										setSearchParams={null}
+										categorySecondPlace={categorySecondPlace}
+										searchParams={searchParams}
+										setSearchParams={setSearchParams}
 									/>
 								</div>
 
@@ -176,15 +471,35 @@ export function SellerPage() {
 									</div>
 								)}
 
-								<div className={cnx("seller-main__cards")}>
-									<ProductCards data={products.rows} />
+								{/* <div className={cnx("seller-main__cards")}>
+									<ProductCards data={catalogData} />
+								</div> */}
+								<div className={cnx("main__cards")} key={categoryId}>
+									{productsFromCatLoading && catalogData.length === 0 ? (
+										<ProductsSceleton isMargin={false} />
+									) : (
+										<ProductCards data={catalogData} />
+									)}
+
+									{totalPages > currentPage && (
+										<div
+											ref={loadMoreRef}
+											className={cnx("ref-load")}
+											style={{ minHeight: "100px" }}
+										>
+											<ProductsSceleton isMargin={catalogData.length > 0} />
+										</div>
+									)}
+
+									{!productsFromCatLoading && catalogData.length === 0 && (
+										<div className={cnx("notFound")}>
+											К сожалению, по текущему поисковому запросу в данной
+											категории товаров нет :(
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
-
-						<Button white className={cnx("seller__btn-more")}>
-							Загрузить ещё
-						</Button>
 					</div>
 				</div>
 			</div>

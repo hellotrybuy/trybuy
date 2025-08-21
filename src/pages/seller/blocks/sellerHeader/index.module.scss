@@ -169,3 +169,34 @@
 	line-height: 100%;
 	cursor: pointer;
 }
+
+.skeletonHeader {
+	height: 104px;
+	width: 100%;
+
+	border-radius: 20px;
+
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	animation: pulse 3s infinite ease-in-out;
+	background-size: 400% 100%;
+}
+
+.skeleton {
+	height: 52px;
+	width: 100%;
+
+	border-radius: 20px;
+
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	animation: pulse 3s infinite ease-in-out;
+	background-size: 400% 100%;
+}
+
+@keyframes pulse {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}

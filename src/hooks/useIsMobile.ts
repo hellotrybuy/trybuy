@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 const MOBILE_BREAKPOINT = 768.2;
 const MOBILE_BREAKPOINT_2 = 576.2;
 const MOBILE_BREAKPOINT_3 = 1600.2;
+const MOBILE_BREAKPOINT_4 = 991.2;
 
 export function useIsMobile() {
 	const [isMobile, setIsMobile] = useState(false);
 	const [isMobile2, setIsMobile2] = useState(false);
+	const [isMobile3, setIsMobile3] = useState(false);
 	const [isBig, setIsBig] = useState(false);
 
 	useEffect(() => {
@@ -14,6 +16,7 @@ export function useIsMobile() {
 			const width = window.innerWidth;
 			setIsMobile(width < MOBILE_BREAKPOINT);
 			setIsMobile2(width < MOBILE_BREAKPOINT_2);
+			setIsMobile3(width < MOBILE_BREAKPOINT_4);
 			setIsBig(width > MOBILE_BREAKPOINT_3);
 		};
 
@@ -23,5 +26,5 @@ export function useIsMobile() {
 		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
-	return { isMobile, isMobile2, isBig };
+	return { isMobile, isMobile2, isBig, isMobile3 };
 }

@@ -38,6 +38,7 @@ function hasPriceModifier(options: OptionItem[]): boolean {
 
 export function ProductCard({ product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
+	console.log(product, "p");
 
 	const totalReviews = useMemo(() => {
 		return Number(product.good_reviews) + Number(product.bad_reviews);
@@ -73,7 +74,11 @@ export function ProductCard({ product }: Props) {
 
 			{/* Основная карточка */}
 			<Link
-				to={`/catalog/product/${product.id_product}`}
+				to={
+					product.id_product
+						? `/catalog/product/${product.id_product}`
+						: `/catalog/product/${product.product_id}`
+				}
 				className={cnx("link")}
 				style={{ display: isImageLoaded ? "block" : "none" }} // 👈 скрыта до загрузки
 			>
@@ -81,7 +86,11 @@ export function ProductCard({ product }: Props) {
 					<div className={cnx("content")}>
 						<img
 							className={cnx("card__img")}
-							src={`https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`}
+							src={
+								product.id_product
+									? `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`
+									: `https://graph.digiseller.ru/img.ashx?id_d=${product.product_id}&w=200&h=200&crop=true`
+							}
 							alt={product.name}
 							onLoad={() => setIsImageLoaded(true)}
 							onError={() => setIsImageLoaded(true)}
@@ -92,11 +101,16 @@ export function ProductCard({ product }: Props) {
 						<div className={cnx("card__review")}>
 							<div className={cnx("card__review-block")}>
 								<img src="/iconsFolder/common/star.svg" alt="Рейтинг" />
-								<span>{raiting.toFixed(1)}</span>
+								<span>{raiting ? raiting.toFixed(1) : "Скрыто"}</span>
 							</div>
 							<div className={cnx("card__review-block")}>
 								<span>
-									{totalReviews >= 1000 ? `1000+` : totalReviews} Оценок
+									{totalReviews
+										? totalReviews >= 1000
+											? `1000+`
+											: totalReviews
+										: "Скрыто"}{" "}
+									Оценок
 								</span>
 							</div>
 						</div>

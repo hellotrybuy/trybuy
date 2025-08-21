@@ -43,6 +43,10 @@
 	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
 	animation: pulse 3s infinite ease-in-out;
 	background-size: 400% 100%;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		width: 100%;
+	}
 }
 
 @keyframes pulse {
