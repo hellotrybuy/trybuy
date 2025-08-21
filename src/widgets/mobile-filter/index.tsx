@@ -64,35 +64,53 @@ export function FilterMobile({
 		if (!swipeArea) return;
 
 		let touchStartY = 0;
-		let touchStartX = 0;
-		let touchEndY = 0;
-		let touchEndX = 0;
-		let isSwipingDown = false;
+		let currentY = 0;
+		let translateY = 0;
+		let isDragging = false;
+
+		const threshold = 100; // px для закрытия
+		const body = swipeArea.closest(`.${cnx("filter__body")}`) as HTMLDivElement;
 
 		const onTouchStart = (e: TouchEvent) => {
 			touchStartY = e.touches[0].clientY;
-			touchStartX = e.touches[0].clientX;
-			touchEndY = 0;
-			touchEndX = 0;
-			isSwipingDown = false;
+			currentY = touchStartY;
+			isDragging = true;
+
+			if (body) {
+				body.style.transition = "none"; // убираем анимацию
+			}
 		};
 
 		const onTouchMove = (e: TouchEvent) => {
-			touchEndY = e.touches[0].clientY;
-			touchEndX = e.touches[0].clientX;
+			if (!isDragging) return;
+			currentY = e.touches[0].clientY;
+			const diffY = currentY - touchStartY;
 
-			const diffY = touchEndY - touchStartY;
-			const diffX = Math.abs(touchEndX - touchStartX);
-
-			if (diffY > 0 && diffY > diffX) {
-				isSwipingDown = true;
+			if (diffY > 0) {
+				translateY = diffY;
+				if (body) {
+					body.style.transform = `translateY(${translateY}px)`;
+				}
 				e.preventDefault();
 			}
 		};
 
 		const onTouchEnd = () => {
-			if (isSwipingDown && touchEndY - touchStartY > 50) {
-				onClose();
+			isDragging = false;
+			if (body) {
+				body.style.transition = "transform 0.3s ease";
+
+				if (translateY > threshold) {
+					// Если свайп большой — закрываем
+					body.style.transform = `translateY(100%)`;
+					setTimeout(() => {
+						onClose();
+						body.style.transform = "";
+					}, 300);
+				} else {
+					// Возвращаем назад
+					body.style.transform = `translateY(0)`;
+				}
 			}
 		};
 
