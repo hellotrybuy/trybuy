@@ -12,6 +12,7 @@ import {
 	CATALOG_CATEGORY,
 	CATALOG_PLATFORMS,
 	CATALOG_SEARCH,
+	CATALOG_SEARCH_ANON,
 	CATALOG_SECOND_CAT,
 	CATALOG_TYPES,
 } from "../../constants/searchParams";
@@ -47,6 +48,8 @@ export function CatalogPage() {
 	const typesFromUrl = searchParams.get(CATALOG_TYPES);
 	const secondCategoryFromUrl = searchParams.get(CATALOG_SECOND_CAT);
 	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+	const searchFromUrlA = searchParams.get(CATALOG_SEARCH_ANON);
+
 	const categoryRefs = useRef<Record<string, HTMLLIElement | null>>({});
 
 	const { searchInput } = useSearchContext();
@@ -94,8 +97,6 @@ export function CatalogPage() {
 		search,
 		refreshKey,
 	);
-
-	console.log(categoryId, "categoryId");
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
@@ -155,13 +156,21 @@ export function CatalogPage() {
 
 	const changeSearch = useCallback(
 		(text: string) => {
-			setSearchParams((prev) => {
-				const newParams = new URLSearchParams(prev);
-				newParams.set(CATALOG_SEARCH, text);
-				return newParams;
-			});
+			if (searchFromUrlA != text) {
+				setSearchParams((prev) => {
+					const newParams = new URLSearchParams(prev);
+					newParams.set(CATALOG_SEARCH, text);
+					return newParams;
+				});
+			} else {
+				setSearchParams((prev) => {
+					const newParams = new URLSearchParams(prev);
+					newParams.set(CATALOG_SEARCH, "");
+					return newParams;
+				});
+			}
 		},
-		[setSearchParams],
+		[setSearchParams, searchFromUrlA],
 	);
 
 	const changeCategorySecondPlace = (id: string) => {

@@ -41,26 +41,28 @@ export function PriceProvider({ children }: { children: React.ReactNode }) {
 
 		const newInvalids: Record<string, boolean> = {};
 
-		options.forEach((opt) => {
-			const value = form[opt.name];
+		if (options) {
+			options.forEach((opt) => {
+				const value = form[opt.name];
 
-			if (opt.required === 1) {
-				if (opt.type === "text" && (!value || !String(value).trim())) {
-					newInvalids[opt.name] = true;
-				} else if (opt.type === "radio" && (!value || value === "")) {
-					newInvalids[opt.name] = true;
-				} else if (opt.type === "checkbox") {
-					if (typeof value === "boolean" && !value) {
+				if (opt.required === 1) {
+					if (opt.type === "text" && (!value || !String(value).trim())) {
 						newInvalids[opt.name] = true;
-					} else if (typeof value === "object") {
-						const checkedCount = Object.values(value).filter(Boolean).length;
-						if (checkedCount === 0) {
+					} else if (opt.type === "radio" && (!value || value === "")) {
+						newInvalids[opt.name] = true;
+					} else if (opt.type === "checkbox") {
+						if (typeof value === "boolean" && !value) {
 							newInvalids[opt.name] = true;
+						} else if (typeof value === "object") {
+							const checkedCount = Object.values(value).filter(Boolean).length;
+							if (checkedCount === 0) {
+								newInvalids[opt.name] = true;
+							}
 						}
 					}
 				}
-			}
-		});
+			});
+		}
 
 		setInvalidFields(newInvalids);
 

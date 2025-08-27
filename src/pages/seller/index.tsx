@@ -105,8 +105,6 @@ export function SellerPage() {
 		refreshKey,
 	);
 
-	console.log(products, "products");
-
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
 
 	useEffect(() => {

@@ -38,7 +38,6 @@ function hasPriceModifier(options: OptionItem[]): boolean {
 
 export function ProductCard({ product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
-	console.log(product, "p");
 
 	const totalReviews = useMemo(() => {
 		return Number(product.good_reviews) + Number(product.bad_reviews);

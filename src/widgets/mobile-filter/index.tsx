@@ -68,7 +68,7 @@ export function FilterMobile({
 		let translateY = 0;
 		let isDragging = false;
 
-		const threshold = 100; // px для закрытия
+		const threshold = 100;
 		const body = swipeArea.closest(`.${cnx("filter__body")}`) as HTMLDivElement;
 
 		const onTouchStart = (e: TouchEvent) => {
@@ -77,7 +77,7 @@ export function FilterMobile({
 			isDragging = true;
 
 			if (body) {
-				body.style.transition = "none"; // убираем анимацию
+				body.style.transition = "none";
 			}
 		};
 
@@ -132,7 +132,8 @@ export function FilterMobile({
 				role="dialog"
 				aria-modal="true"
 			>
-				<div className={cnx("filter__swipe")} ref={swipeRef}></div>
+				<div className={cnx("filter__swipe")}></div>
+				<div className={cnx("filter__swipe__zone")} ref={swipeRef}></div>
 
 				<div className={cnx("filter__con")}>
 					<Filers

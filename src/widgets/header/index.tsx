@@ -107,18 +107,14 @@ export function Header() {
 							ref={ref}
 						>
 							{/* Список категорий */}
-							{categoriesFromView.length > 0 && (
+							{/* {categoriesFromView.length > 0 && (
 								<ul>
 									{categoriesFromView
 										.filter((category) => category.cnt !== 0)
 										.map((category) => (
 											<li key={category.id}>
 												<Link
-													to={`/catalog/?search=${encodeURIComponent(
-														category.name,
-													)}&main_category=${
-														category.parent_id
-													}&second_category=${category.id}`}
+													to={`/catalog/?main_category=${category.parent_id}&second_category=${category.id}&searchI=${searchInput}`}
 													className={cnx("item")}
 													onClick={() => {
 														setIsSearchOpen(false);
@@ -132,7 +128,7 @@ export function Header() {
 											</li>
 										))}
 								</ul>
-							)}
+							)} */}
 
 							{/* Для каждой категории выводим её типы */}
 							{categoriesFromView.some((cat) => cat.types?.length > 0) && (
@@ -148,13 +144,7 @@ export function Header() {
 												category.types.map((type) => (
 													<li key={`${category.id}-${type.id}`}>
 														<Link
-															to={`/catalog?content_type=${
-																type.url
-															}&search=${encodeURIComponent(
-																category.name,
-															)}&main_category=${
-																category.parent_id
-															}&second_category=${category.id}`}
+															to={`/catalog?content_type=${type.url}&&main_category=${category.parent_id}&second_category=${category.id}&searchI=${category.name}`}
 															className={cnx("item")}
 															onClick={() => {
 																setIsSearchOpen(false);

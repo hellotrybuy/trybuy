@@ -37,6 +37,10 @@ function App() {
 
 	const { isStopSite } = useCheckSecure();
 
+	if (window.location.pathname.startsWith("/admin")) {
+		return null; // Просто не монтируем React-контент
+	}
+
 	if (isStopSite === 1 && !isTokenValid()) {
 		return <SecurePage />;
 	}

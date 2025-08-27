@@ -18,6 +18,8 @@ export default defineConfig({
 			registerType: "autoUpdate",
 			workbox: {
 				globPatterns: ["**/*{html,css,js,ico,png,svg}"],
+				cleanupOutdatedCaches: true,
+				globIgnores: ["admin/**"],
 			},
 			manifest: {
 				name: "TryBuy",
@@ -45,4 +47,14 @@ export default defineConfig({
 			},
 		}),
 	],
+	build: {
+		outDir: "dist",
+		rollupOptions: {
+			output: {
+				entryFileNames: "assets/[name].[hash].js",
+				chunkFileNames: "assets/[name].[hash].js",
+				assetFileNames: "assets/[name].[hash].[ext]",
+			},
+		},
+	},
 });

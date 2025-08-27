@@ -15,16 +15,16 @@ export function MobileNavigation() {
 			scrollFixed(
 				() => setIsHidden(false),
 				() => {
-					if (isHidden !== true) setIsHidden(true);
+					if (!isHidden) setIsHidden(true);
 				},
 			);
 
 		window.addEventListener("scroll", computeScroll);
 
-		() => {
+		return () => {
 			window.removeEventListener("scroll", computeScroll);
 		};
-	}, []);
+	}, [isHidden]);
 
 	return (
 		<div className={cnx("navigation", isHidden && "_hidden")}>

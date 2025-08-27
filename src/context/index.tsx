@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
-import { CATALOG_SEARCH } from "../constants/searchParams";
+import { CATALOG_SEARCH, CATALOG_SEARCH_ANON } from "../constants/searchParams";
 
 interface SearchContext {
 	searchInput: string;
@@ -10,16 +10,27 @@ interface SearchContext {
 const SearchContexnt = createContext<SearchContext | undefined>(undefined);
 
 export function SeacrchProvider({ children }: { children: React.ReactNode }) {
-	const [searchParams] = useSearchParams();
-
+	const [searchParams, setSearchParams] = useSearchParams();
 	const searchFromUrl = searchParams.get(CATALOG_SEARCH);
+	const searchFromUrlAnon = searchParams.get(CATALOG_SEARCH_ANON);
 
-	const [searchInput, setSearchInput] = useState(searchFromUrl ?? "");
+	const v = useMemo(() => {
+		if (searchFromUrlAnon && searchFromUrl == searchFromUrlAnon) {
+			return searchFromUrlAnon ?? "";
+		}
+		return searchFromUrl ?? "";
+	}, [searchFromUrl, searchFromUrlAnon]);
+
+	const [searchInput, setSearchInput] = useState(v);
 
 	useEffect(() => {
-		const searchFromUrl = searchParams.get(CATALOG_SEARCH) ?? "";
-		setSearchInput(searchFromUrl);
-	}, [searchParams]);
+		if (searchFromUrl && searchFromUrl != "") {
+			const updated = new URLSearchParams(searchParams);
+			updated.delete(CATALOG_SEARCH_ANON);
+			setSearchParams(updated);
+		}
+		setSearchInput(v);
+	}, [v, searchParams, searchFromUrl, setSearchParams]);
 
 	return (
 		<SearchContexnt.Provider value={{ searchInput, setSearchInput }}>
