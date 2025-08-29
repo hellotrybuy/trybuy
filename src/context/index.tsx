@@ -15,7 +15,11 @@ export function SeacrchProvider({ children }: { children: React.ReactNode }) {
 	const searchFromUrlAnon = searchParams.get(CATALOG_SEARCH_ANON);
 
 	const v = useMemo(() => {
-		if (searchFromUrlAnon && searchFromUrl == searchFromUrlAnon) {
+		if (
+			searchFromUrlAnon &&
+			searchFromUrl == searchFromUrlAnon &&
+			searchFromUrl != ""
+		) {
 			return searchFromUrlAnon ?? "";
 		}
 		return searchFromUrl ?? "";
@@ -29,6 +33,9 @@ export function SeacrchProvider({ children }: { children: React.ReactNode }) {
 			updated.delete(CATALOG_SEARCH_ANON);
 			setSearchParams(updated);
 		}
+		console.log(searchFromUrl, "searchFromUrl");
+		console.log(searchFromUrlAnon, "searchFromUrlAnon");
+		console.log(v, "v");
 		setSearchInput(v);
 	}, [v, searchParams, searchFromUrl, setSearchParams]);
 

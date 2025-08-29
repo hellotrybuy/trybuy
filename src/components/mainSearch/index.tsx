@@ -26,6 +26,12 @@ export function MainSearch({
 	const ref = useRef<HTMLDivElement>(null);
 	const [inputValue, setInputValue] = useState(searchValue); // локальное значение
 
+	useEffect(() => {
+		if (searchValue && searchValue != "") {
+			setInputValue(searchValue);
+		}
+	}, [searchValue, setInputValue]);
+
 	useClickOutside([ref, refProp], () => setIsSearchOpen(false));
 
 	const openCatalog = useCallback(() => {

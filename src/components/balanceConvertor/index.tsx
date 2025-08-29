@@ -39,6 +39,7 @@ function isPricesUnit(obj: any): obj is PricesUnit {
 }
 
 export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {
+	console.log("тут конвертор баланса");
 	const info = useMemo<PricesUnit | null>(() => {
 		try {
 			const parsed = JSON.parse(prices_unit);

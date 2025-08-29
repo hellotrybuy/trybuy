@@ -263,7 +263,7 @@ export default function ProductActivation({ product }: Props) {
 		setShowWarning(showInvalidGlobal);
 	}, [showInvalidGlobal]);
 
-	if (options) {
+	if (options || isType_digi_product) {
 		return (
 			<div className={cnx("activation")}>
 				{showWarning && (
@@ -282,44 +282,46 @@ export default function ProductActivation({ product }: Props) {
 							<BalanceConvertor prices_unit={product[0].prices_unit} />
 						</div>
 					)}
-					{options.map((el) => {
-						if (el.type === "radio")
-							return (
-								<RadioOptionGroup
-									key={el.name}
-									option={el}
-									isExpanded={!!expandedRadios[el.name]}
-									toggleExpand={toggleExpand}
-									formValue={formState[el.name] as string}
-									onChange={handleRadioChange}
-									isInvalid={invalidFields[el.name]}
-									product={product}
-								/>
-							);
-						if (el.type === "text")
-							return (
-								<TextOptionField
-									key={el.name}
-									option={el}
-									value={formState[el.name] as string}
-									onChange={(name, value) =>
-										setFormState((prev) => ({ ...prev, [name]: value }))
-									}
-								/>
-							);
-						if (el.type === "checkbox")
-							return (
-								<CheckboxOptionGroup
-									key={el.name}
-									option={el}
-									values={formState[el.name]}
-									onChange={handleCheckboxChange}
-									isInvalid={invalidFields[el.name]}
-									product={product}
-								/>
-							);
-						return null;
-					})}
+
+					{options &&
+						options.map((el) => {
+							if (el.type === "radio")
+								return (
+									<RadioOptionGroup
+										key={el.name}
+										option={el}
+										isExpanded={!!expandedRadios[el.name]}
+										toggleExpand={toggleExpand}
+										formValue={formState[el.name] as string}
+										onChange={handleRadioChange}
+										isInvalid={invalidFields[el.name]}
+										product={product}
+									/>
+								);
+							if (el.type === "text")
+								return (
+									<TextOptionField
+										key={el.name}
+										option={el}
+										value={formState[el.name] as string}
+										onChange={(name, value) =>
+											setFormState((prev) => ({ ...prev, [name]: value }))
+										}
+									/>
+								);
+							if (el.type === "checkbox")
+								return (
+									<CheckboxOptionGroup
+										key={el.name}
+										option={el}
+										values={formState[el.name]}
+										onChange={handleCheckboxChange}
+										isInvalid={invalidFields[el.name]}
+										product={product}
+									/>
+								);
+							return null;
+						})}
 				</div>
 			</div>
 		);

@@ -116,6 +116,8 @@ export function Filers({
 		return !currentTypes || currentTypes.length === 0;
 	}, [currentTypes]);
 
+	console.log(currentTypes, "currentTypes");
+
 	return (
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
 			<div className={cnx("aside__filter", "filter")}>
@@ -175,21 +177,25 @@ export function Filers({
 					{isTypesLoading ? (
 						<div className={cnx("skeleton")}></div>
 					) : (
-						currentTypes.map((content) => (
-							<li key={content.id}>
-								<Checkbox
-									caption={content.type_name}
-									checked={selectedTypes.includes(content.type_url.toString())}
-									onChange={() =>
-										toggleItem(
+						currentTypes
+							.filter((it) => it.type_url !== "")
+							.map((content) => (
+								<li key={content.id}>
+									<Checkbox
+										caption={content.type_name}
+										checked={selectedTypes.includes(
 											content.type_url.toString(),
-											selectedTypes,
-											setSelectedTypes,
-										)
-									}
-								/>
-							</li>
-						))
+										)}
+										onChange={() =>
+											toggleItem(
+												content.type_url.toString(),
+												selectedTypes,
+												setSelectedTypes,
+											)
+										}
+									/>
+								</li>
+							))
 					)}
 				</ul>
 			</div>

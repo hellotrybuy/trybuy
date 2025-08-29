@@ -74,7 +74,7 @@ export function HeaderMobileNav({
 					openSearch();
 				}}
 			/>
-			<Button
+			{/* <Button
 				onClick={openCatalog}
 				className={cnx(
 					"actions-mobile__search-btn",
@@ -96,7 +96,7 @@ export function HeaderMobileNav({
 					<rect y="10" width="8" height="8" rx="2" fill="white" />
 					<rect x="10" y="10" width="8" height="8" rx="2" fill="white" />
 				</svg>
-			</Button>
+			</Button> */}
 		</div>
 	);
 }

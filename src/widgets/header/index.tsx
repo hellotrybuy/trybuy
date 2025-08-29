@@ -101,13 +101,15 @@ export function Header() {
 					/>
 
 					{/* Выпадающий поиск */}
-					{isSearchOpen && searchInput.length >= 2 && (
-						<div
-							className={cnx("actions__search-dropdown", "dropdown")}
-							ref={ref}
-						>
-							{/* Список категорий */}
-							{/* {categoriesFromView.length > 0 && (
+					{isSearchOpen &&
+						searchInput.length >= 2 &&
+						categoriesFromView.length > 0 && (
+							<div
+								className={cnx("actions__search-dropdown", "dropdown")}
+								ref={ref}
+							>
+								{/* Список категорий */}
+								{/* {categoriesFromView.length > 0 && (
 								<ul>
 									{categoriesFromView
 										.filter((category) => category.cnt !== 0)
@@ -130,42 +132,41 @@ export function Header() {
 								</ul>
 							)} */}
 
-							{/* Для каждой категории выводим её типы */}
-							{categoriesFromView.some((cat) => cat.types?.length > 0) && (
-								<>
-									<div className={cnx("dropdown__section-title")}></div>
-									<ul className={cnx("dropdown__section-types")}>
-										{categoriesFromView
-											.filter(
-												(category) =>
-													category.cnt !== 0 && category.types?.length,
-											)
-											.flatMap((category) =>
-												category.types.map((type) => (
-													<li key={`${category.id}-${type.id}`}>
-														<Link
-															to={`/catalog?content_type=${type.url}&&main_category=${category.parent_id}&second_category=${category.id}&searchI=${category.name}`}
-															className={cnx("item")}
-															onClick={() => {
-																setIsSearchOpen(false);
-																setIsCatalogOpen(false);
-															}}
-														>
-															<div className={cnx("item__name__cat")}>
-																{category.name}
-															</div>
-															<div className={cnx("item__type")}>
-																{type.name}
-															</div>
-														</Link>
-													</li>
-												)),
-											)}
-									</ul>
-								</>
-							)}
-						</div>
-					)}
+								{/* Для каждой категории выводим её типы */}
+								{categoriesFromView.some((cat) => cat.types?.length > 0) && (
+									<>
+										<ul className={cnx("dropdown__section-types")}>
+											{categoriesFromView
+												.filter(
+													(category) =>
+														category.cnt !== 0 && category.types?.length,
+												)
+												.flatMap((category) =>
+													category.types.map((type) => (
+														<li key={`${category.id}-${type.id}`}>
+															<Link
+																to={`/catalog?content_type=${type.url}&&main_category=${category.parent_id}&second_category=${category.id}&searchI=${category.name}`}
+																className={cnx("item")}
+																onClick={() => {
+																	setIsSearchOpen(false);
+																	setIsCatalogOpen(false);
+																}}
+															>
+																<div className={cnx("item__name__cat")}>
+																	{category.name}
+																</div>
+																<div className={cnx("item__type")}>
+																	{type.name}
+																</div>
+															</Link>
+														</li>
+													)),
+												)}
+										</ul>
+									</>
+								)}
+							</div>
+						)}
 				</div>
 			</header>
 
