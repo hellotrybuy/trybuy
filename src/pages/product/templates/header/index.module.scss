@@ -100,8 +100,9 @@
 		font-family: "Unbounded";
 		font-size: 24px;
 		font-weight: 500;
-		word-break: break-all;
-		hyphens: auto;
+		word-break: normal;
+		overflow-wrap: break-word; /* Современный стандарт */
+		hyphens: auto; /* Автоматические переносы при поддержке языка */
 
 		@media screen and (max-width: breakpoints.$lg) {
 			font-size: 16px;

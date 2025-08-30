@@ -58,47 +58,56 @@ export function useGetProductsFromCat(
 	const baseUrl = import.meta.env.VITE_API_URL;
 
 	const platforms = useMemo(() => {
-		if (selectedPlatforms.length > 0) {
-			return selectedPlatforms.map((platform) => `${platform}`).join("%2C");
-		}
-		return "";
+		return selectedPlatforms.length > 0
+			? selectedPlatforms.map((platform) => `${platform}`).join("%2C")
+			: "";
 	}, [selectedPlatforms]);
 
 	const productTypes = useMemo(() => {
-		if (selectedTypes.length > 0) {
-			return selectedTypes.map((type) => `${type}`).join("%2C");
-		}
-		return "";
+		return selectedTypes.length > 0
+			? selectedTypes.map((type) => `${type}`).join("%2C")
+			: "";
 	}, [selectedTypes]);
 
 	useEffect(() => {
+		const controller = new AbortController();
+		const signal = controller.signal;
+
 		setLoading(true);
 		setError(null);
 
 		const category = selectSecondCat ? selectSecondCat : category_id;
-
 		const offset = (page - 1) * rows;
+
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&rows=
-			${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}&page=${page}&search=${searchFromUrl}`,
+					`${baseUrl}/engine/functions/category/category_product_functions.php?ajax=1&sort=${selectOptions}&category_id=${category}&rows=${rows.toString()}&offset=${offset.toString()}&platforms=${platforms}&types=${productTypes}&page=${page}&search=${searchFromUrl}`,
+					{ signal },
 				);
+
 				if (!response.ok) {
 					throw new Error(`Ошибка HTTP: ${response.status}`);
 				}
+
 				const data: ProductDataCATResponse = await response.json();
 				setProducts(data.products);
 				setTotalPages(data.totalPages);
 			} catch (err) {
-				setError(err as Error);
-				setProducts(null);
+				if ((err as DOMException).name !== "AbortError") {
+					setError(err as Error);
+					setProducts(null);
+				}
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		fetchData();
+
+		return () => {
+			controller.abort();
+		};
 	}, [
 		baseUrl,
 		category_id,

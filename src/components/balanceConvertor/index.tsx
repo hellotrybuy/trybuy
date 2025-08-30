@@ -16,26 +16,14 @@ export interface PricesUnit {
 	unit_amount_desc: string;
 	unit_currency: string;
 	unit_cnt: number;
-	unit_cnt_min: number;
+	unit_cnt_min?: number;
 	unit_cnt_max: number;
 	unit_cnt_desc: string;
 	unit_only_int?: number;
 }
 
 function isPricesUnit(obj: any): obj is PricesUnit {
-	return (
-		(obj &&
-			typeof obj.unit_name === "string" &&
-			typeof obj.unit_amount === "number" &&
-			typeof obj.unit_amount_desc === "string" &&
-			typeof obj.unit_currency === "string" &&
-			typeof obj.unit_cnt === "number" &&
-			typeof obj.unit_cnt_min === "number" &&
-			typeof obj.unit_cnt_max === "number" &&
-			typeof obj.unit_cnt_desc === "string" &&
-			typeof obj.unit_only_int === "number") ||
-		obj.unit_only_int === undefined
-	);
+	return obj && typeof obj === "object";
 }
 
 export function BalanceConvertor({ prices_unit }: BalanceConvertorProps) {

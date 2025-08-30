@@ -10,42 +10,92 @@ export interface Category {
 
 export const catalogData: Category[] = [
 	{
-		title: "Игры",
+		title: "Игровые товары",
 		items: [
-			{ name: "Ключи", href: "#" },
-			{ name: "Аккаунты", href: "#" },
-			{ name: "Мобильный гейминг", href: "#" },
-			{ name: "Игровая валюта", href: "#" },
-			{ name: "Боевой пропуск", href: "#" },
+			{
+				name: "Пополнение Steam",
+				href: "/catalog?main_category=151&search=&second_category=399",
+			},
+			{
+				name: "Пополнение PSN",
+				href: "/catalog?main_category=151&search=&second_category=426",
+			},
+			{
+				name: "XBOX game pass",
+				href: "/catalog?main_category=151&search=&second_category=401",
+			},
+			{ name: "Игровые ценности", href: "/catalog?main_category=367&search=" },
 		],
 	},
 	{
-		title: "Пополнение баланса",
+		title: "Сервисы и соцсети",
 		items: [
-			{ name: "Steam Wallet", href: "#" },
-			{ name: "Playstaion Wallet", href: "#" },
-			{ name: "Xbox", href: "#" },
-			{ name: "Nintendo eShop", href: "#" },
-			{ name: "Discord Nitro", href: "#" },
+			{
+				name: "Музыка",
+				href: "/catalog?main_category=366&search=&second_category=382",
+			},
+			{
+				name: "Для креаторов",
+				href: "/catalog?main_category=366&search=&second_category=384",
+			},
+			{
+				name: "Видеосервисы",
+				href: "/catalog?main_category=366&search=&second_category=385",
+			},
+			{
+				name: "Фото/видео стоки",
+				href: "/catalog?main_category=366&search=&second_category=38",
+			},
+			{
+				name: "Нейросети",
+				href: "/catalog?main_category=366&search=&second_category=381",
+			},
 		],
 	},
 	{
-		title: "Подписки",
+		title: "Нейросети",
 		items: [
-			{ name: "Playstaion Network", href: "#" },
-			{ name: "Xbox Game Pass", href: "#" },
-			{ name: "Discord Nitro", href: "#" },
-			{ name: "Spotify", href: "#" },
+			{
+				name: "ChatGPT",
+				href: "/catalog?content_type=&main_category=381&second_category=421",
+			},
+			{
+				name: "Midjourney",
+				href: "/catalog?content_type=&main_category=381&second_category=419",
+			},
+			{
+				name: "Perplexity",
+				href: "/catalog?content_type=&main_category=381&second_category=420",
+			},
+			{
+				name: "Cursor",
+				href: "/catalog?content_type=activation&main_category=381&second_category=511",
+			},
 		],
 	},
 	{
 		title: "Програмное обеспечение",
 		items: [
-			{ name: "Microsoft", href: "#" },
-			{ name: "Антивирусы", href: "#" },
-			{ name: "Adobe", href: "#" },
-			{ name: "Midjourney", href: "#" },
-			{ name: "Chat GPT", href: "#" },
+			{
+				name: "Операционные системы",
+				href: "/catalog?main_category=152&search=&second_category=369",
+			},
+			{
+				name: "Офисные утилиты",
+				href: "/catalog?main_category=152&search=&second_category=378",
+			},
+			{
+				name: "Антивирусы",
+				href: "/catalog?main_category=152&search=&second_category=370",
+			},
+			{
+				name: "Фото/видео редакторы",
+				href: "/catalog?main_category=152&search=&second_category=379",
+			},
+			{
+				name: "Разработчикам",
+				href: "/catalog?main_category=152&search=&second_category=380",
+			},
 		],
 	},
 ];
