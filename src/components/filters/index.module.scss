@@ -17,6 +17,17 @@
 	width: 270px;
 }
 
+.fills {
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+
+	@media screen and (min-width: breakpoints.$lg) {
+		max-height: 50vh;
+	}
+}
+
 .filter {
 	display: flex;
 	flex-direction: column;

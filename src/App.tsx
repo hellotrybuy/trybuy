@@ -16,6 +16,7 @@ import { SecurePage } from "./pages/secure";
 import DownloadBanner from "./widgets/downloadBanner";
 import NotFoundPage from "./pages/not_found";
 import TextPage from "./pages/textPage";
+import { useState } from "react";
 
 const DEV_UNLOCK_CODE = "533529";
 const STORAGE_KEY = "secureAccessToken";
@@ -36,13 +37,14 @@ function App() {
 	usePreventZoom();
 
 	const { isStopSite } = useCheckSecure();
+	const [authorized, setAuthorized] = useState(isTokenValid());
 
 	if (window.location.pathname.startsWith("/admin")) {
 		return null; // Просто не монтируем React-контент
 	}
 
-	if (isStopSite === 1 && !isTokenValid()) {
-		return <SecurePage />;
+	if (isStopSite === 1 && !authorized) {
+		return <SecurePage onAuthorized={() => setAuthorized(true)} />;
 	}
 
 	return (

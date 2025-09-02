@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./index.module.scss";
 
@@ -46,6 +46,17 @@ export function FilterMobile({
 	category = "",
 }: IFilterMobile) {
 	const swipeRef = useRef<HTMLDivElement>(null);
+	const [vh, setVh] = useState(window.innerHeight * 0.01);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setVh(window.innerHeight * 0.01);
+		};
+
+		handleResize(); // начальная установка
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -129,13 +140,17 @@ export function FilterMobile({
 		<div className={cnx("filter", className)}>
 			<div
 				className={cnx("filter__body", { _open: isOpen })}
+				style={{ minHeight: `${vh * 62}px` }}
 				role="dialog"
 				aria-modal="true"
 			>
 				<div className={cnx("filter__swipe")}></div>
 				<div className={cnx("filter__swipe__zone")} ref={swipeRef}></div>
 
-				<div className={cnx("filter__con")}>
+				<div
+					className={cnx("filter__con")}
+					style={{ minHeight: `${vh * 50}px` }}
+				>
 					<Filers
 						category={category}
 						platforms={platforms}

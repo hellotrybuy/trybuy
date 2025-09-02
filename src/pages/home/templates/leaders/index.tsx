@@ -10,9 +10,21 @@ import { useRecommList } from "../../../../hooks/useRecommList";
 const cnx = classNames.bind(styles);
 
 export function HomeLeaders() {
+	const pageSize = useMemo(() => {
+		const width = window.innerWidth;
+
+		if (width >= 1600) {
+			return 24;
+		} else if (width >= 523 && width <= 689) {
+			return 21;
+		} else {
+			return 20;
+		}
+	}, []);
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const loadMoreRef = useRef(null);
-	const { products, loading, hasMore } = useRecommList(currentPage, 20);
+	const { products, loading, hasMore } = useRecommList(currentPage, pageSize);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
 	useEffect(() => {
@@ -69,7 +81,10 @@ export function HomeLeaders() {
 				<PopularCards data={catalogData} />
 				{hasMore && (
 					<div ref={loadMoreRef}>
-						<ProductsSceletonLeaders isMargin={catalogData.length > 0} />
+						<ProductsSceletonLeaders
+							isMargin={catalogData.length > 0}
+							count={pageSize}
+						/>
 					</div>
 				)}
 			</div>

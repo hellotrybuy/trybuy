@@ -1,6 +1,7 @@
 .filter {
-	position: relative;
 	z-index: 1000;
+	position: sticky;
+	padding-bottom: env(safe-area-inset-bottom);
 
 	&__swipe {
 		background-color: #d9d9d933;

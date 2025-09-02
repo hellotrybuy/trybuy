@@ -6,12 +6,13 @@ const cnx = classNames.bind(styles);
 
 interface Props {
 	isMargin: boolean;
+	count?: number;
 }
 
-export function ProductsSceletonLeaders({ isMargin }: Props) {
+export function ProductsSceletonLeaders({ isMargin, count = 20 }: Props) {
 	return (
 		<div className={cnx("cards", isMargin ? "loading" : "")}>
-			{Array(20)
+			{Array(count)
 				.fill(null)
 				.map((_, i) => (
 					<ProductCardSkeleton key={i} />

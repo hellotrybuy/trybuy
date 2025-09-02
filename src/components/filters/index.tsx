@@ -120,84 +120,88 @@ export function Filers({
 
 	return (
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
-			<div className={cnx("aside__filter", "filter")}>
-				{!isPlatformsLoading && (
-					<strong className={cnx("filter__title")}>
-						{!category ? "Платформа" : "Категории"}
-					</strong>
-				)}
+			<div className={cnx("fills")}>
+				<div className={cnx("aside__filter", "filter")}>
+					{!isPlatformsLoading && (
+						<strong className={cnx("filter__title")}>
+							{!category ? "Платформа" : "Категории"}
+						</strong>
+					)}
 
-				{isPlatformsLoading ? (
-					<div className={cnx("skeleton")}></div>
-				) : (
+					{isPlatformsLoading ? (
+						<div className={cnx("skeleton")}></div>
+					) : (
+						<ul>
+							{/* Категории второго уровня */}
+							{categorySecondPlace?.map(
+								(categorySecond: CatrgorySecondPlace) => (
+									<li key={categorySecond.id}>
+										<Radio
+											caption={categorySecond.name}
+											checked={selectSecondCat === categorySecond.id.toString()}
+											onChange={() =>
+												setSelectSecondCat(categorySecond.id.toString())
+											}
+										/>
+									</li>
+								),
+							)}
+
+							{/* Платформы */}
+							{(!categorySecondPlace || categorySecondPlace.length == 0) &&
+								currentPlatforms
+									?.filter((it) => it.platform_url !== "")
+									.map((platform) => (
+										<li key={platform.id}>
+											<Checkbox
+												caption={platform.platform_name}
+												checked={selectedPlatforms.includes(
+													platform.platform_url.toString(),
+												)}
+												onChange={() =>
+													toggleItem(
+														platform.platform_url.toString(),
+														selectedPlatforms,
+														setSelectedPlatforms,
+													)
+												}
+											/>
+										</li>
+									))}
+						</ul>
+					)}
+				</div>
+
+				<div className={cnx("aside__filter", "filter")}>
+					{!isTypesLoading && (
+						<strong className={cnx("filter__title")}>Тип товара:</strong>
+					)}
 					<ul>
-						{/* Категории второго уровня */}
-						{categorySecondPlace?.map((categorySecond: CatrgorySecondPlace) => (
-							<li key={categorySecond.id}>
-								<Radio
-									caption={categorySecond.name}
-									checked={selectSecondCat === categorySecond.id.toString()}
-									onChange={() =>
-										setSelectSecondCat(categorySecond.id.toString())
-									}
-								/>
-							</li>
-						))}
-
-						{/* Платформы */}
-						{(!categorySecondPlace || categorySecondPlace.length == 0) &&
-							currentPlatforms
-								?.filter((it) => it.platform_url !== "")
-								.map((platform) => (
-									<li key={platform.id}>
+						{isTypesLoading ? (
+							<div className={cnx("skeleton")}></div>
+						) : (
+							currentTypes
+								.filter((it) => it.type_url !== "")
+								.map((content) => (
+									<li key={content.id}>
 										<Checkbox
-											caption={platform.platform_name}
-											checked={selectedPlatforms.includes(
-												platform.platform_url.toString(),
+											caption={content.type_name}
+											checked={selectedTypes.includes(
+												content.type_url.toString(),
 											)}
 											onChange={() =>
 												toggleItem(
-													platform.platform_url.toString(),
-													selectedPlatforms,
-													setSelectedPlatforms,
+													content.type_url.toString(),
+													selectedTypes,
+													setSelectedTypes,
 												)
 											}
 										/>
 									</li>
-								))}
+								))
+						)}
 					</ul>
-				)}
-			</div>
-
-			<div className={cnx("aside__filter", "filter")}>
-				{!isTypesLoading && (
-					<strong className={cnx("filter__title")}>Тип товара:</strong>
-				)}
-				<ul>
-					{isTypesLoading ? (
-						<div className={cnx("skeleton")}></div>
-					) : (
-						currentTypes
-							.filter((it) => it.type_url !== "")
-							.map((content) => (
-								<li key={content.id}>
-									<Checkbox
-										caption={content.type_name}
-										checked={selectedTypes.includes(
-											content.type_url.toString(),
-										)}
-										onChange={() =>
-											toggleItem(
-												content.type_url.toString(),
-												selectedTypes,
-												setSelectedTypes,
-											)
-										}
-									/>
-								</li>
-							))
-					)}
-				</ul>
+				</div>
 			</div>
 
 			<div className={cnx("filter__actions")}>

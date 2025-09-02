@@ -82,6 +82,18 @@ export function CatalogPage() {
 	const loadMoreRef = useRef(null);
 	const [refreshKey, setRefreshKey] = useState(0);
 
+	const pageSize = useMemo(() => {
+		const width = window.innerWidth;
+
+		if (width >= 991 && width <= 1203) {
+			return 21;
+		} else if (width >= 523 && width <= 689) {
+			return 21;
+		} else {
+			return 20;
+		}
+	}, []);
+
 	const {
 		products: productsFromCat,
 		loading: productsFromCatLoading,
@@ -89,7 +101,7 @@ export function CatalogPage() {
 	} = useGetProductsFromCat(
 		categoryId,
 		currentPage,
-		20,
+		pageSize,
 		selectValue,
 		selectedPlatforms,
 		selectedType,
@@ -416,7 +428,10 @@ export function CatalogPage() {
 										className={cnx("ref-load")}
 										style={{ minHeight: "100px" }}
 									>
-										<ProductsSceleton isMargin={catalogData.length > 0} />
+										<ProductsSceleton
+											isMargin={catalogData.length > 0}
+											count={pageSize}
+										/>
 									</div>
 								)}
 

@@ -6,6 +6,23 @@ const cnx = classNames.bind(styles);
 
 type DeviceType = "iphone" | "android" | "desktop" | null;
 
+const HIDE_BANNER_KEY = "hideDownloadBanner";
+const HIDE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 дней в миллисекундах
+
+// ✅ Надежная проверка PWA режима
+function isStandaloneMode(): boolean {
+	// 1. Android Chrome и десктопные PWA
+	if (window.matchMedia("(display-mode: standalone)").matches) return true;
+
+	// 2. iOS Safari PWA
+	if ((window.navigator as any).standalone === true) return true;
+
+	// 3. Дополнительная эвристика: отсутствие opener и реферера
+	if (!document.referrer && !window.opener) return true;
+
+	return false;
+}
+
 export default function DownloadBanner() {
 	const [deviceType, setDeviceType] = useState<DeviceType>(null);
 	const [isVisible, setIsVisible] = useState(true);
@@ -13,6 +30,21 @@ export default function DownloadBanner() {
 	const [isPWA, setIsPWA] = useState(false);
 
 	useEffect(() => {
+		// ✅ Проверяем localStorage (скрыт ли баннер)
+		const stored = localStorage.getItem(HIDE_BANNER_KEY);
+		if (stored) {
+			try {
+				const { expiresAt } = JSON.parse(stored);
+				if (Date.now() < expiresAt) {
+					setIsVisible(false);
+					return;
+				}
+			} catch (e) {
+				console.warn("Ошибка парсинга localStorage:", e);
+			}
+		}
+
+		// ✅ Определяем устройство
 		const ua = navigator.userAgent || navigator.vendor;
 
 		if (/iPhone/i.test(ua)) {
@@ -23,15 +55,17 @@ export default function DownloadBanner() {
 			setDeviceType("desktop");
 		}
 
-		const standaloneIos = (window.navigator as any).standalone === true;
-		const standaloneAndroid = window.matchMedia(
-			"(display-mode: standalone)",
-		).matches;
-		setIsPWA(standaloneIos || standaloneAndroid);
+		// ✅ Проверяем, PWA ли это
+		setIsPWA(isStandaloneMode());
 	}, []);
 
 	const handleCloseBanner = () => {
 		setIsVisible(false);
+		// ✅ Сохраняем дату истечения на 7 дней вперед
+		localStorage.setItem(
+			HIDE_BANNER_KEY,
+			JSON.stringify({ expiresAt: Date.now() + HIDE_DURATION }),
+		);
 	};
 
 	const handleBannerClick = () => {
@@ -42,6 +76,7 @@ export default function DownloadBanner() {
 		setIsModalOpen(false);
 	};
 
+	// ✅ Если баннер не нужен — ничего не рендерим
 	if (!isVisible || deviceType === "desktop" || deviceType === null || isPWA)
 		return null;
 
@@ -80,10 +115,10 @@ export default function DownloadBanner() {
 				</div>
 			)}
 
-			{/* Модальное окно */}
+			{/* ✅ Модальное окно */}
 			{isModalOpen && (
 				<div className={cnx("modalOverlay")} onClick={handleCloseModal}>
-					{deviceType == "iphone" && (
+					{deviceType === "iphone" && (
 						<div
 							className={cnx("modalContent")}
 							onClick={(e) => e.stopPropagation()}
@@ -93,6 +128,7 @@ export default function DownloadBanner() {
 								доступа
 							</h2>
 							<div className={cnx("ios__instr")}>
+								{/* Шаги */}
 								<div className={cnx("ios__instr__item")}>
 									<div className={cnx("ios__instr__item__num")}>
 										<p>1</p>
@@ -142,7 +178,7 @@ export default function DownloadBanner() {
 							</button>
 						</div>
 					)}
-					{deviceType == "android" && (
+					{deviceType === "android" && (
 						<div
 							className={cnx("modalContent")}
 							onClick={(e) => e.stopPropagation()}
@@ -155,11 +191,13 @@ export default function DownloadBanner() {
 										src="/iconsFolder/common/rustore.svg"
 										alt="Закрыть"
 									/>
-									<img
-										className={cnx("container__arrow")}
-										src="/iconsFolder/common/apk.svg"
-										alt="Закрыть"
-									/>
+									<a href="/files/trybuy.apk" download>
+										<img
+											className={cnx("container__arrow")}
+											src="/iconsFolder/common/apk.svg"
+											alt="Закрыть"
+										/>
+									</a>
 								</div>
 							</div>
 							<button

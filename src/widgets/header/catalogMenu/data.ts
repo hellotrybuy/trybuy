@@ -44,7 +44,7 @@ export const catalogData: Category[] = [
 			},
 			{
 				name: "Фото/видео стоки",
-				href: "/catalog?main_category=366&search=&second_category=38",
+				href: "/catalog?main_category=366&search=&second_category=386",
 			},
 			{
 				name: "Нейросети",

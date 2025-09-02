@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-const MOBILE_BREAKPOINT = 768.2;
-const MOBILE_BREAKPOINT_2 = 576.2;
-const MOBILE_BREAKPOINT_3 = 1600.2;
-const MOBILE_BREAKPOINT_4 = 991.2;
+const MOBILE_BREAKPOINT = 768;
+const MOBILE_BREAKPOINT_2 = 576;
+const MOBILE_BREAKPOINT_3 = 1600;
+const MOBILE_BREAKPOINT_4 = 991;
 
 export function useIsMobile() {
 	const [isMobile, setIsMobile] = useState(false);
@@ -12,19 +12,27 @@ export function useIsMobile() {
 	const [isBig, setIsBig] = useState(false);
 
 	useEffect(() => {
-		const handleResize = () => {
+		const check = () => {
 			const width = window.innerWidth;
-			setIsMobile(width < MOBILE_BREAKPOINT);
-			setIsMobile2(width < MOBILE_BREAKPOINT_2);
-			setIsMobile3(width < MOBILE_BREAKPOINT_4);
-			setIsBig(width > MOBILE_BREAKPOINT_3);
+
+			// Проверяем display-mode: standalone (PWA)
+			const isStandalone = window.matchMedia(
+				"(display-mode: standalone)",
+			).matches;
+
+			// Если standalone, можно подкорректировать breakpoints (опционально)
+			const adjustedWidth = isStandalone ? width - 0 : width; // при необходимости можно вычитать padding/status bar
+
+			setIsMobile(adjustedWidth < MOBILE_BREAKPOINT);
+			setIsMobile2(adjustedWidth < MOBILE_BREAKPOINT_2);
+			setIsMobile3(adjustedWidth < MOBILE_BREAKPOINT_4);
+			setIsBig(adjustedWidth > MOBILE_BREAKPOINT_3);
 		};
 
-		window.addEventListener("resize", handleResize);
-		handleResize(); // вызов при монтировании
-
-		return () => window.removeEventListener("resize", handleResize);
+		check(); // первый вызов при монтировании
+		window.addEventListener("resize", check);
+		return () => window.removeEventListener("resize", check);
 	}, []);
 
-	return { isMobile, isMobile2, isBig, isMobile3 };
+	return { isMobile, isMobile2, isMobile3, isBig };
 }

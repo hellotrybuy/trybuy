@@ -103,9 +103,6 @@ function InnerProductPage({ product }: { product: ProductData }) {
 							<p className={cnx("seller__info")}>
 								Если вы уже приобрели товар — напишите продавцу на сайте
 								oplata.info на странице заказа.
-								<br />
-								<br />
-								Аттестат продавца
 							</p>
 							<Button
 								className={cnx("seller__btn")}

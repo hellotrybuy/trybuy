@@ -3,6 +3,7 @@ import styles from "./index.module.scss";
 import { useWindowSize } from "../../../hooks/useWindiwSize";
 import Button from "../../../components/button";
 import { catalogData } from "./data";
+import { Link } from "react-router";
 
 const cnx = classNames.bind(styles);
 
@@ -38,9 +39,9 @@ export function CatalogMenu({
 						</div>
 					))}
 				</div>
-				<Button className={cnx("catalog__btn")}>
-					{width > 991 ? "Все товары по алфавиту" : "Весь каталог"}
-				</Button>
+				<Link to={"catalog"}>
+					<Button className={cnx("catalog__btn")}>{"Весь каталог"}</Button>
+				</Link>
 			</div>
 		</div>
 	);
