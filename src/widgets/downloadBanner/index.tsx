@@ -186,11 +186,13 @@ export default function DownloadBanner() {
 							<h2>Скачайте приложение для вашего Android смартфона</h2>
 							<div>
 								<div className={cnx("downTypes")}>
-									<img
-										className={cnx("container__arrow")}
-										src="/iconsFolder/common/rustore.svg"
-										alt="Закрыть"
-									/>
+									<a href="https://www.rustore.ru/catalog/app/com.aistudio.trybuy">
+										<img
+											className={cnx("container__arrow")}
+											src="/iconsFolder/common/rustore.svg"
+											alt="Закрыть"
+										/>
+									</a>
 									<a href="/files/trybuy.apk" download>
 										<img
 											className={cnx("container__arrow")}

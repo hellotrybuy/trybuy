@@ -78,6 +78,7 @@ export function ProductCard({ product }: Props) {
 						? `/catalog/product/${product.id_product}`
 						: `/catalog/product/${product.product_id}`
 				}
+				id={`product-${product.id}`}
 				className={cnx("link")}
 				style={{ display: isImageLoaded ? "block" : "none" }} // 👈 скрыта до загрузки
 			>

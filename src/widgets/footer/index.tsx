@@ -26,11 +26,11 @@ function CopyrightBlock({ isMobile = false }: { isMobile?: boolean }) {
 		>
 			<div className={cnx("copyright__main")}>
 				<span>(c) TRYBUY 2025</span>
-				{LEGAL_LINKS.map((link) => (
+				{/* {LEGAL_LINKS.map((link) => (
 					<a key={link.label} href={link.href}>
 						{link.label}
 					</a>
-				))}
+				))} */}
 			</div>
 			<Button className={cnx("copyright__btn")} onClick={goHistory}>
 				Стать продавцом

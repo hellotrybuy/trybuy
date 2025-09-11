@@ -28,7 +28,7 @@ export function useRecommList(
 				try {
 					const json: ProductResponseRecom = JSON.parse(text);
 					setData(json);
-					setHasMore(json.data.length === rows);
+					setHasMore(json.data.length > 0);
 				} catch (parseErr) {
 					console.error("Ошибка JSON:", parseErr);
 				}

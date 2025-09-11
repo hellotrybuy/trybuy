@@ -22,8 +22,20 @@ export function HomeLeaders() {
 		}
 	}, []);
 
+	const pageSizeSceleton = useMemo(() => {
+		const width = window.innerWidth;
+
+		if (width >= 1600) {
+			return 6;
+		} else if (width >= 523 && width <= 689) {
+			return 3;
+		} else {
+			return 5;
+		}
+	}, []);
+
 	const [currentPage, setCurrentPage] = useState(1);
-	const loadMoreRef = useRef(null);
+	const loadMoreRef = useRef<HTMLDivElement | null>(null);
 	const { products, loading, hasMore } = useRecommList(currentPage, pageSize);
 	const [catalogData, setCatalogData] = useState<ProductData[]>([]);
 
@@ -31,15 +43,11 @@ export function HomeLeaders() {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const totalPages = useMemo(() => {
-		return 10;
-	}, []);
-
 	const changePage = useCallback(() => {
-		if (currentPage < totalPages) {
+		if (hasMore) {
 			setCurrentPage((prevPage) => prevPage + 1);
 		}
-	}, [currentPage, totalPages]);
+	}, [hasMore]);
 
 	useEffect(() => {
 		if (products && products.length > 0) {
@@ -48,6 +56,7 @@ export function HomeLeaders() {
 				const newProducts = products.filter(
 					(product) => !existingIds.has(product.id),
 				);
+
 				return [...prev, ...newProducts];
 			});
 		}
@@ -60,7 +69,7 @@ export function HomeLeaders() {
 					changePage();
 				}
 			},
-			{ threshold: 0.1 },
+			{ threshold: 0.3 },
 		);
 
 		if (loadMoreRef.current) {
@@ -83,7 +92,7 @@ export function HomeLeaders() {
 					<div ref={loadMoreRef}>
 						<ProductsSceletonLeaders
 							isMargin={catalogData.length > 0}
-							count={pageSize}
+							count={pageSizeSceleton}
 						/>
 					</div>
 				)}
