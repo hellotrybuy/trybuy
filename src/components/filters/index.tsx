@@ -116,16 +116,26 @@ export function Filers({
 		return !currentTypes || currentTypes.length === 0;
 	}, [currentTypes]);
 
-	console.log(currentTypes, "currentTypes");
+	console.log(category, "currentTypes");
+
+	const textCat = useMemo(() => {
+		if (!category) {
+			return "Платформа";
+		} else {
+			if (category == "151") {
+				return "Популярные категории";
+			} else {
+				return "Категории";
+			}
+		}
+	}, [category]);
 
 	return (
 		<aside className={cnx("filersBlock-vertical__aside", "aside")}>
 			<div className={cnx("fills")}>
 				<div className={cnx("aside__filter", "filter")}>
 					{!isPlatformsLoading && (
-						<strong className={cnx("filter__title")}>
-							{!category ? "Платформа" : "Категории"}
-						</strong>
+						<strong className={cnx("filter__title")}>{textCat}</strong>
 					)}
 
 					{isPlatformsLoading ? (

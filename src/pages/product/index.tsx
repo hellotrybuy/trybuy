@@ -71,6 +71,8 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		];
 	}, [product]);
 
+	console.log(product);
+
 	return (
 		<div className={cnx("product")}>
 			<Breadcrumbs crumbs={crumbs} />

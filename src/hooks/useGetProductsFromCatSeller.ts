@@ -67,6 +67,9 @@ export function useGetProductsFromCatSeller(
 	}, [selectedTypes]);
 
 	useEffect(() => {
+		const controller = new AbortController();
+		const signal = controller.signal;
+
 		setLoading(true);
 		setError(null);
 
@@ -75,12 +78,13 @@ export function useGetProductsFromCatSeller(
 
 		const fetchData = async () => {
 			try {
-				const url = `${baseUrl}/engine/functions/ajax/seller_ajax.php?sort=${selectOptions}&category_id=${category}&rows=${rows}&offset=${offset}&platforms=${platforms}&types=${productTypes}&page=${page}&search=${searchFromUrl}&seller_id=${sellerId}ajax=1`;
+				const url = `${baseUrl}/engine/functions/category/category_product_functions_seller.php?sort=${selectOptions}&category_id=${category}&rows=${rows}&offset=${offset}&platforms=${platforms}&types=${productTypes}&page=${page}&search=${searchFromUrl}&seller_id=${sellerId}&ajax=1`;
 
 				const response = await fetch(url, {
 					headers: {
 						Accept: "application/json",
 					},
+					signal, // ← ключевой момент
 				});
 
 				if (!response.ok) {
@@ -94,17 +98,30 @@ export function useGetProductsFromCatSeller(
 				}
 
 				const data: ProductDataCATResponse = await response.json();
-				setProducts(data.products || []);
-				setTotalPages(data.totalPages || 0);
-			} catch (err) {
+
+				if (!signal.aborted) {
+					setProducts(data.products || []);
+					setTotalPages(data.totalPages || 0);
+				}
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			} catch (err: any) {
+				if (err.name === "AbortError") {
+					return;
+				}
 				setError(err as Error);
 				setProducts([]);
 			} finally {
-				setLoading(false);
+				if (!signal.aborted) {
+					setLoading(false);
+				}
 			}
 		};
 
 		fetchData();
+
+		return () => {
+			controller.abort();
+		};
 	}, [
 		baseUrl,
 		category_id,

@@ -126,7 +126,6 @@ export function ProductPay({ product }: Props) {
 			seller_id: product[0].seller_id,
 		});
 	}
-	console.log(product, "p");
 
 	return (
 		<div className={cnx("pay")}>

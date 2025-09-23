@@ -114,24 +114,23 @@ export function SellerPage() {
 
 	useEffect(() => {
 		if (!products) return;
-
 		setCatalogData((prev) => {
 			const existingIds = new Set(prev.map((p) => p.id));
+			console.log(products, "products");
 			const uniqueNew = products.filter(
 				(p: ProductDataCAT, index, self) =>
 					self.findIndex(
 						(x: ProductDataCAT) => x.id_product === p.id_product,
 					) === index,
 			);
-
 			if (currentPage === 1) {
 				return uniqueNew;
 			}
-
 			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
 			return [...prev, ...filteredNew];
 		});
 	}, [products, currentPage, categoryId, refreshKey]);
+	console.log(catalogData, "catalogData");
 
 	const changeCategory = (id: string) => {
 		setCurrentPage(1);
@@ -278,32 +277,6 @@ export function SellerPage() {
 			});
 		}
 	}, [categorys, categoryId]);
-
-	useEffect(() => {
-		setCatalogData([]);
-		setCurrentPage(1);
-	}, [categoryId, selectedPlatforms, selectedType, selectSecondCat, search]);
-
-	useEffect(() => {
-		if (!products) return;
-
-		setCatalogData((prev) => {
-			const existingIds = new Set(prev.map((p) => p.id));
-			const uniqueNew = products.filter(
-				(p: ProductDataCAT, index, self) =>
-					self.findIndex(
-						(x: ProductDataCAT) => x.id_product === p.id_product,
-					) === index,
-			);
-
-			if (currentPage === 1) {
-				return uniqueNew;
-			}
-
-			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
-			return [...prev, ...filteredNew];
-		});
-	}, [products, currentPage, categoryId, refreshKey]);
 
 	const crumbs: Crumb[] = [
 		{ label: "Главная", href: "/" },
