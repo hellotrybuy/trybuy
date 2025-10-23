@@ -3,6 +3,7 @@ import { ProductDataCAT } from "./useGetProductsFromCat";
 export interface ProductData {
 	id: string;
 	product_id: string;
+	cnt: number;
 	seller_id: number;
 	id_prev: string;
 	seller_name: string;
@@ -88,6 +89,7 @@ export interface OptionItem {
 	modify: string;
 	id: string;
 	required: number;
+	modify_value_default?: string;
 }
 
 export interface OptionItemVariantItem {
@@ -95,6 +97,7 @@ export interface OptionItemVariantItem {
 	modify: string;
 	modify_type: string;
 	modify_value?: number;
+	modify_value_default?: number;
 	text: string;
 	value: string;
 	id: string;

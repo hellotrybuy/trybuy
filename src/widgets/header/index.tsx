@@ -36,8 +36,10 @@ export function Header() {
 	}, [categories]);
 
 	const goCatalog = useCallback(() => {
-		navigate(`/catalog?search=${searchInput}`);
-	}, [searchInput, navigate]);
+		if (isSearchOpen) {
+			navigate(`/catalog?search=${searchInput}`);
+		}
+	}, [searchInput, navigate, isSearchOpen]);
 
 	useEnterKey(goCatalog, [goCatalog]);
 

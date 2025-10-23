@@ -14,6 +14,7 @@ import CheckboxOptionGroup from "./blocks/CheckboxOptionGroup";
 import { usePrice } from "../../../../context";
 import { useGetExchangeRate } from "../../../../../../hooks/useGetExchangeRate";
 import BalanceConvertor from "../../../../../../components/balanceConvertor";
+import SelectOptionGroup from "./blocks/SelectOptionGroup";
 
 const cnx = classNames.bind(styles);
 
@@ -52,6 +53,8 @@ export default function ProductActivation({ product }: Props) {
 	const [formState, setFormState] = useState<
 		Record<string, string | boolean | Record<string, boolean>>
 	>({});
+
+	console.log(formState, "formState");
 
 	useEffect(() => {
 		setForm((prev) => ({ ...prev, ...formState }));
@@ -139,7 +142,25 @@ export default function ProductActivation({ product }: Props) {
 							result = applyModifier(
 								result,
 								selected.modify_type,
-								selected.modify_value,
+								selected.modify_value_default,
+								selected.modify,
+							);
+						}
+					}
+
+					if (opt.type === "select") {
+						const selected = opt.variants?.find(
+							(v) => String(v.value) === String(value),
+						);
+						if (
+							selected &&
+							selected.modify_value_default &&
+							selected.modify_type
+						) {
+							result = applyModifier(
+								result,
+								selected.modify_type,
+								selected.modify_value_default,
 								selected.modify,
 							);
 						}
@@ -147,11 +168,11 @@ export default function ProductActivation({ product }: Props) {
 
 					if (opt.type === "checkbox") {
 						if (typeof value === "boolean") {
-							if (value && opt.modify_value && opt.modify_type) {
+							if (value && opt.modify_value_default && opt.modify_type) {
 								result = applyModifier(
 									result,
 									opt.modify_type,
-									Number(opt.modify_value),
+									Number(opt.modify_value_default),
 									opt.modify,
 								);
 							}
@@ -162,11 +183,11 @@ export default function ProductActivation({ product }: Props) {
 							const group = value as Record<string, boolean>;
 							opt.variants?.forEach((variant) => {
 								if (group[variant.value]) {
-									if (variant.modify_value && variant.modify_type) {
+									if (variant.modify_value_default && variant.modify_type) {
 										result = applyModifier(
 											result,
 											variant.modify_type,
-											variant.modify_value,
+											variant.modify_value_default,
 											variant.modify,
 										);
 									}
@@ -196,13 +217,17 @@ export default function ProductActivation({ product }: Props) {
 				if (opt.type === "text") {
 					initialState[opt.name] = "";
 				}
-				if (opt.type === "radio" && Array.isArray(opt.variants)) {
+
+				if (
+					(opt.type === "radio" || opt.type === "select") &&
+					Array.isArray(opt.variants)
+				) {
 					const defaultVariant = opt.variants.find(
 						(variant) => Number(variant.default) === 1,
 					);
-					// Приводим значение по умолчанию к строке или ставим пустую строку
 					initialState[opt.name] = defaultVariant?.value?.toString() ?? "";
 				}
+
 				if (opt.type === "checkbox") {
 					if (Array.isArray(opt.variants) && opt.variants.length > 0) {
 						initialState[opt.name] = opt.variants.reduce((acc, variant) => {
@@ -279,7 +304,10 @@ export default function ProductActivation({ product }: Props) {
 				<div className={cnx("activation__inner")}>
 					{isType_digi_product && product[0].prices_unit != "" && (
 						<div className={cnx("rev")}>
-							<BalanceConvertor prices_unit={product[0].prices_unit} />
+							<BalanceConvertor
+								prices_unit={product[0].prices_unit}
+								product={product[0]}
+							/>
 						</div>
 					)}
 
@@ -307,6 +335,19 @@ export default function ProductActivation({ product }: Props) {
 										onChange={(name, value) =>
 											setFormState((prev) => ({ ...prev, [name]: value }))
 										}
+									/>
+								);
+							if (el.type === "select")
+								return (
+									<SelectOptionGroup
+										key={el.name}
+										option={el}
+										value={formState[el.name] as string}
+										onChange={(name, value) =>
+											setFormState((prev) => ({ ...prev, [name]: value }))
+										}
+										isInvalid={invalidFields[el.name]}
+										product={product}
 									/>
 								);
 							if (el.type === "checkbox")

@@ -133,7 +133,7 @@
 	padding: 20px;
 	background-color: #23262f;
 	border-radius: 20px;
-
+	box-sizing: border-box;
 	overflow: hidden;
 
 	@media screen and (max-width: breakpoints.$lg) {
@@ -305,7 +305,6 @@
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 15px;
 }
 
 .notFound {

@@ -44,28 +44,43 @@ export function PriceProvider({ children }: { children: React.ReactNode }) {
 		if (options) {
 			options.forEach((opt) => {
 				const value = form[opt.name];
+				if (opt.required !== 1) return;
 
-				if (opt.required === 1) {
-					if (opt.type === "text" && (!value || !String(value).trim())) {
-						newInvalids[opt.name] = true;
-					} else if (opt.type === "radio" && (!value || value === "")) {
-						newInvalids[opt.name] = true;
-					} else if (opt.type === "checkbox") {
-						if (typeof value === "boolean" && !value) {
+				switch (opt.type) {
+					case "text":
+						if (!value || !String(value).trim()) {
 							newInvalids[opt.name] = true;
+						}
+						break;
+
+					case "radio":
+						if (!value || value === "") {
+							newInvalids[opt.name] = true;
+						}
+						break;
+
+					case "select":
+						if (!value || value === "") {
+							newInvalids[opt.name] = true;
+						}
+						break;
+
+					case "checkbox":
+						if (typeof value === "boolean") {
+							if (!value) newInvalids[opt.name] = true;
 						} else if (typeof value === "object") {
 							const checkedCount = Object.values(value).filter(Boolean).length;
-							if (checkedCount === 0) {
-								newInvalids[opt.name] = true;
-							}
+							if (checkedCount === 0) newInvalids[opt.name] = true;
 						}
-					}
+						break;
+
+					default:
+						break;
 				}
 			});
 		}
 
 		setInvalidFields(newInvalids);
-
 		return Object.keys(newInvalids).length === 0;
 	};
 

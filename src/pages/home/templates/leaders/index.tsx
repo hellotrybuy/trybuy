@@ -62,6 +62,30 @@ export function HomeLeaders() {
 		}
 	}, [products]);
 
+	// useEffect(() => {
+	// 	if (products && products.length > 0) {
+	// 		const filteredProducts = products.filter((product) => {
+	// 			try {
+	// 				const options = JSON.parse(product.options || "[]");
+	// 				return options.some((opt: any) => opt.type === "select");
+	// 			} catch {
+	// 				return false;
+	// 			}
+	// 		});
+
+	// 		setCatalogData((prev) => {
+	// 			const existingIds = new Set(prev.map((p) => p.id));
+	// 			const newProducts = filteredProducts.filter(
+	// 				(product) => !existingIds.has(product.id),
+	// 			);
+
+	// 			return [...prev, ...newProducts];
+	// 		});
+	// 	}
+	// }, [products]);
+
+	console.log(products, "products");
+
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {

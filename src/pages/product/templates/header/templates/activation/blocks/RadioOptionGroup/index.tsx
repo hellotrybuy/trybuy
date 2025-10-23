@@ -40,22 +40,34 @@ export default function RadioOptionGroup({
 	const cntSumm = (elem: OptionItemVariantItem) => {
 		if (elem) {
 			if (elem.modify_type == "USD" && elem.modify) {
-				const curs = Number(product[0].price) / Number(product[0].price_usd);
+				const curs = Math.ceil(
+					Number(product[0].price) / Number(product[0].price_usd),
+				);
 
-				const res = Math.ceil(Number(elem.modify_value) * curs);
+				const res = Math.ceil(Number(elem.modify_value_default) * curs);
 
 				if (res > 0) {
-					return `(+${Math.ceil(Number(elem.modify_value) * curs)} руб.)`;
+					return `(+${Math.ceil(
+						Number(elem.modify_value_default) * curs,
+					)} руб.)`;
 				} else {
-					return `(${Math.ceil(Number(elem.modify_value) * curs)} руб.)`;
+					return `(${Math.ceil(
+						Number(elem.modify_value_default) * curs,
+					)} руб.)`;
 				}
 			}
 
 			if (elem.modify) {
-				if (elem.modify_value > 0) {
-					return `(+${elem.modify_value} руб.)`;
+				if (elem.modify_type != "%") {
+					if (elem.modify_value > 0) {
+						return `(+${elem.modify_value} руб.)`;
+					} else {
+						return `(${elem.modify_value} руб.)`;
+					}
 				} else {
-					return `(${elem.modify_value} руб.)`;
+					return `(${
+						(Number(product[0].price) * Number(elem.modify_value_default)) / 100
+					} руб.)`;
 				}
 			}
 		}

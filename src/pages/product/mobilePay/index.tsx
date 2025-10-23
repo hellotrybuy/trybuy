@@ -31,7 +31,7 @@ function transformOptions(
 	const result: Record<number, number | string | number[]> = {};
 
 	for (const key in input) {
-		let match = key.match(/option(?:_text|_radio|_checkbox)?_(\d+)$/);
+		let match = key.match(/option(?:_text|_radio|_checkbox|_select)?_(\d+)$/);
 		if (!match) continue;
 
 		const fieldId = Number(match[1]);
@@ -39,7 +39,10 @@ function transformOptions(
 
 		if (key.startsWith("option_text_") && typeof value === "string") {
 			result[fieldId] = value;
-		} else if (
+			continue;
+		}
+
+		if (
 			(key.startsWith("option_radio_") || key.startsWith("option_")) &&
 			(typeof value === "string" || typeof value === "number")
 		) {
@@ -47,7 +50,21 @@ function transformOptions(
 			if (!isNaN(num)) {
 				result[fieldId] = num;
 			}
-		} else if (
+			continue;
+		}
+
+		if (
+			key.startsWith("option_select_") &&
+			(typeof value === "string" || typeof value === "number")
+		) {
+			const num = Number(value);
+			if (!isNaN(num)) {
+				result[fieldId] = num;
+			}
+			continue;
+		}
+
+		if (
 			key.startsWith("option_checkbox_") &&
 			typeof value === "object" &&
 			value !== null
@@ -59,6 +76,7 @@ function transformOptions(
 			if (selectedValues.length > 0) {
 				result[fieldId] = selectedValues;
 			}
+			continue;
 		}
 	}
 

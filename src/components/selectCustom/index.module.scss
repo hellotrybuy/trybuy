@@ -1,0 +1,70 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/zIndex";
+
+.select {
+	position: relative;
+	z-index: zIndex.$z-index-50;
+	height: 38px;
+	min-width: 205px;
+	cursor: pointer;
+
+	&__head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 15px;
+
+		padding: 10px 16px;
+		background-color: #42454f;
+		border-radius: 50px;
+
+		svg {
+			transition: transitions.$main;
+		}
+	}
+
+	&__value {
+		font-size: 14px;
+		color: #7b7b7b;
+	}
+
+	&__dropdown {
+		display: none;
+
+		position: absolute;
+		z-index: -1;
+		top: 1px;
+		left: 0;
+		right: 0;
+
+		background-color: #f7f6f8;
+		border-radius: 25px;
+
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			align-items: start !important;
+			padding: 50px 18px 11px 18px;
+
+			li {
+				font-size: 14px;
+				color: #7b7b7b;
+				cursor: pointer;
+				text-align: left;
+				width: 100%;
+			}
+		}
+	}
+
+	&._opened &__head svg {
+		transform: rotate(180deg);
+	}
+
+	&._opened &__dropdown {
+		display: block;
+		overflow-y: auto;
+		max-height: 200px;
+	}
+}
