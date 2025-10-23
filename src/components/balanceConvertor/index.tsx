@@ -57,12 +57,26 @@ export function BalanceConvertor({
 	// - иначе стандартно
 	const curs = useMemo(() => {
 		if (!info) return 1;
-		if (hasFixedValues) {
+
+		if (hasFixedValues && fixedValues.length > 0) {
 			const base = fixedValues[0];
-			if (base > 0) return Number(product.price) / base;
+			if (base > 0) return info.unit_amount / base;
 		}
-		if (info.unit_cnt === 0) return 1;
-		return Number(product.price) / info.unit_cnt;
+
+		const baseCnt =
+			info.unit_cnt_min && info.unit_cnt_min > 0
+				? info.unit_cnt_min
+				: info.unit_cnt;
+
+		if (baseCnt === 0) return 1;
+
+		console.log(info.unit_amount / baseCnt, "info.unit_amount / baseCnt");
+
+		if (info.unit_amount / baseCnt < Number(product.price) / baseCnt) {
+			return Number(product.price) / baseCnt;
+		}
+
+		return info.unit_amount / baseCnt;
 	}, [info, hasFixedValues, fixedValues, product]);
 
 	const minCount = info?.unit_cnt_min || 1;
@@ -159,8 +173,18 @@ export function BalanceConvertor({
 					<div className={cnx("container__field")}>
 						<InputField
 							value={Math.round(valueIWillReceive).toString()}
-							onChange={() => {}}
-							readOnly
+							onChange={(e) => {
+								const raw = e.target.value.replace(/[^0-9.]/g, "");
+								const num = Number(raw);
+								if (!isNaN(num)) {
+									const clamped = Math.min(
+										Math.max(num, minCount * curs),
+										maxCount * curs,
+									);
+									setValueIWillReceive(clamped);
+									setValueIWillPay(Math.ceil(clamped / curs));
+								}
+							}}
 							placeholder=""
 							id="valueIWillReceive"
 						/>

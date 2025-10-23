@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { ProductDataCATResponse } from "./types";
 
 export interface ProductDataCAT {
+	is_hidden: boolean;
 	id: number;
 	product_id: number;
 	category_id: number;

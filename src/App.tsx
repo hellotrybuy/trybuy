@@ -56,6 +56,7 @@ function App() {
 					<main className="main">
 						<Routes>
 							<Route path="*" element={<NotFoundPage />} />
+							<Route path="/404" element={<NotFoundPage />} />
 							<Route path="/" element={<Home />} />
 							<Route path="/nav" element={<Navigation />} />
 							<Route path="/product" element={<ProductPage />} />

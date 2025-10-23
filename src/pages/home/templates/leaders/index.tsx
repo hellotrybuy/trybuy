@@ -111,7 +111,7 @@ export function HomeLeaders() {
 		<section className={cnx("leaders")}>
 			<div className={cnx("leaders__inner")}>
 				<Title size="large">Лидеры продаж</Title>
-				<PopularCards data={catalogData} />
+				<PopularCards data={catalogData.filter((el) => !el.is_hidden)} />
 				{hasMore && (
 					<div ref={loadMoreRef}>
 						<ProductsSceletonLeaders

@@ -3,6 +3,7 @@ import { ProductDataCATResponse } from "./types";
 
 export interface ProductDataCAT {
 	id: number;
+	is_hidden: boolean;
 	product_id: number;
 	category_id: number;
 	platform_name: string;

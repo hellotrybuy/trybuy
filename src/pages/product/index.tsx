@@ -10,7 +10,7 @@ import ProductExtraInfo from "./templates/extra-info";
 import ProductRewies from "./templates/reviews";
 import Button from "../../components/button";
 import OtherProducts from "./templates/other-products";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { useGetProduct } from "../../hooks/useGetProduct";
 import { ProductData } from "../../hooks/types";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -23,12 +23,13 @@ import MobilePay from "./mobilePay";
 export default function ProductPage() {
 	const { id } = useParams();
 	const data = useGetProduct(id);
-
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, [id]);
 
-	if (data.product == null) return;
+	if (data.product == null) {
+		return;
+	}
 	const product = data.product as ProductData;
 
 	return (
@@ -42,6 +43,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 	const cnx = classNames.bind(styles);
 	const refChat = useRef<HTMLDivElement>(null);
 	const [chaIsOpen, setChaIsOpen] = useState(false);
+	const navigate = useNavigate();
 
 	useClickOutside([refChat], () => setChaIsOpen(false));
 
@@ -59,17 +61,23 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		window.addEventListener("scroll", computeScroll);
 	}, [isHidden]);
 
-	const crumbs: Crumb[] = useMemo(() => {
-		return [
-			{ label: "Главная", href: "/" },
-			{ label: "Каталог", href: "/catalog" },
-			{
-				label: product[0].name,
-				href: `/catalog/${product[0].id_product}`,
-				isActive: true,
-			},
-		];
-	}, [product]);
+	useEffect(() => {
+		if (!product?.[0]?.name) {
+			setTimeout(() => navigate("/404", { replace: true }), 0);
+		}
+	}, [product, navigate]);
+
+	if (!product?.[0]) return null;
+
+	const crumbs: Crumb[] = [
+		{ label: "Главная", href: "/" },
+		{ label: "Каталог", href: "/catalog" },
+		{
+			label: product[0].name,
+			href: `/catalog/${product[0].id_product}`,
+			isActive: true,
+		},
+	];
 
 	console.log(product);
 

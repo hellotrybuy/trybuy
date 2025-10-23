@@ -419,7 +419,9 @@ export function CatalogPage() {
 								{productsFromCatLoading && catalogData.length === 0 ? (
 									<ProductsSceleton isMargin={false} />
 								) : (
-									<ProductCards data={catalogData} />
+									<ProductCards
+										data={catalogData.filter((el) => !el.is_hidden)}
+									/>
 								)}
 
 								{totalPages > currentPage && (

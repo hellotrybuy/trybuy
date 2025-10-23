@@ -34,7 +34,7 @@ export function OtherProducts() {
 	return (
 		<div className={cnx("other")}>
 			<Title className={cnx("other__title")}>Вам может понравиться</Title>
-			<PopularCards data={visibleProducts} />
+			<PopularCards data={visibleProducts.filter((el) => !el.is_hidden)} />
 		</div>
 	);
 }
