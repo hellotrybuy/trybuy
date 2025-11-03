@@ -216,6 +216,8 @@ import classNames from "classnames/bind";
 import { OptionItem, ProductData } from "../../hooks/types";
 import { useMemo, useState } from "react";
 import ProductCardSkeleton from "../productCardSkeleton/ProductCardSkeleton";
+import { PricesUnit } from "../balanceConvertor";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const cnx = classNames.bind(styles);
 
@@ -223,6 +225,10 @@ interface Props {
 	raiting?: string;
 	reviewsCount?: number;
 	product: ProductData;
+}
+
+function isPricesUnit(obj: any): obj is PricesUnit {
+	return obj && typeof obj === "object";
 }
 
 function removeEmojis(text: string): string {
@@ -235,7 +241,8 @@ function removeEmojis(text: string): string {
 		.trim();
 }
 
-function hasPriceModifier(options: OptionItem[]): boolean {
+function hasPriceModifier(options: OptionItem[] | ""): boolean {
+	if (options == "") return false;
 	if (options == undefined) return false;
 	return options.some((opt) => {
 		if (opt.modify_value !== undefined && opt.modify_type !== undefined)
@@ -251,6 +258,11 @@ function hasPriceModifier(options: OptionItem[]): boolean {
 
 export function ProductCard({ product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
+	const { isMobile3 } = useIsMobile();
+	if (product.id_product == "4606138") {
+		console.log(product, "4606138 продукт");
+	}
+	console.log(product, " продукт");
 
 	const totalReviews = useMemo(() => {
 		return Number(product.good_reviews) + Number(product.bad_reviews);
@@ -267,17 +279,70 @@ export function ProductCard({ product }: Props) {
 		return JSON.parse(product.options) as OptionItem[];
 	}, [product]);
 
+	const getPriceUnit = (data: string) => {
+		try {
+			const parsed = JSON.parse(data);
+			if (isPricesUnit(parsed)) {
+				return parsed;
+			} else {
+				console.warn("Invalid prices_unit format");
+				return null;
+			}
+		} catch (e) {
+			console.error("Failed to parse prices_unit:", e);
+			return null;
+		}
+	};
+
 	const price = useMemo(() => {
-		if (options != "") {
+		if (options != "" || product.prices_unit != "null") {
 			const isModify = hasPriceModifier(options);
 			if (isModify || product.prices_unit != "null") {
-				return `От ${product.price} RUB`;
+				const data = getPriceUnit(product?.prices_unit);
+				if (data) {
+					// округляем вниз до 2 знаков
+					const roundDown2 = (val: number) =>
+						(Math.floor(val * 100) / 100).toFixed(2);
+
+					// обрезаем слишком длинное имя (более 5 символов)
+					const shortName =
+						data.unit_name.length > 3 && isMobile3
+							? data.unit_name.slice(0, 3) + "..."
+							: data.unit_name;
+
+					if (data?.unit_fixed && data?.unit_fixed[0]) {
+						return `1 ${shortName} = ${roundDown2(
+							data.unit_amount / data?.unit_fixed[0],
+						)} RUB`;
+					}
+
+					const devl =
+						Number(product.price) / data.unit_cnt > 100
+							? data.unit_amount
+							: data.unit_cnt;
+
+					return `1 ${shortName} = ${roundDown2(
+						Number(product.price) / devl,
+					)} RUB`;
+				} else {
+					return `От ${Number(product.price)} RUB`;
+				}
 			} else {
 				return `${product.price} RUB`;
 			}
 		}
 		return `${product.price} RUB`;
-	}, [product, options]);
+	}, [product, options, isMobile3]);
+
+	const imagePreviewSrc = useMemo(() => {
+		if (product.preview) {
+			return `https://admin.trybuy.pro/${product.preview}`;
+		} else {
+			return product.id_product
+				? `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`
+				: `https://graph.digiseller.ru/img.ashx?id_d=${product.product_id}&w=200&h=200&crop=true`;
+		}
+	}, [product]);
 
 	return (
 		<>
@@ -293,17 +358,13 @@ export function ProductCard({ product }: Props) {
 				}
 				id={`product-${product.id}`}
 				className={cnx("link")}
-				style={{ display: isImageLoaded ? "block" : "none" }} // 👈 скрыта до загрузки
+				style={{ display: isImageLoaded ? "block" : "none" }}
 			>
 				<div className={cnx("card")}>
 					<div className={cnx("content")}>
 						<img
 							className={cnx("card__img")}
-							src={
-								product.id_product
-									? `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`
-									: `https://graph.digiseller.ru/img.ashx?id_d=${product.product_id}&w=200&h=200&crop=true`
-							}
+							src={imagePreviewSrc}
 							alt={product.name}
 							onLoad={() => setIsImageLoaded(true)}
 							onError={() => setIsImageLoaded(true)}
@@ -312,19 +373,16 @@ export function ProductCard({ product }: Props) {
 							{removeEmojis(product.name)}
 						</strong>
 						<div className={cnx("card__review")}>
-							<div className={cnx("card__review-block")}>
-								<img src="/iconsFolder/common/star.svg" alt="Рейтинг" />
-								<span>{raiting ? raiting.toFixed(1) : "Скрыто"}</span>
-							</div>
-							<div className={cnx("card__review-block")}>
-								<span>
-									{totalReviews
-										? totalReviews >= 1000
-											? `1000+`
-											: totalReviews
-										: "Скрыто"}{" "}
-									Оценок
-								</span>
+							{raiting ? (
+								<div className={cnx("card__review-block")}>
+									<img src="/iconsFolder/common/star.svg" alt="Рейтинг" />
+									<span>{raiting > 1 && raiting.toFixed(1)}</span>
+								</div>
+							) : (
+								<></>
+							)}
+							<div className={cnx("card__pr__type")}>
+								<span>{product.type_name}</span>
 							</div>
 						</div>
 						<strong className={cnx("card__bottom")}>{price}</strong>

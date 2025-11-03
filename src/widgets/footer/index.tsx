@@ -44,7 +44,6 @@ export function Footer() {
 	const { data } = useGetSiteSettingsMin();
 
 	const socialLinks = [
-		{ href: data?.vk_url, src: "/iconsFolder/social/vk.svg", alt: "VK" },
 		{
 			href: data?.ds_url || "",
 			src: "/iconsFolder/social/instagram.svg",

@@ -19,7 +19,7 @@ export function Apps({ className }: IApps) {
 			{data[0]?.data.map((el) => (
 				<AppItem
 					key={el.id}
-					icon={`https://admin.try-buy.ru/${el.header_icon}`}
+					icon={`https://admin.trybuy.pro/${el.header_icon}`}
 					text={el.header_menu}
 					url={el.header_url}
 				/>

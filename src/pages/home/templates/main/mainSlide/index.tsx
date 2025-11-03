@@ -14,7 +14,7 @@ export function Slide({ el }: SlideProps) {
 			<Link to={el?.link ?? "/"}>
 				<img
 					className={cnx("slide__img")}
-					src={`https://admin.try-buy.ru/${el?.image}`}
+					src={`https://admin.trybuy.pro/${el?.image}`}
 					alt={el?.title ?? ""}
 				/>
 				<strong className={cnx("slide__caption")}>{el?.title ?? ""}</strong>

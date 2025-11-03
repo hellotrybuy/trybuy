@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useMemo, useState } from "react";
 import InputField from "../inputField";
 import styles from "./index.module.scss";
@@ -52,7 +53,7 @@ export function BalanceConvertor({
 	const hasFixedValues = !!info?.unit_fixed?.length;
 	const fixedValues = info?.unit_fixed || [];
 
-	// курс рассчитываем по логике:
+	// Курс рассчитываем по логике:
 	// - если есть fixed, то по первому элементу
 	// - иначе стандартно
 	const curs = useMemo(() => {
@@ -70,8 +71,6 @@ export function BalanceConvertor({
 
 		if (baseCnt === 0) return 1;
 
-		console.log(info.unit_amount / baseCnt, "info.unit_amount / baseCnt");
-
 		if (info.unit_amount / baseCnt < Number(product.price) / baseCnt) {
 			return Number(product.price) / baseCnt;
 		}
@@ -80,7 +79,7 @@ export function BalanceConvertor({
 	}, [info, hasFixedValues, fixedValues, product]);
 
 	const minCount = info?.unit_cnt_min || 1;
-	const maxCount = info?.unit_cnt_max || 1;
+	const maxCount = info?.unit_cnt_max || Infinity;
 	const { setTotalPrice, setCnt } = usePrice();
 
 	const [valueIWillPay, setValueIWillPay] = useState<number>(
@@ -88,6 +87,12 @@ export function BalanceConvertor({
 	);
 	const [valueIWillReceive, setValueIWillReceive] = useState<number>(
 		Math.ceil((hasFixedValues ? fixedValues[0] : minCount) * curs),
+	);
+	const [inputPayValue, setInputPayValue] = useState<string>(
+		(hasFixedValues ? fixedValues[0] : minCount).toString(),
+	);
+	const [inputReceiveValue, setInputReceiveValue] = useState<string>(
+		Math.ceil((hasFixedValues ? fixedValues[0] : minCount) * curs).toString(),
 	);
 
 	const warningMessage = hasFixedValues
@@ -107,16 +112,69 @@ export function BalanceConvertor({
 		const num = Number(val);
 		setValueIWillPay(num);
 		setValueIWillReceive(Math.ceil(num * curs));
+		setInputPayValue(num.toString());
+		setInputReceiveValue(Math.ceil(num * curs).toString());
 	};
 
-	// Обработчик ручного ввода (если unit_fixed нет)
+	// Обработчик ввода для valueIWillPay
 	const handlePayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const raw = e.target.value.replace(/[^0-9.]/g, "");
+		setInputPayValue(raw);
+		if (raw === "") return; // Разрешить пустое поле
 		const num = Number(raw);
 		if (!isNaN(num)) {
+			setValueIWillPay(num);
+			setValueIWillReceive(Math.ceil(num * curs));
+			setInputReceiveValue(Math.ceil(num * curs).toString());
+		}
+	};
+
+	// Обработчик потери фокуса для valueIWillPay
+	const handlePayBlur = () => {
+		const num = Number(inputPayValue);
+		if (isNaN(num) || inputPayValue === "") {
+			const defaultValue = minCount;
+			setValueIWillPay(defaultValue);
+			setValueIWillReceive(Math.ceil(defaultValue * curs));
+			setInputPayValue(defaultValue.toString());
+			setInputReceiveValue(Math.ceil(defaultValue * curs).toString());
+		} else {
 			const clamped = Math.min(Math.max(num, minCount), maxCount);
 			setValueIWillPay(clamped);
 			setValueIWillReceive(Math.ceil(clamped * curs));
+			setInputPayValue(clamped.toString());
+			setInputReceiveValue(Math.ceil(clamped * curs).toString());
+		}
+	};
+
+	// Обработчик ввода для valueIWillReceive
+	const handleReceiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const raw = e.target.value.replace(/[^0-9.]/g, "");
+		setInputReceiveValue(raw);
+		if (raw === "") return; // Разрешить пустое поле
+		const num = Number(raw);
+		if (!isNaN(num)) {
+			setValueIWillReceive(num);
+			setValueIWillPay(Math.ceil(num / curs));
+			setInputPayValue(Math.ceil(num / curs).toString());
+		}
+	};
+
+	// Обработчик потери фокуса для valueIWillReceive
+	const handleReceiveBlur = () => {
+		const num = Number(inputReceiveValue);
+		if (isNaN(num) || inputReceiveValue === "") {
+			const defaultValue = Math.ceil(minCount * curs);
+			setValueIWillReceive(defaultValue);
+			setValueIWillPay(minCount);
+			setInputReceiveValue(defaultValue.toString());
+			setInputPayValue(minCount.toString());
+		} else {
+			const clamped = Math.min(Math.max(num, minCount * curs), maxCount * curs);
+			setValueIWillReceive(clamped);
+			setValueIWillPay(Math.ceil(clamped / curs));
+			setInputReceiveValue(clamped.toString());
+			setInputPayValue(Math.ceil(clamped / curs).toString());
 		}
 	};
 
@@ -128,7 +186,6 @@ export function BalanceConvertor({
 						<div className={cnx("container__text")}>
 							Получу, {info?.unit_name}
 						</div>
-
 						<div className={cnx("container__field")}>
 							<SelectCustom
 								value={valueIWillPay.toString()}
@@ -145,12 +202,11 @@ export function BalanceConvertor({
 						src="/iconsFolder/common/Arrow_Right_LG.svg"
 						alt="Arrow"
 					/>
-
 					<div className={cnx("container__item")}>
 						<div className={cnx("container__text")}>Заплачу, руб.</div>
 						<div className={cnx("container__field")}>
 							<InputField
-								value={Math.round(valueIWillReceive).toString()}
+								value={inputReceiveValue}
 								onChange={() => {}}
 								readOnly
 								placeholder=""
@@ -159,7 +215,6 @@ export function BalanceConvertor({
 						</div>
 					</div>
 				</div>
-
 				<div className={cnx("container__warning")}>{warningMessage}</div>
 			</div>
 		);
@@ -172,47 +227,34 @@ export function BalanceConvertor({
 					<div className={cnx("container__text")}>Заплачу, руб.</div>
 					<div className={cnx("container__field")}>
 						<InputField
-							value={Math.round(valueIWillReceive).toString()}
-							onChange={(e) => {
-								const raw = e.target.value.replace(/[^0-9.]/g, "");
-								const num = Number(raw);
-								if (!isNaN(num)) {
-									const clamped = Math.min(
-										Math.max(num, minCount * curs),
-										maxCount * curs,
-									);
-									setValueIWillReceive(clamped);
-									setValueIWillPay(Math.ceil(clamped / curs));
-								}
-							}}
-							placeholder=""
+							value={inputReceiveValue}
+							onChange={handleReceiveChange}
+							onBlur={handleReceiveBlur}
+							placeholder="Введите сумму"
 							id="valueIWillReceive"
 						/>
 					</div>
 				</div>
-
 				<img
 					className={cnx("container__arrow")}
 					src="/iconsFolder/common/Arrow_Right_LG.svg"
 					alt="Arrow"
 				/>
-
 				<div className={cnx("container__item")}>
 					<div className={cnx("container__text")}>
 						Получу, {info?.unit_name}
 					</div>
-
 					<div className={cnx("container__field")}>
 						<InputField
-							value={valueIWillPay.toString()}
+							value={inputPayValue}
 							onChange={handlePayChange}
+							onBlur={handlePayBlur}
 							placeholder="Введите сумму"
 							id="valueIWillPay"
 						/>
 					</div>
 				</div>
 			</div>
-
 			<div className={cnx("container__warning")}>{warningMessage}</div>
 		</div>
 	);

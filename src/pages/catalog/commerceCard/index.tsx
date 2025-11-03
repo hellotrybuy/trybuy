@@ -1,13 +1,116 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import cnx from "classnames/bind";
 import styles from "../index.module.scss";
 import Button from "../../../components/button";
 import { Link } from "react-router";
+import { OptionItem } from "../../../hooks/types";
+import { PricesUnit } from "../../../components/balanceConvertor";
+import { useIsMobile } from "../../../hooks/useIsMobile";
 
 const cx = cnx.bind(styles);
 
+function isPricesUnit(obj: any): obj is PricesUnit {
+	return obj && typeof obj === "object";
+}
+
+function removeEmojis(text: string): string {
+	return text
+		.replace(
+			/([\p{Emoji_Presentation}]|[\p{Extended_Pictographic}]|[\u2600-\u27BF])/gu,
+			" ",
+		)
+		.replace(/\s+/g, " ")
+		.trim();
+}
+
+function hasPriceModifier(options: OptionItem[] | ""): boolean {
+	if (options == "") return false;
+	if (options == undefined) return false;
+	return options.some((opt) => {
+		if (opt.modify_value !== undefined && opt.modify_type !== undefined)
+			return true;
+		if (Array.isArray(opt.variants)) {
+			return opt.variants.some(
+				(v) => v.modify_value !== undefined && v.modify_type !== undefined,
+			);
+		}
+		return false;
+	});
+}
+
 export function CommerceCard({ product }) {
 	const [isMobile, setIsMobile] = useState(window.innerWidth <= 990);
+	const { isMobile: isMobile1 } = useIsMobile();
+	const imagePreviewSrc = useMemo(() => {
+		if (product?.preview) {
+			return `https://admin.trybuy.pro/${product?.preview}`;
+		} else {
+			return product?.id_product
+				? `https://graph.digiseller.ru/img.ashx?id_d=${product?.id_product}&w=200&h=200&crop=true`
+				: `https://graph.digiseller.ru/img.ashx?id_d=${product?.product_id}&w=200&h=200&crop=true`;
+		}
+		return "";
+	}, [product]);
+
+	const options = useMemo(() => {
+		if (product.options == undefined) return "";
+		return JSON.parse(product.options) as OptionItem[];
+	}, [product]);
+
+	const getPriceUnit = (data: string) => {
+		try {
+			const parsed = JSON.parse(data);
+			if (isPricesUnit(parsed)) {
+				return parsed;
+			} else {
+				console.warn("Invalid prices_unit format");
+				return null;
+			}
+		} catch (e) {
+			console.error("Failed to parse prices_unit:", e);
+			return null;
+		}
+	};
+
+	const price = useMemo(() => {
+		if (options != "" || product.prices_unit != "null") {
+			const isModify = hasPriceModifier(options);
+			if (isModify || product.prices_unit != "null") {
+				const data = getPriceUnit(product?.prices_unit);
+				if (data) {
+					// округляем вниз до 2 знаков
+					const roundDown2 = (val: number) =>
+						(Math.floor(val * 100) / 100).toFixed(2);
+
+					// обрезаем слишком длинное имя (более 5 символов)
+					const shortName =
+						data.unit_name.length > 3 && isMobile1
+							? data.unit_name.slice(0, 3) + "..."
+							: data.unit_name;
+
+					if (data?.unit_fixed && data?.unit_fixed[0]) {
+						return `1 ${shortName} = ${roundDown2(
+							data.unit_amount / data?.unit_fixed[0],
+						)} RUB`;
+					}
+
+					const devl =
+						Number(product.price) / data.unit_cnt > 100
+							? data.unit_amount
+							: data.unit_cnt;
+
+					return `1 ${shortName} = ${roundDown2(
+						Number(product.price) / devl,
+					)} RUB`;
+				} else {
+					return `От ${Number(product.price)} RUB`;
+				}
+			} else {
+				return `${product.price} RUB`;
+			}
+		}
+		return `${product.price} RUB`;
+	}, [product, options, isMobile1]);
 
 	useEffect(() => {
 		function handleResize() {
@@ -22,22 +125,18 @@ export function CommerceCard({ product }) {
 	const rating =
 		totalReviews === 0 ? 0 : (Number(product.good_reviews) / totalReviews) * 5;
 
-	const getImage = () => {
-		return `https://graph.digiseller.ru/img.ashx?id_d=${product.id_product}&w=200&h=200&crop=true`;
-	};
-
 	if (isMobile) {
 		return (
 			<div className={cx("main__box", "box", "_mobile")}>
 				<div className={cx("box__top")}>
 					<img
 						className={cx("box__img")}
-						src={getImage() || ""}
+						src={imagePreviewSrc || ""}
 						alt={product.platform_name || "Platform"}
 					/>
 					<div className={cx("box__info-mobile")}>
-						<b className={cx("box__title")}>{product.name}</b>
-						<strong className={cx("box__price")}>{product.price} руб.</strong>
+						<b className={cx("box__title")}>{removeEmojis(product.name)}</b>
+						<strong className={cx("box__price")}>{price}</strong>
 					</div>
 				</div>
 				<Link
@@ -57,7 +156,7 @@ export function CommerceCard({ product }) {
 		<div className={cx("main__box", "box", "_desktop")}>
 			<img
 				className={cx("box__img")}
-				src={getImage() || ""}
+				src={imagePreviewSrc || ""}
 				alt={product.platform_name || "Platform"}
 			/>
 			<div className={cx("box__main")}>
@@ -91,20 +190,22 @@ export function CommerceCard({ product }) {
 						</svg>
 						<span>{product.seller_name || ""}</span>
 					</div>
-					<div className={cx("box__top-block")}>
-						<img src="/iconsFolder/common/star.svg" alt="Star" />
-						<span>{rating.toFixed(1)}</span>
-					</div>
-					<div className={cx("box__top-block")}>
-						<span>{totalReviews} Оценок</span>
+					{rating ? (
+						<div className={cx("box__top-block")}>
+							<img src="/iconsFolder/common/star.svg" alt="Star" />
+							<span>{rating.toFixed(1)}</span>
+						</div>
+					) : (
+						<></>
+					)}
+					<div className={cx("pr__type")}>
+						<span>{product.type_name}</span>
 					</div>
 				</div>
-				<b className={cx("box__title")}>{product.name}</b>
+				<b className={cx("box__title")}>{removeEmojis(product.name)}</b>
 				<div className={cx("box__actions")}>
 					<Link to={`/catalog/product/${product.id_product}`}>
-						<Button className={cx("box__btn")}>
-							Купить за {product.price} ₽
-						</Button>
+						<Button className={cx("box__btn")}> {price} </Button>
 					</Link>
 				</div>
 			</div>

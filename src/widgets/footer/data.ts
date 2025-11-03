@@ -24,11 +24,11 @@ export const USER_LINKS = [
 export const CONTACT_INFO = [
 	{
 		label: "По вопросам сотрудничества",
-		email: "hello@try-buy.ru",
+		email: "hello@trybuy.pro",
 	},
 	{
 		label: "Техническая поддержка",
-		email: "support@try-buy.ru",
+		email: "support@trybuy.pro",
 		hasTelegram: true,
 	},
 ];

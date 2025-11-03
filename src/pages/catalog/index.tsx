@@ -284,26 +284,45 @@ export function CatalogPage() {
 		setCurrentPage(1);
 	}, [categoryId, selectedPlatforms, selectedType, selectSecondCat, search]);
 
+	// локальный ref для актуального запроса
+	// локальный ref для актуального запроса
+	const latestRequestRef = useRef<number>(0);
+	const [requestId, setRequestId] = useState<number>(0);
+
+	// каждый раз, когда меняются параметры запроса, генерируем новый id
+	useEffect(() => {
+		const id = Date.now();
+		setRequestId(id);
+		latestRequestRef.current = id;
+	}, [
+		categoryId,
+		selectedPlatforms,
+		selectedType,
+		selectSecondCat,
+		search,
+		currentPage,
+	]);
+
+	const [isLoadingPage, setIsLoadingPage] = useState(false);
+
 	useEffect(() => {
 		if (!productsFromCat) return;
+		if (latestRequestRef.current !== requestId) return; // игнорируем старые данные
 
-		setCatalogData((prev) => {
-			const existingIds = new Set(prev.map((p) => p.id));
-			const uniqueNew = productsFromCat.filter(
-				(p: ProductDataCAT, index, self) =>
-					self.findIndex(
-						(x: ProductDataCAT) => x.id_product === p.id_product,
-					) === index,
-			);
-
-			if (currentPage === 1) {
-				return uniqueNew;
-			}
-
-			const filteredNew = uniqueNew.filter((p) => !existingIds.has(p.id));
-			return [...prev, ...filteredNew];
-		});
-	}, [productsFromCat, currentPage, categoryId, refreshKey]);
+		if (currentPage === 1) {
+			setIsLoadingPage(true); // показываем скелетон
+			setCatalogData(productsFromCat);
+			setIsLoadingPage(false);
+		} else {
+			setCatalogData((prev) => {
+				const existingIds = new Set(prev.map((p) => p.id_product));
+				const newItems = productsFromCat.filter(
+					(p: ProductDataCAT) => !existingIds.has(p.id_product),
+				);
+				return [...prev, ...newItems];
+			});
+		}
+	}, [productsFromCat, currentPage, requestId]);
 
 	const { product: commerceProucts, loading: commerceLoading } =
 		useGetCommerceProductWithFallback(
@@ -416,7 +435,8 @@ export function CatalogPage() {
 							)}
 
 							<div className={cnx("main__cards")} key={categoryId}>
-								{productsFromCatLoading && catalogData.length === 0 ? (
+								{(productsFromCatLoading || isLoadingPage) &&
+								currentPage === 1 ? (
 									<ProductsSceleton isMargin={false} />
 								) : (
 									<ProductCards

@@ -74,6 +74,8 @@ export function useGetProductsFromCat(
 		const controller = new AbortController();
 		const signal = controller.signal;
 
+		let canceled = false;
+
 		setLoading(true);
 		setError(null);
 
@@ -87,26 +89,28 @@ export function useGetProductsFromCat(
 					{ signal },
 				);
 
-				if (!response.ok) {
-					throw new Error(`Ошибка HTTP: ${response.status}`);
-				}
+				if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
 
 				const data: ProductDataCATResponse = await response.json();
-				setProducts(data.products);
-				setTotalPages(data.totalPages);
+
+				if (!canceled) {
+					setProducts(data.products);
+					setTotalPages(data.totalPages);
+				}
 			} catch (err) {
 				if ((err as DOMException).name !== "AbortError") {
 					setError(err as Error);
-					setProducts(null);
+					setProducts([]);
 				}
 			} finally {
-				setLoading(false);
+				if (!canceled) setLoading(false);
 			}
 		};
 
 		fetchData();
 
 		return () => {
+			canceled = true;
 			controller.abort();
 		};
 	}, [

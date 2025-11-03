@@ -67,6 +67,17 @@ function InnerProductPage({ product }: { product: ProductData }) {
 		}
 	}, [product, navigate]);
 
+	const imagePreviewSrc = useMemo(() => {
+		if (product?.[0]?.preview) {
+			return `https://admin.trybuy.pro/${product?.[0]?.preview}`;
+		} else {
+			return product?.[0]?.id_product
+				? `https://graph.digiseller.ru/img.ashx?id_d=${product?.[0]?.id_product}&w=200&h=200&crop=true`
+				: `https://graph.digiseller.ru/img.ashx?id_d=${product?.[0]?.product_id}&w=200&h=200&crop=true`;
+		}
+		return "";
+	}, [product]);
+
 	if (!product?.[0]) return null;
 
 	const crumbs: Crumb[] = [
@@ -96,7 +107,7 @@ function InnerProductPage({ product }: { product: ProductData }) {
 					<aside className={cnx("product__aside", "aside")}>
 						<img
 							className={cnx("aside__img")}
-							src={`https://graph.digiseller.ru/img.ashx?id_d=${product[0].id_product}&w=200&h=200&crop=true`}
+							src={imagePreviewSrc}
 							alt={product.name}
 						/>
 						<div className={cnx("aside__block", "seller")}>

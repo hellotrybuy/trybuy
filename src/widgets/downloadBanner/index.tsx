@@ -137,7 +137,7 @@ export default function DownloadBanner() {
 										<p>В браузере Safari откройте</p>
 										<div className={cnx("ios__instr__item__text__flex")}>
 											<p>страницу</p>
-											<a href="https://try-buy.ru/">try-buy.ru</a>
+											<a href="https://trybuy.pro/">trybuy.pro</a>
 										</div>
 									</div>
 								</div>

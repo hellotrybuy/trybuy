@@ -3,96 +3,105 @@
 @use "/src/scss/variables/breakpoints";
 
 .btn {
-  position: relative;
-  z-index: 1;
+	position: relative;
+	z-index: 1;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+	mask: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path d="m0,1 c0,-1 0,-1 1,-1 l99,0 l0,100 l-100,0 Z"/></svg>')
+			top left / calc(2em * 100) no-repeat intersect,
+		url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path d="m0,0 l99,0 c1,0 1,0 1,1 l0,99 l-100,0 l0,-100 Z"/></svg>')
+			top right / calc(2em * 100) no-repeat intersect,
+		url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path d="m0,0 l100,0 l0,99 c0,1 -0,1 -1,1 l-99,0 Z"/></svg>')
+			bottom right / calc(2em * 100) no-repeat intersect,
+		url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><path d="m0,0 l100,0 l0,100 l-99,0 c-1,0 -1,-0 -1,-1 Z"/></svg>')
+			bottom left / calc(2em * 100) no-repeat intersect;
 
-  font-size: 14px;
-  color: colors.$white;
-  text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
 
-  width: fit-content;
+	font-size: 14px;
+	color: colors.$white;
+	text-align: center;
 
-  padding: 10px 15px;
-  border-radius: 20px;
+	width: fit-content;
 
-  transition: transitions.$main;
+	padding: 10px 15px;
+	// border-radius: 20px;
 
-  overflow: hidden;
+	transition: transitions.$main;
 
-  & > span {
-    transform: translateY(8%);
-  }
+	overflow: hidden;
 
-  &._icon {
-    padding: 9px;
-    border-radius: 100%;
-  }
+	& > span {
+		transform: translateY(8%);
+	}
 
-  &._large {
-    font-size: 16px;
-    font-weight: 500;
+	&._icon {
+		padding: 9px;
+		border-radius: 100%;
+	}
 
-    padding: 14px 20px;
-  }
+	&._large {
+		font-size: 16px;
+		font-weight: 500;
 
-  &._active {
-    background: #f7f6f8;
-    color: #3f3f3f;
+		padding: 14px 20px;
+	}
 
-    &::after {
-      opacity: 0;
-    }
-  }
+	&._active {
+		background: #f7f6f8;
+		color: #3f3f3f;
 
-  &:hover {
-    @media screen and (min-width: breakpoints.$lg) {
-      background: #f7f6f8;
-      color: #3f3f3f;
+		&::after {
+			opacity: 0;
+		}
+	}
 
-      &::after {
-        opacity: 0;
-      }
-    }
-  }
+	&:hover {
+		@media screen and (min-width: breakpoints.$lg) {
+			background: #f7f6f8;
+			color: #3f3f3f;
 
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+			&::after {
+				opacity: 0;
+			}
+		}
+	}
 
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
+	&::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -1;
 
-    background: colors.$blueGradient;
-    opacity: 1;
-    transition: transitions.$main;
-  }
+		width: 100%;
+		height: 100%;
+		// border-radius: 20px;
 
-  &._white {
-    color: #3f3f3f;
+		background: colors.$blueGradient;
+		opacity: 1;
+		transition: transitions.$main;
+	}
 
-    &::after {
-      background: radial-gradient(
-        farthest-corner at 0 10%,
-        #f3f3f3 72%,
-        #b6b6b6 100%
-      );
-    }
+	&._white {
+		color: #3f3f3f;
 
-    &:hover {
-      &::after {
-        opacity: 1;
+		&::after {
+			background: radial-gradient(
+				farthest-corner at 0 10%,
+				#f3f3f3 72%,
+				#b6b6b6 100%
+			);
+		}
 
-        filter: contrast(2);
-      }
-    }
-  }
+		&:hover {
+			&::after {
+				opacity: 1;
+
+				filter: contrast(2);
+			}
+		}
+	}
 }
