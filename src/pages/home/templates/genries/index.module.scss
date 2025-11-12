@@ -25,15 +25,15 @@
 	}
 
 	&__title._mobile {
-		font-family: "Unbounded";
-		text-align: center;
-		font-size: 36px;
-		font-weight: 500;
+		// font-family: "Unbounded";
+		// text-align: center;
+		// font-size: 36px;
+		// font-weight: 500;
 
-		background: -webkit-linear-gradient(#f7f7f7, #91919100 90%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-
+		// background: -webkit-linear-gradient(#f7f7f7, #91919100 90%);
+		// -webkit-background-clip: text;
+		// -webkit-text-fill-color: transparent;
+		margin-bottom: 27px;
 		@media screen and (min-width: breakpoints.$lg) {
 			display: none;
 		}

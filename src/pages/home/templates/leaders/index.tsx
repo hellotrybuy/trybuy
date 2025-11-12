@@ -84,8 +84,6 @@ export function HomeLeaders() {
 	// 	}
 	// }, [products]);
 
-	console.log(products, "products");
-
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -110,7 +108,7 @@ export function HomeLeaders() {
 	return (
 		<section className={cnx("leaders")}>
 			<div className={cnx("leaders__inner")}>
-				<Title size="large">Лидеры продаж</Title>
+				<Title size="large">Рекомендуем</Title>
 				<PopularCards data={catalogData.filter((el) => !el.is_hidden)} />
 				{hasMore && (
 					<div ref={loadMoreRef}>

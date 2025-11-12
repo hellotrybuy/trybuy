@@ -116,7 +116,6 @@ export function SellerPage() {
 		if (!products) return;
 		setCatalogData((prev) => {
 			const existingIds = new Set(prev.map((p) => p.id));
-			console.log(products, "products");
 			const uniqueNew = products.filter(
 				(p: ProductDataCAT, index, self) =>
 					self.findIndex(
@@ -130,7 +129,6 @@ export function SellerPage() {
 			return [...prev, ...filteredNew];
 		});
 	}, [products, currentPage, categoryId, refreshKey]);
-	console.log(catalogData, "catalogData");
 
 	const changeCategory = (id: string) => {
 		setCurrentPage(1);

@@ -17,9 +17,6 @@ function isStandaloneMode(): boolean {
 	// 2. iOS Safari PWA
 	if ((window.navigator as any).standalone === true) return true;
 
-	// 3. Дополнительная эвристика: отсутствие opener и реферера
-	if (!document.referrer && !window.opener) return true;
-
 	return false;
 }
 
@@ -58,6 +55,7 @@ export default function DownloadBanner() {
 		// ✅ Проверяем, PWA ли это
 		setIsPWA(isStandaloneMode());
 	}, []);
+	console.log({ isVisible, deviceType, isPWA });
 
 	const handleCloseBanner = () => {
 		setIsVisible(false);
@@ -193,7 +191,7 @@ export default function DownloadBanner() {
 											alt="Закрыть"
 										/>
 									</a>
-									<a href="/files/trybuy.apk" download>
+									<a href="/files/trybuy-1.1.apk" download>
 										<img
 											className={cnx("container__arrow")}
 											src="/iconsFolder/common/apk.svg"

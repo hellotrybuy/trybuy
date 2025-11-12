@@ -116,8 +116,6 @@ export function Filers({
 		return !currentTypes || currentTypes.length === 0;
 	}, [currentTypes]);
 
-	console.log(category, "currentTypes");
-
 	const textCat = useMemo(() => {
 		if (!category) {
 			return "Платформа";

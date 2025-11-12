@@ -54,8 +54,6 @@ export default function ProductActivation({ product }: Props) {
 		Record<string, string | boolean | Record<string, boolean>>
 	>({});
 
-	console.log(formState, "formState");
-
 	useEffect(() => {
 		setForm((prev) => ({ ...prev, ...formState }));
 	}, [formState, setForm]);

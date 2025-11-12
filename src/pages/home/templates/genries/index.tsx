@@ -40,7 +40,9 @@ export function HomeGenries() {
 					<SwiperControl prevBtn={prevBtnRef} nextBtn={nextBtnRef} />
 				</div>
 
-				<div className={cnx("genries__title", "_mobile")}>Категории</div>
+				<Title size="large" className={cnx("genries__title", "_mobile")}>
+					Категории
+				</Title>
 
 				<div className={cnx("genries__swiper")}>
 					{categories.length > 0 ? (

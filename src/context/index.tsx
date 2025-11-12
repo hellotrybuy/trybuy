@@ -33,9 +33,6 @@ export function SeacrchProvider({ children }: { children: React.ReactNode }) {
 			updated.delete(CATALOG_SEARCH_ANON);
 			setSearchParams(updated);
 		}
-		console.log(searchFromUrl, "searchFromUrl");
-		console.log(searchFromUrlAnon, "searchFromUrlAnon");
-		console.log(v, "v");
 		setSearchInput(v);
 	}, [v, searchParams, searchFromUrl, setSearchParams]);
 

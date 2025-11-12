@@ -259,10 +259,6 @@ function hasPriceModifier(options: OptionItem[] | ""): boolean {
 export function ProductCard({ product }: Props) {
 	const [isImageLoaded, setIsImageLoaded] = useState(false);
 	const { isMobile3 } = useIsMobile();
-	if (product.id_product == "4606138") {
-		console.log(product, "4606138 продукт");
-	}
-	console.log(product, " продукт");
 
 	const totalReviews = useMemo(() => {
 		return Number(product.good_reviews) + Number(product.bad_reviews);
