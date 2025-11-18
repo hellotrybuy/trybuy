@@ -1,0 +1,76 @@
+@use "/src/scss/variables/breakpoints";
+@use "/src/scss/variables/transitions";
+@use "/src/scss/variables/zIndex";
+
+.select {
+	z-index: zIndex.$z-index-50;
+	cursor: pointer;
+	position: absolute;
+	right: 3px;
+	top: 3px;
+	bottom: 3px;
+	font-size: 16px;
+	box-sizing: border-box;
+
+	&__head {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+		background: radial-gradient(at 0% 0%, #0077ff, #3d97ff);
+		height: max-content;
+		padding: 5px 12px;
+		border-radius: 50px;
+		box-sizing: border-box;
+		position: relative;
+
+		svg {
+			transition: transitions.$main;
+			filter: brightness(200%) contrast(200%);
+		}
+	}
+
+	&__value {
+		font-size: 16px;
+		color: #ffffff;
+	}
+
+	&__dropdown {
+		display: none;
+
+		position: absolute;
+		z-index: -1;
+		top: 40px;
+		left: 0;
+		right: 0;
+
+		background-color: #f7f6f8;
+		border-radius: 16px;
+
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			align-items: start !important;
+			padding: 11px 18px 11px 18px;
+
+			li {
+				font-size: 14px;
+				color: #7b7b7b;
+				cursor: pointer;
+				text-align: left;
+				width: 100%;
+			}
+		}
+	}
+
+	&._opened &__head svg {
+		transform: rotate(180deg);
+	}
+
+	&._opened &__dropdown {
+		display: block;
+		overflow-y: auto;
+		max-height: 200px;
+	}
+}

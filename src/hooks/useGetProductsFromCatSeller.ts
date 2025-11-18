@@ -30,6 +30,7 @@ export interface ProductDataCAT {
 	good_reviews: string;
 	bad_reviews: string;
 	agency_percent: number;
+	info: string;
 	type_digi_product: string;
 }
 

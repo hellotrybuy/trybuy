@@ -31,6 +31,7 @@ export interface ProductDataCAT {
 	bad_reviews: string;
 	agency_percent: number;
 	type_digi_product: string;
+	info: string;
 }
 
 interface UseGetCategories {

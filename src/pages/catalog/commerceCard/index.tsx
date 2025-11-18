@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { OptionItem } from "../../../hooks/types";
 import { PricesUnit } from "../../../components/balanceConvertor";
 import { useIsMobile } from "../../../hooks/useIsMobile";
+import { CommerceCardSteam } from "../commerceCardSteam";
 
 const cx = cnx.bind(styles);
 
@@ -124,6 +125,15 @@ export function CommerceCard({ product }) {
 		Number(product.good_reviews) + Number(product.bad_reviews);
 	const rating =
 		totalReviews === 0 ? 0 : (Number(product.good_reviews) / totalReviews) * 5;
+
+	if (
+		product.type_digi_product == "unit" &&
+		product.platform_name.toString().toLowerCase() == "steam"
+	) {
+		return (
+			<CommerceCardSteam prices_unit={product.prices_unit} product={product} />
+		);
+	}
 
 	if (isMobile) {
 		return (

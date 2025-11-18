@@ -3,6 +3,7 @@ import { ProductDataCAT } from "./useGetProductsFromCat";
 export interface ProductData {
 	id: string;
 	preview: string;
+	platform_name: string;
 	is_hidden: boolean;
 	product_id: string;
 	cnt: number;
