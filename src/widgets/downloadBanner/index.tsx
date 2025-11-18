@@ -25,6 +25,7 @@ export default function DownloadBanner() {
 	const [isVisible, setIsVisible] = useState(true);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isPWA, setIsPWA] = useState(false);
+	const [isAnimating, setIsAnimating] = useState(false);
 
 	useEffect(() => {
 		// ✅ Проверяем localStorage (скрыт ли баннер)
@@ -68,10 +69,18 @@ export default function DownloadBanner() {
 
 	const handleBannerClick = () => {
 		setIsModalOpen(true);
+		setIsAnimating(true);
 	};
 
 	const handleCloseModal = () => {
 		setIsModalOpen(false);
+	};
+
+	const handleCloseModalIphone = () => {
+		setIsAnimating(false);
+		setTimeout(() => {
+			setIsModalOpen(false);
+		}, 400);
 	};
 
 	// ✅ Если баннер не нужен — ничего не рендерим
@@ -115,58 +124,85 @@ export default function DownloadBanner() {
 
 			{/* ✅ Модальное окно */}
 			{isModalOpen && (
-				<div className={cnx("modalOverlay")} onClick={handleCloseModal}>
-					{deviceType === "iphone" && (
+				<div
+					className={cnx("modalOverlay")}
+					onClick={handleCloseModal}
+					onTransitionEnd={() => {
+						if (!isModalOpen) {
+							setIsAnimating(false);
+						}
+					}}
+				>
+					{deviceType === "iphone" ? (
 						<div
-							className={cnx("modalContent")}
+							className={cnx(
+								"bannerIphone",
+								isAnimating && "mobile__modal__open",
+								!isAnimating && "mobile__modal__closed",
+							)}
 							onClick={(e) => e.stopPropagation()}
 						>
-							<h2>
-								Добавьте web-приложение на экран вашего iPhone для быстрого
-								доступа
-							</h2>
 							<div className={cnx("ios__instr")}>
 								{/* Шаги */}
-								<div className={cnx("ios__instr__item")}>
-									<div className={cnx("ios__instr__item__num")}>
-										<p>1</p>
-									</div>
-									<div className={cnx("ios__instr__item__text")}>
-										<p>В браузере Safari откройте</p>
-										<div className={cnx("ios__instr__item__text__flex")}>
-											<p>страницу</p>
-											<a href="https://trybuy.pro/">trybuy.pro</a>
+
+								<img
+									src="/iconsFolder/common/iph_dw.png"
+									className={cnx("iphD")}
+									alt="Закрыть"
+								/>
+
+								<h2>Добавьте web-приложение</h2>
+
+								<div className={cnx("cont_iph")}>
+									<div className={cnx("ios__instr__item")}>
+										<div className={cnx("ios__instr__item__num")}>
+											<p>1</p>
+										</div>
+										<div className={cnx("ios__instr__item__text", "flex")}>
+											<p>Нажмите на кнопку</p>
+											<div
+												className={cnx("ios__instr__item__text__flex", "icon")}
+											>
+												<img src="/iconsFolder/common/shar.svg" alt="Закрыть" />
+											</div>
 										</div>
 									</div>
-								</div>
-								<div className={cnx("ios__instr__item")}>
-									<div className={cnx("ios__instr__item__num")}>
-										<p>2</p>
-									</div>
-									<div className={cnx("ios__instr__item__text", "flex")}>
-										<p>Нажмите на кнопку</p>
-										<div
-											className={cnx("ios__instr__item__text__flex", "icon")}
-										>
-											<img src="/iconsFolder/common/shar.svg" alt="Закрыть" />
+									<div className={cnx("ios__instr__item")}>
+										<div className={cnx("ios__instr__item__num")}>
+											<p>2</p>
+										</div>
+										<div className={cnx("ios__instr__item__text", "flex")}>
+											<p>Выберите раздел</p>
+											<div
+												className={cnx("ios__instr__item__text__flex", "icon")}
+											>
+												<img src="/iconsFolder/common/dots.svg" alt="Закрыть" />
+												<p>Ещё</p>
+											</div>
 										</div>
 									</div>
-								</div>
-								<div className={cnx("ios__instr__item")}>
-									<div className={cnx("ios__instr__item__num")}>
-										<p>3</p>
-									</div>
-									<div className={cnx("ios__instr__item__text", "flexHome")}>
-										<p>Выберите</p>
-										<div className={cnx("ios__instr__item__goHome")}>
-											“На экран домой”
+									<div className={cnx("ios__instr__item")}>
+										<div className={cnx("ios__instr__item__num")}>
+											<p>3</p>
+										</div>
+										<div className={cnx("ios__instr__item__text", "flex")}>
+											<p>Выберите</p>
+											<div
+												className={cnx("ios__instr__item__text__flex", "icon")}
+											>
+												<img
+													src="/iconsFolder/common/dplus.svg"
+													alt="Закрыть"
+												/>
+												<p>На экран домой</p>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							<button
-								className={cnx("banner__close")}
-								onClick={handleCloseModal}
+								className={cnx("banner__close__iph")}
+								onClick={handleCloseModalIphone}
 							>
 								<img
 									className={cnx("container__arrow")}
@@ -175,7 +211,7 @@ export default function DownloadBanner() {
 								/>
 							</button>
 						</div>
-					)}
+					) : null}
 					{deviceType === "android" && (
 						<div
 							className={cnx("modalContent")}

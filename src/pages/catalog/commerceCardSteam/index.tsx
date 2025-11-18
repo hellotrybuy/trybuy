@@ -338,13 +338,85 @@ export const CommerceCardSteam = ({
 		totalReviews === 0 ? 0 : (Number(product.good_reviews) / totalReviews) * 5;
 
 	const [isOpenModal, setIsOpenModal] = useState(false);
+	const [isOpenModalM, setIsOpenModalM] = useState(false);
+
 	const refDesc = useRef(null);
+	const refMob = useRef(null);
 
 	useClickOutside([refDesc], () => setIsOpenModal(false));
+	useClickOutside([refDesc, refMob], () => setIsOpenModalM(false));
+
+	const [isAnimating, setIsAnimating] = useState(false);
 
 	if (isMobile) {
 		return (
 			<div className={cnx("main__box", "box", "_desktop")}>
+				{isOpenModalM || isAnimating ? (
+					<div
+						ref={refMob}
+						onTransitionEnd={() => {
+							if (!isOpenModalM) {
+								setIsAnimating(false);
+							}
+						}}
+						className={cnx(
+							"mobile__modal",
+							isOpenModalM && "mobile__modal__open",
+							!isOpenModalM && "mobile__modal__closed",
+						)}
+					>
+						<button
+							className={cnx("modalCon__close")}
+							onClick={() => setIsOpenModalM(false)}
+						>
+							<img
+								className={cnx("modalCon__arrow")}
+								src="/iconsFolder/common/close.svg"
+								alt="Закрыть"
+							/>
+						</button>
+						<div className={cnx("modalCon")} ref={refDesc}>
+							<h2>Как узнать логин Steam?</h2>
+							<img
+								className={cnx("modalCon__image")}
+								src="/iconsFolder/common/checklogin.png"
+								alt=""
+							/>
+							<p>
+								Ваш логин — это имя, под которым вы входите в Steam.{" "}
+								<span>Не путайте его с ником в профиле или e-mail!</span>
+							</p>
+							<div className={cnx("modalCon__linkblock")}>
+								Как узнать свой логин можно{" "}
+								<a
+									href="https://store.steampowered.com/account/"
+									target="_blank"
+								>
+									по ссылке
+								</a>{" "}
+								или:
+								<ol>
+									<li>Откройте клиент Steam.</li>
+									<li>
+										В разделе настроек вашего профиля откройте раздел
+										“Безопасность”.
+									</li>
+								</ol>
+							</div>
+							<div className={cnx("modalCon__warn")}>
+								<div className={cnx("modalCon__warn__top")}>
+									<img src="/iconsFolder/common/warn.svg" alt="" />
+									<div>Проверьте перед оплатой!</div>
+								</div>
+								<div>
+									Если указать e-mail или ник, пополнение может не зачислиться,
+									а возврат средств будет невозможен.
+								</div>
+							</div>
+						</div>
+					</div>
+				) : null}
+
 				<img
 					className={cnx("box__img")}
 					src={imagePreviewSrc || ""}
@@ -438,7 +510,13 @@ export const CommerceCardSteam = ({
 									<div>
 										<div className={cnx("container__warning")}>
 											<img src="/iconsFolder/common/faq.svg" />
-											<div style={{ textDecoration: "underline" }}>
+											<div
+												style={{ textDecoration: "underline" }}
+												onClick={() => {
+													setIsAnimating(true);
+													setIsOpenModalM(true);
+												}}
+											>
 												Как узнать логин Steam
 											</div>
 										</div>

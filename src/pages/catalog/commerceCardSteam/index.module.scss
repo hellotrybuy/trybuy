@@ -525,6 +525,10 @@
 	cursor: default;
 	position: relative;
 
+	@media screen and (max-width: 990px) {
+		background: none;
+	}
+
 	&__close {
 		border: none;
 		background-color: rgba(0, 119, 255, 1);
@@ -536,6 +540,15 @@
 		border-radius: 90px;
 		right: -10px;
 		top: -10px;
+
+		@media screen and (max-width: 990px) {
+			top: 10px;
+			right: 10px;
+			background-color: rgba(49, 57, 74, 1);
+			width: 40px;
+			height: 40px;
+			z-index: 1001;
+		}
 
 		img {
 			position: absolute;
@@ -619,5 +632,55 @@
 
 	&__image {
 		width: 315px;
+	}
+}
+
+.mobile__modal {
+	position: fixed;
+	bottom: -200%;
+	left: 0;
+	right: 0;
+	height: 440px;
+	background: radial-gradient(
+		52.29% 52.29% at 100% 46.53%,
+		#242f42 0%,
+		#222834 100%
+	);
+	z-index: 1000;
+	border-radius: 16px 16px 0 0;
+	opacity: 0;
+}
+
+.mobile__initial {
+	opacity: 0 !important;
+}
+
+.mobile__modal__open {
+	animation: openMobModal 0.7s forwards;
+}
+
+.mobile__modal__closed {
+	animation: closedMobModal 0.7s forwards;
+}
+
+@keyframes openMobModal {
+	0% {
+		bottom: -200%;
+		opacity: 0;
+	}
+	100% {
+		bottom: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes closedMobModal {
+	0% {
+		bottom: 0;
+		opacity: 1;
+	}
+	100% {
+		bottom: -200%;
+		opacity: 0;
 	}
 }

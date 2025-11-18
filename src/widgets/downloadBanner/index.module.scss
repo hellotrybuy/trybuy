@@ -117,11 +117,21 @@
 // 		<div className={cnx("ios__instr__item__text")}>asdasdadasdasd</div>
 // 	</div>
 // </div>
+
+.cont_iph {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
 .ios__instr {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	margin-bottom: 10px;
+	gap: 20px;
+	margin-bottom: 32px;
+	margin-top: 32px;
+
+	align-items: center;
 
 	&__item {
 		display: flex;
@@ -144,6 +154,7 @@
 			background-color: #d9d9d9;
 			border-radius: 5px;
 			position: relative;
+			color: rgba(44, 46, 53, 1);
 
 			p {
 				position: absolute;
@@ -174,7 +185,14 @@
 
 			&__flex {
 				display: flex;
-				gap: 2px;
+				gap: 5px;
+				background-color: rgba(49, 57, 74, 1);
+				padding: 4px;
+				border-radius: 5px;
+
+				p {
+					color: rgba(61, 151, 255, 1) !important;
+				}
 			}
 
 			p {
@@ -202,9 +220,9 @@
 	gap: 5px;
 }
 
-.icon {
-	margin-top: -7px;
-}
+// .icon {
+// 	margin-top: -7px;
+// }
 
 .downTypes {
 	display: flex;
@@ -213,5 +231,74 @@
 
 	img {
 		cursor: pointer;
+	}
+}
+
+.banner__close__iph {
+	border: none;
+	background-color: rgba(49, 57, 74, 1);
+	font-size: 20px;
+	cursor: pointer;
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	border-radius: 90px;
+	top: 10px;
+	right: 10px;
+
+	img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+.bannerIphone {
+	position: fixed;
+	bottom: -200%;
+	left: 0;
+	right: 0;
+	height: 500px;
+	background: radial-gradient(
+		52.29% 52.29% at 100% 46.53%,
+		#242f42 0%,
+		#222834 100%
+	);
+	z-index: 1000;
+	border-radius: 16px 16px 0 0;
+	opacity: 0;
+}
+
+.iphD {
+	width: 245px;
+}
+.mobile__modal__open {
+	animation: openMobModal 0.7s forwards;
+}
+
+.mobile__modal__closed {
+	animation: closedMobModal 0.7s forwards;
+}
+
+@keyframes openMobModal {
+	0% {
+		bottom: -200%;
+		opacity: 0;
+	}
+	100% {
+		bottom: 0;
+		opacity: 1;
+	}
+}
+
+@keyframes closedMobModal {
+	0% {
+		bottom: 0;
+		opacity: 1;
+	}
+	100% {
+		bottom: -200%;
+		opacity: 0;
 	}
 }
