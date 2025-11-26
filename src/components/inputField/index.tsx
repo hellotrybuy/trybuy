@@ -37,7 +37,9 @@ export function InputField({
 				/>
 				{afterText && <span>{afterText}</span>}
 			</div>
-			<small className={cnx("replenishment__caption")}>{warning}</small>
+			{warning != "" && warning && (
+				<small className={cnx("replenishment__caption")}>{warning}</small>
+			)}
 		</div>
 	);
 }

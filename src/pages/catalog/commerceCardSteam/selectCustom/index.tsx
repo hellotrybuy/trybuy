@@ -50,7 +50,10 @@ export function SelectCustom({ value, options, onChange }: ISelect) {
 								setIsOpen(false);
 							}}
 						>
-							{option.label}
+							<p>{option.label}</p>
+							{option.value === value && (
+								<img src="/iconsFolder/common/checkBl.svg" />
+							)}
 						</li>
 					))}
 				</ul>

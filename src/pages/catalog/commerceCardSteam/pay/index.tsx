@@ -116,9 +116,10 @@ function prepareOptionsForApi(
 
 interface Props {
 	product: ProductData;
+	isDisabled: boolean;
 }
 
-export function ProductPayComm({ product }: Props) {
+export function ProductPayComm({ product, isDisabled }: Props) {
 	const { totalPrice, form, cnt, setFormSubmitted } = usePrice();
 
 	const newFormData = useMemo(() => {
@@ -151,9 +152,10 @@ export function ProductPayComm({ product }: Props) {
 				className={cnx("pay__btn")}
 				size="medium"
 				onClick={() => {
-					setFormSubmitted(true);
-
-					sendRequest(dataFromAPI);
+					if (!isDisabled) {
+						setFormSubmitted(true);
+						sendRequest(dataFromAPI);
+					}
 				}}
 			>
 				Купить за {totalPrice > 0 ? totalPrice : 1} ₽

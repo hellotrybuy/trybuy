@@ -7,14 +7,11 @@ const cnx = classNames.bind(styles);
 type DeviceType = "iphone" | "android" | "desktop" | null;
 
 const HIDE_BANNER_KEY = "hideDownloadBanner";
-const HIDE_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 дней в миллисекундах
+const HIDE_DURATION = 7 * 24 * 60 * 60 * 1000;
 
-// ✅ Надежная проверка PWA режима
 function isStandaloneMode(): boolean {
-	// 1. Android Chrome и десктопные PWA
 	if (window.matchMedia("(display-mode: standalone)").matches) return true;
 
-	// 2. iOS Safari PWA
 	if ((window.navigator as any).standalone === true) return true;
 
 	return false;
@@ -28,7 +25,6 @@ export default function DownloadBanner() {
 	const [isAnimating, setIsAnimating] = useState(false);
 
 	useEffect(() => {
-		// ✅ Проверяем localStorage (скрыт ли баннер)
 		const stored = localStorage.getItem(HIDE_BANNER_KEY);
 		if (stored) {
 			try {
@@ -42,7 +38,6 @@ export default function DownloadBanner() {
 			}
 		}
 
-		// ✅ Определяем устройство
 		const ua = navigator.userAgent || navigator.vendor;
 
 		if (/iPhone/i.test(ua)) {
@@ -53,14 +48,12 @@ export default function DownloadBanner() {
 			setDeviceType("desktop");
 		}
 
-		// ✅ Проверяем, PWA ли это
 		setIsPWA(isStandaloneMode());
 	}, []);
 	console.log({ isVisible, deviceType, isPWA });
 
 	const handleCloseBanner = () => {
 		setIsVisible(false);
-		// ✅ Сохраняем дату истечения на 7 дней вперед
 		localStorage.setItem(
 			HIDE_BANNER_KEY,
 			JSON.stringify({ expiresAt: Date.now() + HIDE_DURATION }),
@@ -83,7 +76,6 @@ export default function DownloadBanner() {
 		}, 400);
 	};
 
-	// ✅ Если баннер не нужен — ничего не рендерим
 	if (!isVisible || deviceType === "desktop" || deviceType === null || isPWA)
 		return null;
 
@@ -122,7 +114,6 @@ export default function DownloadBanner() {
 				</div>
 			)}
 
-			{/* ✅ Модальное окно */}
 			{isModalOpen && (
 				<div
 					className={cnx("modalOverlay")}
@@ -143,8 +134,6 @@ export default function DownloadBanner() {
 							onClick={(e) => e.stopPropagation()}
 						>
 							<div className={cnx("ios__instr")}>
-								{/* Шаги */}
-
 								<img
 									src="/iconsFolder/common/iph_dw.png"
 									className={cnx("iphD")}

@@ -9,7 +9,6 @@
 	right: 3px;
 	top: 3px;
 	bottom: 3px;
-	height: 50px;
 	font-size: 16px;
 	box-sizing: border-box;
 
@@ -19,11 +18,11 @@
 		justify-content: center;
 		gap: 5px;
 		background: radial-gradient(at 0% 0%, #0077ff, #3d97ff);
-		height: max-content;
-		padding: 6px 12px;
+		padding: 0 12px;
 		border-radius: 50px;
 		box-sizing: border-box;
 		position: relative;
+		height: 100%;
 
 		svg {
 			transition: transitions.$main;
@@ -46,14 +45,14 @@
 		right: 0;
 
 		background-color: #f7f6f8;
-		border-radius: 16px;
+		border-radius: 10px;
 
 		ul {
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
+			gap: 5px;
 			align-items: start !important;
-			padding: 11px 18px 11px 18px;
+			padding: 4px;
 
 			li {
 				font-size: 14px;
@@ -61,6 +60,23 @@
 				cursor: pointer;
 				text-align: left;
 				width: 100%;
+				transition: 0.2s;
+				padding: 3px 7px;
+				display: flex;
+				gap: 5px;
+				align-items: center;
+				justify-content: space-between;
+				border-radius: 5px;
+
+				img {
+					// height: 6px;
+					// width: 5px;
+				}
+
+				&:hover {
+					transition: 0.2s;
+					background-color: rgba(230, 230, 230, 1);
+				}
 			}
 		}
 	}

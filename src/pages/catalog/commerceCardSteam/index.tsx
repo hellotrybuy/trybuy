@@ -348,6 +348,8 @@ export const CommerceCardSteam = ({
 
 	const [isAnimating, setIsAnimating] = useState(false);
 
+	console.log(formState[loginItem.name], "formState[loginItem.name]");
+
 	if (isMobile) {
 		return (
 			<div className={cnx("main__box", "box", "_desktop")}>
@@ -387,7 +389,7 @@ export const CommerceCardSteam = ({
 								<span>Не путайте его с ником в профиле или e-mail!</span>
 							</p>
 							<div className={cnx("modalCon__linkblock")}>
-								Как узнать свой логин можно{" "}
+								Узнать свой логин можно{" "}
 								<a
 									href="https://store.steampowered.com/account/"
 									target="_blank"
@@ -426,7 +428,7 @@ export const CommerceCardSteam = ({
 					<div className={cnx("box__top")}>
 						<div className={cnx("header_mob")}>
 							<div className={cnx("pr__type")}>
-								<span>{removeEmojis(product.name)}</span>
+								<span>Пополнение STEAM</span>
 							</div>
 							<div className={cnx("headerss")}>
 								<div className={cnx("box__top-block")}>
@@ -473,21 +475,23 @@ export const CommerceCardSteam = ({
 						<div style={{ width: "100%" }}>
 							<div className={cnx("container")}>
 								<div className={cnx("container__field")}>
-									<InputField
-										value={inputPayValue}
-										onChange={handlePayChange}
-										onBlur={handlePayBlur}
-										placeholder="Получу"
-										id="valueIWillPay"
-									/>
-									<SelectCustom
-										value={valueIWillPayS.toString()}
-										options={course.map((v) => ({
-											value: v.value.toString(),
-											label: v.label.toString(),
-										}))}
-										onChange={(val) => resultCourse(Number(val))}
-									/>
+									<div className={cnx("container__field__sel")}>
+										<InputField
+											value={inputPayValue}
+											onChange={handlePayChange}
+											onBlur={handlePayBlur}
+											placeholder="Получу"
+											id="valueIWillPay"
+										/>
+										<SelectCustom
+											value={valueIWillPayS.toString()}
+											options={course.map((v) => ({
+												value: v.value.toString(),
+												label: v.label.toString(),
+											}))}
+											onChange={(val) => resultCourse(Number(val))}
+										/>
+									</div>
 									<div>
 										<div className={cnx("container__warning")}>
 											<img src="/iconsFolder/common/faq.svg" />
@@ -523,7 +527,13 @@ export const CommerceCardSteam = ({
 									</div>
 								</div>
 								<div className={cnx("container__item")}>
-									<ProductPayComm product={product} />
+									<ProductPayComm
+										product={product}
+										isDisabled={
+											formState[loginItem.name] == "" ||
+											formState[loginItem.name] == undefined
+										}
+									/>
 								</div>
 							</div>
 						</div>
@@ -559,7 +569,7 @@ export const CommerceCardSteam = ({
 							<span>Не путайте его с ником в профиле или e-mail!</span>
 						</p>
 						<div className={cnx("modalCon__linkblock")}>
-							Как узнать свой логин можно{" "}
+							Узнать свой логин можно{" "}
 							<a href="https://store.steampowered.com/account/" target="_blank">
 								по ссылке
 							</a>{" "}
@@ -633,28 +643,30 @@ export const CommerceCardSteam = ({
 						<span>{product.type_name}</span>
 					</div>
 				</div>
-				<b className={cnx("box__title")}>{removeEmojis(product.name)}</b>
+				<b className={cnx("box__title")}>Пополнение STEAM</b>
 				<div className={cnx("box__actions")}>
 					<div>
 						<div className={cnx("container")}>
 							<div className={cnx("container__item")}>
 								<div className={cnx("container__text")}></div>
 								<div className={cnx("container__field")}>
-									<InputField
-										value={inputPayValue}
-										onChange={handlePayChange}
-										onBlur={handlePayBlur}
-										placeholder="Получу"
-										id="valueIWillPay"
-									/>
-									<SelectCustom
-										value={valueIWillPayS.toString()}
-										options={course.map((v) => ({
-											value: v.value.toString(),
-											label: v.label.toString(),
-										}))}
-										onChange={(val) => resultCourse(Number(val))}
-									/>
+									<div className={cnx("container__field__sel")}>
+										<InputField
+											value={inputPayValue}
+											onChange={handlePayChange}
+											onBlur={handlePayBlur}
+											placeholder="Получу"
+											id="valueIWillPay"
+										/>
+										<SelectCustom
+											value={valueIWillPayS.toString()}
+											options={course.map((v) => ({
+												value: v.value.toString(),
+												label: v.label.toString(),
+											}))}
+											onChange={(val) => resultCourse(Number(val))}
+										/>
+									</div>
 									<div>
 										<div className={cnx("container__warning")}>
 											<img src="/iconsFolder/common/faq.svg" />
@@ -688,7 +700,13 @@ export const CommerceCardSteam = ({
 								</div>
 							</div>
 							<div className={cnx("container__item")}>
-								<ProductPayComm product={product} />
+								<ProductPayComm
+									product={product}
+									isDisabled={
+										formState[loginItem.name] == "" ||
+										formState[loginItem.name] == undefined
+									}
+								/>
 							</div>
 						</div>
 					</div>
