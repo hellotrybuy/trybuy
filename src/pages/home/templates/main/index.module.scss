@@ -1,5 +1,26 @@
 @use "/src/scss/variables/breakpoints";
 
+.slide__img._hidden {
+	display: none;
+}
+
+.slide__skeleton {
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
+	animation-delay: 0.4s;
+	height: 100%;
+}
+
+@keyframes pulse {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
 .desktop {
 	position: relative;
 
@@ -107,7 +128,7 @@
 		text-align: center;
 		font-size: 36px;
 		font-weight: 500;
-
+		height: 45px;
 		background: -webkit-linear-gradient(#f7f7f7, #91919100 90%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;

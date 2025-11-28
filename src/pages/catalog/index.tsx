@@ -34,6 +34,7 @@ import { FilterButton } from "./filterButton";
 import { FilterMobile } from "../../widgets/mobile-filter";
 import { useGetCommerceProductWithFallback } from "../../hooks/useGetCommerceProductWithFallback";
 import { PriceProvider } from "../product/context";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -112,6 +113,7 @@ export function CatalogPage() {
 	);
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
+	const { isMobile } = useIsMobile();
 
 	const { categorys, loading: loadingCat } = useGetGreatCategories();
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -344,49 +346,59 @@ export function CatalogPage() {
 		}
 	}, [commerceLoading, commerceProucts]);
 
+	const checkFiltersDel = useMemo(() => {
+		return (
+			isMobile &&
+			category == "151" &&
+			(secondCategoryFromUrl == "399" || secondCategoryFromUrl == "698")
+		);
+	}, [isMobile, category, secondCategoryFromUrl]);
+
 	return (
 		<div className={cnx("catalog")}>
 			<PriceProvider>
 				<Breadcrumbs crumbs={crumbs} />
 				<div className={CONTAINER}>
 					<div className={cnx("catalog__inner")}>
-						<div className={cnx("catalog__categories", "categories")}>
-							<nav className={cnx("categories__nav")}>
-								{categorys ? (
-									<ul>
-										<li
-											className={cnx(categoryId == "" && "_active")}
-											onClick={() => changeCategory("")}
-											ref={(node) => {
-												categoryRefs.current[""] = node;
-											}}
-										>
-											<div>Все товары</div>
-										</li>
-										{categorys.map((el) => (
+						{!checkFiltersDel && (
+							<div className={cnx("catalog__categories", "categories")}>
+								<nav className={cnx("categories__nav")}>
+									{categorys ? (
+										<ul>
 											<li
+												className={cnx(categoryId == "" && "_active")}
+												onClick={() => changeCategory("")}
 												ref={(node) => {
-													categoryRefs.current[el.id] = node;
+													categoryRefs.current[""] = node;
 												}}
-												className={cnx(categoryId == el.id && "_active")}
-												key={el.id}
-												onClick={() => changeCategory(el.id)}
 											>
-												<div>{el.name}</div>
+												<div>Все товары</div>
 											</li>
-										))}
-									</ul>
-								) : (
-									<div className={cnx("categories_sceleton")}></div>
-								)}
+											{categorys.map((el) => (
+												<li
+													ref={(node) => {
+														categoryRefs.current[el.id] = node;
+													}}
+													className={cnx(categoryId == el.id && "_active")}
+													key={el.id}
+													onClick={() => changeCategory(el.id)}
+												>
+													<div>{el.name}</div>
+												</li>
+											))}
+										</ul>
+									) : (
+										<div className={cnx("categories_sceleton")}></div>
+									)}
 
-								<ChapterSearch
-									selectValue={selectValue}
-									setSelectValue={setSelectValue}
-									values={selectOptions}
-								/>
-							</nav>
-						</div>
+									<ChapterSearch
+										selectValue={selectValue}
+										setSelectValue={setSelectValue}
+										values={selectOptions}
+									/>
+								</nav>
+							</div>
+						)}
 						<div className={cnx("catalog__body")}>
 							<div className={cnx("catalog__filters")}>
 								<Filers
@@ -405,35 +417,39 @@ export function CatalogPage() {
 								/>
 							</div>
 							<div className={cnx("catalog__main", "main")}>
-								<div className={cnx("catalog__filter-mobile", "filter-mobile")}>
-									<div className={cnx("catalog__main__down")}>
-										<Select
-											onChange={(newValue) => setSelectValue(newValue)}
-											value={selectValue}
-											options={selectOptions}
-										/>
-										<FilterButton
-											onClick={toggleFilter}
+								{!checkFiltersDel && (
+									<div
+										className={cnx("catalog__filter-mobile", "filter-mobile")}
+									>
+										<div className={cnx("catalog__main__down")}>
+											<Select
+												onChange={(newValue) => setSelectValue(newValue)}
+												value={selectValue}
+												options={selectOptions}
+											/>
+											<FilterButton
+												onClick={toggleFilter}
+												isOpen={isFilterOpen}
+											/>
+										</div>
+										<FilterMobile
 											isOpen={isFilterOpen}
+											onClose={() => setIsFilterOpen(false)}
+											platforms={platforms}
+											category={categoryId}
+											selectedPlatforms={selectedPlatforms}
+											setSelectedPlatforms={changePlatforms}
+											contentTypes={productTypes}
+											selectedTypes={selectedType}
+											setSelectedTypes={changeContentTypes}
+											setSelectSecondCat={changeCategorySecondPlace}
+											selectSecondCat={selectSecondCat}
+											categorySecondPlace={categorySecondPlace}
+											searchParams={searchParams}
+											setSearchParams={setSearchParams}
 										/>
 									</div>
-									<FilterMobile
-										isOpen={isFilterOpen}
-										onClose={() => setIsFilterOpen(false)}
-										platforms={platforms}
-										category={categoryId}
-										selectedPlatforms={selectedPlatforms}
-										setSelectedPlatforms={changePlatforms}
-										contentTypes={productTypes}
-										selectedTypes={selectedType}
-										setSelectedTypes={changeContentTypes}
-										setSelectSecondCat={changeCategorySecondPlace}
-										selectSecondCat={selectSecondCat}
-										categorySecondPlace={categorySecondPlace}
-										searchParams={searchParams}
-										setSearchParams={setSearchParams}
-									/>
-								</div>
+								)}
 
 								{lastCommerceProduct && (
 									<CommerceCard product={lastCommerceProduct} />

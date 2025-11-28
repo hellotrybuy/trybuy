@@ -59,10 +59,20 @@ export function HomeMain() {
 				return [repeatedFirst, repeatedSecond];
 			} catch (e) {
 				console.error("Ошибка при парсинге nested_blocks:", e);
-				return [[], []];
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				return [
+					Array(8).fill({ image: "" } as NestedBlock),
+					Array(8).fill({ image: "" } as NestedBlock),
+				];
 			}
 		}
-		return [[], []];
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		return [
+			Array(8).fill({ image: "" } as NestedBlock),
+			Array(8).fill({ image: "" } as NestedBlock),
+		];
 	}, [data, loading]);
 
 	// Desktop sync
@@ -100,9 +110,7 @@ export function HomeMain() {
 
 	return (
 		<div>
-			{sliderData.length > 0 &&
-			sliderData[0].length > 0 &&
-			sliderData[1].length > 0 ? (
+			{sliderData.length > 0 && (
 				<div className={cnx("desktop")}>
 					<div className={cnx("desktop__text")}>
 						<h2 className={cnx("desktop__title")}>
@@ -161,13 +169,9 @@ export function HomeMain() {
 						)}
 					</div>
 				</div>
-			) : (
-				<div className={cnx("skeletonPc")}></div>
 			)}
 
-			{sliderData.length > 0 &&
-			sliderData[0].length > 0 &&
-			sliderData[1].length > 0 ? (
+			{sliderData.length > 0 && (
 				<div className={cnx("mobile")}>
 					<h1 className={cnx("mobile__title")}>
 						{infoData != "" && infoData.title}
@@ -205,8 +209,6 @@ export function HomeMain() {
 						</div>
 					</div>
 				</div>
-			) : (
-				<div className={cnx("skeletonMob")}></div>
 			)}
 		</div>
 	);

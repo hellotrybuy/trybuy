@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 import classNames from "classnames/bind";
 const cnx = classNames.bind(styles);
 
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 import { FreeMode, Navigation } from "swiper/modules";
@@ -17,19 +17,47 @@ import PsAnim from "./psBlock";
 import { Link } from "react-router";
 
 export function HomeGenries() {
-	const prevBtnRef = useRef(null);
-	const nextBtnRef = useRef(null);
-	const [, setSwiper] = useState<SwiperType>();
+	const prevBtnRef = useRef<HTMLButtonElement>(null);
+	const nextBtnRef = useRef<HTMLButtonElement>(null);
+	const [, setSwiper] = useState<SwiperType | null>(null);
+
 	const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
 	const { categories } = useMainScreenCategories();
-
 	const { isMobile2, isBig } = useIsMobile();
 
-	const getGradint = (first: string, second: string) => {
-		return `radial-gradient(97.07% 97.07% at 100% 98.78%, ${first} 0%, ${second} 98.46%)`;
+	// Состояние: какие карточки уже загрузили все картинки
+	const [imagesLoadedMap, setImagesLoadedMap] = useState<
+		Record<string, boolean>
+	>({});
+
+	const imagesLoadedMapSafe = useMemo(() => {
+		const map: Record<string, boolean> = { ...imagesLoadedMap }; // копируем текущее
+
+		// Добавляем все id из текущих categories, которых ещё нет
+		categories.forEach((cat) => {
+			if (cat?.id) {
+				const id = cat.id ?? `placeholder-${categories.indexOf(cat)}`;
+				if (!(id in map)) {
+					map[id] = false;
+				}
+			}
+		});
+
+		return map;
+	}, [categories, imagesLoadedMap]);
+
+	const handleImageReady = (id: string) => {
+		setImagesLoadedMap((prev) => ({ ...prev, [id]: true }));
 	};
 
+	const getGradint = (first: string, second: string) =>
+		`radial-gradient(97.07% 97.07% at 100% 98.78%, ${first} 0%, ${second} 98.46%)`;
+
+	// Если данных нет — показываем 8 скелетонов
+	const slidesToRender =
+		categories.length > 0 ? categories : Array(6).fill(null);
+
+	console.log(imagesLoadedMapSafe, "imagesLoadedMapSafe");
 	return (
 		<section className={cnx("genries")}>
 			<div className={cnx("genries__inner")}>
@@ -37,6 +65,8 @@ export function HomeGenries() {
 					<Title size="large" className={cnx("genries__title", "_desktop")}>
 						Категории
 					</Title>
+					{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+					{/* @ts-ignore */}
 					<SwiperControl prevBtn={prevBtnRef} nextBtn={nextBtnRef} />
 				</div>
 
@@ -45,74 +75,79 @@ export function HomeGenries() {
 				</Title>
 
 				<div className={cnx("genries__swiper")}>
-					{categories.length > 0 ? (
-						<Swiper
-							modules={[Navigation, FreeMode]}
-							spaceBetween={isMobile2 ? 100 : 20}
-							slidesPerView={isBig ? 5 : 4}
-							slidesPerGroup={1}
-							navigation={{
-								prevEl: prevBtnRef.current,
-								nextEl: nextBtnRef.current,
-							}}
-							grabCursor
-							onInit={(swiper) => setSwiper(swiper)}
-							className={cnx("slider")}
-						>
-							{[...categories].map((genre, index) => (
-								<SwiperSlide key={index} className={cnx("slide")}>
-									<Link
-										to={genre.collections_url}
-										key={genre.id}
-										onMouseEnter={() => setHoveredIndex(index)}
-										onMouseLeave={() => setHoveredIndex(null)}
-										className={cnx("genre")}
-										style={{
-											background: getGradint(
-												genre.collections_color_1,
-												genre.collections_color_2,
-											),
-										}}
-									>
-										<p className={cnx("genre__title")}>
-											{genre.collections_name}
-										</p>
-										{index == 3 ? (
-											<PsAnim isHovered={hoveredIndex === index} />
-										) : (
-											<ImagesBlock
-												images={genre.screenshots}
-												isHovered={hoveredIndex === index}
-												index={index}
-											/>
-										)}
-									</Link>
-								</SwiperSlide>
-							))}
-							{isMobile2 && <SwiperSlide></SwiperSlide>}
-						</Swiper>
-					) : (
-						<div className={cnx("sceleton")}></div>
-					)}
-				</div>
+					<Swiper
+						modules={[Navigation, FreeMode]}
+						spaceBetween={isMobile2 ? 100 : 20}
+						slidesPerView={isBig ? 5 : 4}
+						slidesPerGroup={1}
+						navigation={{
+							prevEl: prevBtnRef.current,
+							nextEl: nextBtnRef.current,
+						}}
+						grabCursor
+						onInit={(swiper) => setSwiper(swiper)}
+						className={cnx("slider")}
+					>
+						{slidesToRender.map((genre: any, index) => {
+							const categoryId = genre?.id ?? `placeholder-${index}`;
+							const isSkeleton = !genre?.collections_url;
+							const isLoaded = imagesLoadedMap[categoryId]; // true или undefined
 
-				{/* <div className={cnx("genries__grid")}>
-					{[...MOCK_GENRES].map((genre, index) => (
-						<div
-							key={index}
-							className={cnx("genre")}
-							style={{ background: genre.bg }}
-						>
-							<b className={cnx("genre__title")}>{genre.title}</b>
-							<img
-								src={genre.img}
-								alt=""
-								className={cnx(genre.className)}
-								style={genre.style}
-							/>
-						</div>
-					))}
-				</div> */}
+							// Показываем скелетон только если это skeleton и ещё не загружено
+							const showSkeleton =
+								isSkeleton || (genre?.screenshots && !isLoaded);
+
+							return (
+								<SwiperSlide key={index} className={cnx("slide")}>
+									{showSkeleton ? (
+										<div className={cnx("genre", "genre--skeleton")}>
+											<div className={cnx("genre-skeleton")} />
+											{genre?.screenshots && (
+												<ImagesBlock
+													images={genre.screenshots}
+													isHovered={false}
+													index={index}
+													onReady={() => handleImageReady(categoryId)}
+													hidden
+												/>
+											)}
+										</div>
+									) : (
+										<Link
+											to={genre.collections_url}
+											onMouseEnter={() => setHoveredIndex(index)}
+											onMouseLeave={() => setHoveredIndex(null)}
+											className={cnx("genre")}
+											style={{
+												background: getGradint(
+													genre.collections_color_1,
+													genre.collections_color_2,
+												),
+											}}
+										>
+											<p className={cnx("genre__title")}>
+												{genre.collections_name}
+											</p>
+
+											{index === 1 ? (
+												<PsAnim isHovered={hoveredIndex === index} />
+											) : (
+												<ImagesBlock
+													images={genre.screenshots ?? []}
+													isHovered={hoveredIndex === index}
+													index={index}
+												/>
+											)}
+										</Link>
+									)}
+								</SwiperSlide>
+							);
+						})}
+
+						{/* Мобильная "пустая" карточка для выравнивания */}
+						{isMobile2 && <SwiperSlide></SwiperSlide>}
+					</Swiper>
+				</div>
 			</div>
 		</section>
 	);

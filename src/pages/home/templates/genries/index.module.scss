@@ -50,6 +50,42 @@
 	}
 }
 
+.genre-skeleton {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(90deg, #292832 25%, #3a3946 50%, #292832 75%);
+	background-size: 200% 100%;
+	animation: pulse 1.5s infinite ease-in-out;
+	animation-delay: 0.4s;
+	padding: 24px 27px;
+	border-radius: 25px;
+
+	transition: transitions.$main;
+	overflow: hidden;
+
+	@media screen and (max-width: breakpoints.$lg) {
+		height: clamp(4.438rem, 0.557rem + 17.25vw, 11.25rem);
+		aspect-ratio: 1.2/1;
+		padding: 8px 10px;
+		border-radius: 10px;
+	}
+
+	@media screen and (max-width: breakpoints.$sm) {
+		height: clamp(6.438rem, 2.557rem + 19.25vw, 13.25rem);
+
+		aspect-ratio: 1/1.1;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
+	}
+}
+
 .genre {
 	position: relative;
 	display: block;
@@ -101,7 +137,7 @@
 		}
 
 		@media screen and (max-width: breakpoints.$sm) {
-			font-size: 8px;
+			font-size: 9px;
 		}
 	}
 
