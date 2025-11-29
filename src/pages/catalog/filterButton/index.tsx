@@ -17,7 +17,14 @@ export function FilterButton({ onClick, isOpen }: FilterButtonProps) {
 			aria-expanded={isOpen}
 			aria-label="Открыть фильтры"
 		>
-			<img src="/iconsFolder/common/Sort_by_square.svg" />
+			<img
+				src="/iconsFolder/common/Sort_by_square.svg"
+				className={cnx("desk")}
+			/>
+			<img
+				src="/iconsFolder/common/Sort_by_square_mob.svg"
+				className={cnx("mob")}
+			/>
 			Фильтры
 		</button>
 	);

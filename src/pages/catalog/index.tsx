@@ -16,7 +16,6 @@ import {
 	CATALOG_SECOND_CAT,
 	CATALOG_TYPES,
 } from "../../constants/searchParams";
-import Select from "../../components/select";
 import { Filers } from "../../components/filters";
 import { ChapterSearch } from "./chapterSearch";
 import { useGetGreatCategories } from "../../hooks/useGetGreatCategories";
@@ -35,6 +34,8 @@ import { FilterMobile } from "../../widgets/mobile-filter";
 import { useGetCommerceProductWithFallback } from "../../hooks/useGetCommerceProductWithFallback";
 import { PriceProvider } from "../product/context";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { TopCategories } from "./topCategorys";
+import SelectCatalog from "../../components/selectCatalog";
 
 export const selectOptions = [
 	{ value: "default", label: "По рекомендациям" },
@@ -363,33 +364,14 @@ export function CatalogPage() {
 						{!checkFiltersDel && (
 							<div className={cnx("catalog__categories", "categories")}>
 								<nav className={cnx("categories__nav")}>
-									{categorys ? (
-										<ul>
-											<li
-												className={cnx(categoryId == "" && "_active")}
-												onClick={() => changeCategory("")}
-												ref={(node) => {
-													categoryRefs.current[""] = node;
-												}}
-											>
-												<div>Все товары</div>
-											</li>
-											{categorys.map((el) => (
-												<li
-													ref={(node) => {
-														categoryRefs.current[el.id] = node;
-													}}
-													className={cnx(categoryId == el.id && "_active")}
-													key={el.id}
-													onClick={() => changeCategory(el.id)}
-												>
-													<div>{el.name}</div>
-												</li>
-											))}
-										</ul>
-									) : (
-										<div className={cnx("categories_sceleton")}></div>
-									)}
+									<TopCategories
+										categorys={categorys}
+										categoryId={categoryId}
+										changeCategory={changeCategory}
+										categoryRefs={categoryRefs}
+										changeCategorySecondPlace={changeCategorySecondPlace}
+										secondCategoryFromUrl={secondCategoryFromUrl}
+									/>
 
 									<ChapterSearch
 										selectValue={selectValue}
@@ -422,7 +404,7 @@ export function CatalogPage() {
 										className={cnx("catalog__filter-mobile", "filter-mobile")}
 									>
 										<div className={cnx("catalog__main__down")}>
-											<Select
+											<SelectCatalog
 												onChange={(newValue) => setSelectValue(newValue)}
 												value={selectValue}
 												options={selectOptions}
