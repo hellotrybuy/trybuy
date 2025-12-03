@@ -12,8 +12,9 @@ import CatalogMenu from "./catalogMenu/CatalogMenu";
 import HeaderMobileNav from "./headerMobileNav";
 import { useSearchContext } from "../../context";
 import { useEnterKey } from "../../hooks/useEnterKey";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useSearch } from "../../hooks/useSearch";
+import { useIsMobile } from "../../hooks/useIsMobile";
 
 const cnx = classNames.bind(styles);
 
@@ -24,6 +25,13 @@ export function Header() {
 	const ref = useRef<HTMLDivElement>(null);
 	const [isHeaderFixed, setIsHeaderFixed] = useState(false);
 	const navigate = useNavigate();
+	const { isMobile } = useIsMobile();
+
+	console.log(window.history, "navigate");
+
+	const location = useLocation();
+
+	const isHome = location.pathname === Routes.HOME;
 
 	const goHistory = () => {
 		window.open("https://oplata.info/info/", "_blank");
@@ -61,12 +69,44 @@ export function Header() {
 			<header className={cnx("header", { "header--fixed": isHeaderFixed })}>
 				<div className={CONTAINER}>
 					<div className={cnx("header__inner")}>
-						<div className={cnx("header__logo")}>
-							<a href={Routes.HOME}>
-								<img src="/iconsFolder/common/logo.svg" alt="TryBuy" />
-								<img src="/iconsFolder/common/logo-short.svg" alt="TryBuy" />
-							</a>
-						</div>
+						{!isMobile || isHome ? (
+							<div className={cnx("header__logo")}>
+								<a href={Routes.HOME}>
+									<img src="/iconsFolder/common/logo.svg" alt="TryBuy" />
+									<img src="/iconsFolder/common/logo-short.svg" alt="TryBuy" />
+								</a>
+							</div>
+						) : (
+							<div
+								className={cnx("butBack")}
+								onClick={() => {
+									const path = location.pathname;
+
+									// 1. Если мы на продукте в каталоге → вернуться в каталог
+									if (path.startsWith("/catalog/product")) {
+										navigate("/catalog");
+									}
+									// 2. Если мы на каталоге → уйти на главную
+									else if (
+										path === "/catalog" ||
+										path.startsWith("/catalog?")
+									) {
+										navigate("/");
+									}
+									// 3. Все остальные страницы → обычный назад
+									else {
+										if (window.history.length <= 1) navigate("/");
+										else navigate(-1);
+									}
+
+									setTimeout(() => {
+										window.scrollTo({ top: 0, behavior: "smooth" });
+									}, 0);
+								}}
+							>
+								<img src="/iconsFolder/common/arrow-left.svg" alt="TryBuy" />
+							</div>
+						)}
 
 						<nav className={cnx("header__actions", "actions")}>
 							<MainSearch

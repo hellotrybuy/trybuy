@@ -2,6 +2,23 @@
 @use "/src/scss/variables/breakpoints";
 @use "/src/scss/variables/transitions";
 
+.butBack {
+	display: flex;
+	align-items: center;
+	border-radius: 12px;
+	height: 36px;
+	justify-content: center;
+	background-color: rgba(51, 57, 64, 1);
+	padding: 3px 10px;
+	cursor: pointer;
+	transition: 0.2s;
+
+	&:hover {
+		background-color: rgb(57, 59, 62);
+		transition: 0.2s;
+	}
+}
+
 .header {
 	position: sticky;
 	z-index: zIndex.$z-index-200;
@@ -40,6 +57,10 @@
 			border-radius: 20px;
 			padding: 20px;
 			margin: 0 -15px;
+		}
+
+		@media screen and (max-width: 480px) {
+			gap: 10px;
 		}
 
 		&::after {

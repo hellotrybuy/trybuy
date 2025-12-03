@@ -114,7 +114,7 @@ export function CatalogPage() {
 	);
 
 	const [catalogData, setCatalogData] = useState<ProductDataCAT[]>([]);
-	const { isMobile } = useIsMobile();
+	const { isMobile, isMobile0 } = useIsMobile();
 
 	const { categorys, loading: loadingCat } = useGetGreatCategories();
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -381,6 +381,10 @@ export function CatalogPage() {
 								</nav>
 							</div>
 						)}
+						{lastCommerceProduct && isMobile0 && (
+							<CommerceCard product={lastCommerceProduct} />
+						)}
+
 						<div className={cnx("catalog__body")}>
 							<div className={cnx("catalog__filters")}>
 								<Filers
@@ -398,6 +402,7 @@ export function CatalogPage() {
 									setSearchParams={setSearchParams}
 								/>
 							</div>
+
 							<div className={cnx("catalog__main", "main")}>
 								{!checkFiltersDel && (
 									<div
@@ -414,6 +419,7 @@ export function CatalogPage() {
 												isOpen={isFilterOpen}
 											/>
 										</div>
+
 										<FilterMobile
 											isOpen={isFilterOpen}
 											onClose={() => setIsFilterOpen(false)}
@@ -433,7 +439,7 @@ export function CatalogPage() {
 									</div>
 								)}
 
-								{lastCommerceProduct && (
+								{lastCommerceProduct && !isMobile0 && (
 									<CommerceCard product={lastCommerceProduct} />
 								)}
 
